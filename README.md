@@ -17,10 +17,8 @@
 
 ## 🛠️ Getting Started
 
-### 1. Clone the repository
-
 ```bash
-git clone https://github.com/yourusername/RestroNet.git
+git clone https://github.com/0Shraddha/restroNet-Frontend.git
 cd RestroNet
 npm install/ npm i
 npm run dev
