@@ -1,12 +1,12 @@
 'use client'
-import { Input } from '../../components/ui/input'
-import { Label } from '../../components/ui/label'
-import { Button } from '../../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Button } from '../components/ui/button'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 
-export default function LoginPage() {
+export default function SignUpPage() {
 
     const {
         register,
@@ -43,7 +43,7 @@ export default function LoginPage() {
         )}
       <div className="w-full flex items-center justify-center p-8">
         <div className="max-w-md w-full space-y-6">
-          <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
+          <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)} method='POST'>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -65,15 +65,19 @@ export default function LoginPage() {
                 {errors.email && <small className='text-red-800'>{errors.email.message}</small>}
               </div>
               <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
+                <Label htmlFor="fullname">Fullname</Label>
+                <Input
+                  id="fullname"
+                  type="fullname"
+                  placeholder="m@example.com"
+                {...register('fullname', { 
+                    required: 'Fullname is required'
+                })}
+
+                />
+                {errors.fullname && <small className='text-red-800'>{errors.fullname.message}</small>}
+              </div>
+              <div className="grid gap-3">
                 <Input id="password" type="password"                 
                 {...register('password', { 
                     required: 'Password is required',
@@ -89,6 +93,22 @@ export default function LoginPage() {
                 />
                 {errors.password && <small className='text-red-800'>{errors.password.message}</small>}
 
+                <div className="grid gap-3">
+                <Input id="confirmPassword" type="confirmPassword"                 
+                {...register('confirmPassword', { 
+                    required: 'Password is required',
+                    minLength: {
+                        value : 8,
+                        message : 'Password should be atleast 8 characters long'
+                    },
+                    pattern : {
+                         value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                        message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+                    }
+                })}
+                />
+                {errors.confirmPassword && <small className='text-red-800'>{errors.confirmPassword.message}</small>}
+
               </div>
               <Button type="submit" className="w-auto bg-black text-white">
                 Login
@@ -100,6 +120,7 @@ export default function LoginPage() {
                   Sign up
                 </a>
               </div>
+            </div>
             </div>
           </form>
         </div>

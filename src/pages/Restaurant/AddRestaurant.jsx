@@ -263,8 +263,6 @@ const AddRestaurant = () => {
         </button>
       </div>
 
-
-
       {submitted && (
         <p className="text-green-600 text-center font-medium">Restaurant added successfully!</p>
       )}

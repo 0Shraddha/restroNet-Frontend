@@ -1,5 +1,5 @@
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
-
+import { NavLink } from "react-router-dom"
 import {
   Sidebar,
   SidebarContent,
@@ -14,28 +14,28 @@ import {
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "Dashboard",
+    url: "/",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: "Restaurant",
+    url: "/restaurant-list",
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
+    title: "Admin/Manager",
+    url: "/manager",
     icon: Calendar,
   },
   {
-    title: "Search",
-    url: "#",
+    title: "Approval",
+    url: "/approve",
     icon: Search,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
 ]
@@ -45,16 +45,20 @@ export default function SidebarLayout() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>RESTRONET</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <NavLink  to={item.url}
+                      className={({ isActive }) => {
+                        return isActive ? 'active' : undefined;
+                      }}
+                      end>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

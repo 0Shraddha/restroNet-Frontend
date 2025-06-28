@@ -1,12 +1,12 @@
 'use client'
-import { Input } from '../../components/ui/input'
-import { Label } from '../../components/ui/label'
-import { Button } from '../../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Button } from '../components/ui/button'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 
-export default function SignUpPage() {
+export default function LoginPage() {
 
     const {
         register,
@@ -65,19 +65,15 @@ export default function SignUpPage() {
                 {errors.email && <small className='text-red-800'>{errors.email.message}</small>}
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="fullname">Fullname</Label>
-                <Input
-                  id="fullname"
-                  type="fullname"
-                  placeholder="m@example.com"
-                {...register('fullname', { 
-                    required: 'Fullname is required'
-                })}
-
-                />
-                {errors.fullname && <small className='text-red-800'>{errors.fullname.message}</small>}
-              </div>
-              <div className="grid gap-3">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                  <a
+                    href="#"
+                    className="ml-auto text-sm underline-offset-2 hover:underline"
+                  >
+                    Forgot your password?
+                  </a>
+                </div>
                 <Input id="password" type="password"                 
                 {...register('password', { 
                     required: 'Password is required',
@@ -93,22 +89,6 @@ export default function SignUpPage() {
                 />
                 {errors.password && <small className='text-red-800'>{errors.password.message}</small>}
 
-                <div className="grid gap-3">
-                <Input id="confirmPassword" type="confirmPassword"                 
-                {...register('confirmPassword', { 
-                    required: 'Password is required',
-                    minLength: {
-                        value : 8,
-                        message : 'Password should be atleast 8 characters long'
-                    },
-                    pattern : {
-                         value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                        message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-                    }
-                })}
-                />
-                {errors.confirmPassword && <small className='text-red-800'>{errors.confirmPassword.message}</small>}
-
               </div>
               <Button type="submit" className="w-auto bg-black text-white">
                 Login
@@ -120,7 +100,6 @@ export default function SignUpPage() {
                   Sign up
                 </a>
               </div>
-            </div>
             </div>
           </form>
         </div>
