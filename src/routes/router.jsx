@@ -1,8 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import LoginPage from "../pages/Login";
 import App from "../App";
 import ErrorPage from './error'
 import restaurantRoutes from "../pages/Restaurant/restaurantRoutes";
+import SignUpPage from "../pages/Registration";
+import { action as authAction } from "../Authentication/Authentication";
+import Dashboard from "../pages/Dashboard";
+
 
 const router = createBrowserRouter([
     { path: '/',
@@ -11,7 +14,12 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <LoginPage />
+                element: <Dashboard />
+            },
+            {
+                path: '/auth',
+                element: <SignUpPage />,
+                action: authAction
             },
            ...restaurantRoutes,
         ]

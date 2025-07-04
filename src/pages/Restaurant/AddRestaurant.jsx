@@ -45,7 +45,7 @@ const AddRestaurant = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label htmlFor="restaurantName" className="block text-sm mb-1 font-medium text-gray-700">Restaurant Name</label>
+              <label htmlFor="restaurantName" className="block text-sm mb-2 font-medium text-gray-700">Restaurant Name *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="restaurantName"
@@ -57,7 +57,7 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="restaurantLocation" className="block text-sm mb-1 font-medium text-gray-700">Location</label>
+              <label htmlFor="restaurantLocation" className="block text-sm mb-2 font-medium text-gray-700">Location *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="restaurantLocation"
@@ -69,7 +69,7 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="restaurantPhone" className="block text-sm mb-1 font-medium text-gray-700">Phone Number</label>
+              <label htmlFor="restaurantPhone" className="block text-sm mb-2 font-medium text-gray-700">Phone Number *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="restaurantPhone"
@@ -81,7 +81,7 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="restaurantEmail" className="block text-sm mb-1 font-medium text-gray-700">Email</label>
+              <label htmlFor="restaurantEmail" className="block text-sm mb-2 font-medium text-gray-700">Email *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="restaurantEmail"
@@ -99,7 +99,7 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="restaurantDescription" className="block text-sm mb-1 font-medium text-gray-700">Description</label>
+              <label htmlFor="restaurantDescription" className="block text-sm mb-2 font-medium text-gray-700">Description</label>
               <Textarea
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="restaurantDescription"
@@ -124,58 +124,29 @@ const AddRestaurant = () => {
         <Card className="border-gray-100 bg-card text-card-foreground rounded-xl border py-6 shadow-sm">
           <CardContent className="space-y-4">
             <div>
-              <label htmlFor="ownerName" className="block text-sm mb-1 font-medium text-gray-700">Cusinie</label>
+              <label htmlFor="cuisine" className="block text-sm mb-2 font-medium text-gray-700">Cusinie *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="ownerName"
+                id="cuisine"
                 type="text"
-                placeholder="Enter Owner Fullname"
-                {...register('ownerName', { required: 'Full name is required' })}
+                placeholder="Enter Cuisine (Nepali, Indian, Chinese)"
+                {...register('cuisine', { required: 'Cuisine is required' })}
               />
-              {errors.ownerName && <p className="error">{errors.ownerName.message}</p>}
+              {errors.cuisine && <p className="error">{errors.cuisine.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="ownerLocation" className="block text-sm mb-1 font-medium text-gray-700">Location</label>
+              <label htmlFor="tags" className="block text-sm mb-2 font-medium text-gray-700">Tags *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="ownerLocation"
+                id="tags"
                 type="text"
-                placeholder="Enter Owner Location"
-                {...register('ownerLocation', { required: 'Owner location is required' })}
+                placeholder="Chefs special, Spicy, Vegan ..."
+                {...register('tags', { required: 'Atleast one tag is required' })}
               />
-              {errors.ownerLocation && <p className="error">{errors.ownerLocation.message}</p>}
+              {errors.tags && <p className="error">{errors.tags.message}</p>}
             </div>
 
-            <div>
-              <label htmlFor="ownerPhone" className="block text-sm mb-1 font-medium text-gray-700">Phone Number</label>
-              <Input
-                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="ownerPhone"
-                type="tel"
-                placeholder="Enter Owner Phone Number"
-                {...register('ownerPhone', { required: 'Phone number is required' })}
-              />
-              {errors.ownerPhone && <p className="error">{errors.ownerPhone.message}</p>}
-            </div>
-
-            <div>
-              <label htmlFor="ownerEmail" className="block text-sm mb-1 font-medium text-gray-700">Email</label>
-              <Input
-                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="ownerEmail"
-                type="email"
-                placeholder="Enter Owner Email"
-                {...register('ownerEmail', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: 'Invalid email format'
-                  }
-                })}
-              />
-              {errors.ownerEmail && <p className="error">{errors.ownerEmail.message}</p>}
-            </div>
           </CardContent>
         </Card>
     </div>
@@ -188,7 +159,7 @@ const AddRestaurant = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label htmlFor="ownerName" className="block text-sm mb-1 font-medium text-gray-700">Full Name</label>
+              <label htmlFor="ownerName" className="block text-sm mb-2 font-medium text-gray-700">Full Name *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="ownerName"
@@ -200,7 +171,7 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="ownerLocation" className="block text-sm mb-1 font-medium text-gray-700">Location</label>
+              <label htmlFor="ownerLocation" className="block text-sm mb-2 font-medium text-gray-700">Location *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="ownerLocation"
@@ -212,7 +183,7 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="ownerPhone" className="block text-sm mb-1 font-medium text-gray-700">Phone Number</label>
+              <label htmlFor="ownerPhone" className="block text-sm mb-2 font-medium text-gray-700">Phone Number *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="ownerPhone"
@@ -224,7 +195,7 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="ownerEmail" className="block text-sm mb-1 font-medium text-gray-700">Email</label>
+              <label htmlFor="ownerEmail" className="block text-sm mb-2 font-medium text-gray-700">Email *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="ownerEmail"
