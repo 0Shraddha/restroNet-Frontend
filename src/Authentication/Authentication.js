@@ -1,17 +1,25 @@
+import { redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+
 // Action function for handling form submissions
 export async function action({ request }) {
+    console.log('--- Auth Action Called ---');
+  console.log('Request URL:', request.url);
+
+
   const searchParams = new URL(request.url).searchParams;
   const mode = searchParams.get('mode') || 'login'; // Standardize to 'login' lowercase
 
   // Validate mode parameter
   if (mode !== 'login' && mode !== 'signup') {
+    // eslint-disable-next-line no-undef
     return json({ message: 'Invalid mode parameter.' }, { status: 400 });
   }
 
   const data = await request.formData();
   const email = data.get('email');
   const password = data.get('password');
-  const fullname = data.get('fullname');
+  const name = data.get('name');
   const confirmPassword = data.get('confirmPassword');
 
   const errors = {};
@@ -30,29 +38,33 @@ export async function action({ request }) {
 
 
   let authData = { email, password };
-  const baseUrl = "http://localhost:2700"; // Consider making this configurable for deployment
+  const baseUrl = "http://localhost:2700"; 
   let url;
 
   if (mode === 'signup') { // Standardize to 'signup' lowercase
-    if (!fullname || fullname.trim() === '') {
-      errors.fullname = 'Fullname is required.';
+    if (!name || name.trim() === '') {
+      errors.name = 'Fullname is required.';
     }
     if (password !== confirmPassword) {
       errors.confirmPassword = 'Passwords do not match.';
     }
 
-    authData = { email, password, fullname };
+    authData = { email, password, name };
     url = baseUrl + "/user/signup";
   } else { // mode === 'login'
+    const username = email;
+    authData = { username, password };
+
     url = baseUrl + "/user/login";
   }
 
-  // If there are any validation errors, return them
-  if (Object.keys(errors).length > 0) {
-    return json({ message: 'Validation failed.', errors }, { status: 422 });
-  }
+
+
+  console.log({url});
+  console.log("making req to backend");
 
   try {
+    console.log("inside try");
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -62,22 +74,54 @@ export async function action({ request }) {
     });
 
     if (response.status === 422 || response.status === 401) {
-      // If the backend returns validation errors or unauthorized status
-      // we can parse the response body for more specific messages/errors
       const responseData = await response.json();
+        toast.error('Failed to register user!');
+
+      // eslint-disable-next-line no-undef
       return json(responseData, { status: response.status });
+
     }
+
+  console.log("done making request");
 
     if (!response.ok) {
-      // For other non-OK responses (e.g., 500 server error)
-      throw json({ message: 'Could not authenticate user. ' }, { status: 500 });
-    }
+     console.log("Server error");
+     const errorText = await response.text(); // Get raw text for more info
+              toast.error('Server error : ', errorText);
 
-    // If authentication is successful, redirect to the home page
-    return redirect('/');
+            // eslint-disable-next-line no-undef
+            return json({ message: 'Could not authenticate user. Server responded with an error.' }, { status: response.status });
+        }
+
+const contentType = response.headers.get('content-type') || '';
+
+let responseData;
+if (contentType.includes('application/json')) {
+  responseData = await response.json();
+  console.log("successful JSON data:", responseData);
+} else {
+  const text = await response.text();
+  console.log("successful TEXT data:", text);
+  responseData = { message: text };
+}
+toast.success(responseData.message || 'User registered successfully!');
+    
+if(mode === 'signup'){
+          return redirect('/auth?mode=login')
+
+}else{
+  const user = 'user';
+  if(user === 'admin' ||  user === 'superadmin'){
+          return redirect('/')
+  }else{
+          return redirect('/users')
+
+  }
+
+}
+     
   } catch (error) {
     console.error("Error during authentication request : ", error);
-    // Return a generic error message if the fetch itself fails (e.g., network error)
-    return json({ message: 'Failed to connect to the authentication server.' }, { status: 500 });
+   
   }
 }

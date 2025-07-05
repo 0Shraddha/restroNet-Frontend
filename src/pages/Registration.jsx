@@ -4,10 +4,11 @@ import { Label } from '../components/ui/label'; // Assuming this path is correct
 import { Button } from '../components/ui/button'; // Assuming this path is correct
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, useActionData, useNavigation, useSearchParams, Link } from 'react-router-dom';
+import { Form, useActionData, useNavigation, useSearchParams, Link, useSubmit } from 'react-router-dom';
 
 export default function SignUpPage() {
   const navigation = useNavigation();
+  const submit = useSubmit();
   const isSubmitting = navigation.state === 'submitting';
   const actionData = useActionData(); // Data returned from the action
   const [searchParams] = useSearchParams();
@@ -18,44 +19,24 @@ export default function SignUpPage() {
     register,
     handleSubmit, // We will still use handleSubmit for client-side validation
     formState: { errors },
-    setError,
     getValues,
-    trigger, // Import trigger to manually trigger validation
   } = useForm();
 
-  // Use useEffect to process errors returned from the action function
-  useEffect(() => {
-    if (actionData && actionData.errors) {
-      for (const key in actionData.errors) {
-        setError(key, { type: 'server', message: actionData.errors[key] });
-      }
+  useEffect(()=>{
+    if(actionData){
+      console.log(actionData.errors);
     }
-    // Also, if actionData.message exists and there are no specific field errors,
-    // it could be a general server error message.
-    if (actionData && actionData.message && !actionData.errors) {
-        // You might want to set a general form error or display it differently
-        // For example, setError('root', { type: 'server', message: actionData.message });
-        // Or handle it in your JSX directly as you currently do.
+  })
+
+ const handleClientSideValidation = (data) => {
+  
+  const formData = new FormData();
+  for (const key in data) {
+        formData.append(key, data[key]);
     }
-  }, [actionData, setError]);
 
-  // This function will be called by react-hook-form's handleSubmit
-  // It's typically used for client-side validation.
-  // For React Router actions, you don't actually need to "submit" here.
-  // The <Form> component will handle the submission to the action.
-  // You might use this `onSubmit` if you had client-side-only logic or
-  // if you were manually fetching.
-  // For now, we can keep it as a placeholder or remove it if not needed.
-  const onSubmitClientValidation = async (data) => {
-    // This function runs if client-side validation passes.
-    // If you were NOT using React Router's action, you would perform your fetch here.
-    // Since you ARE using React Router's action, this function is actually redundant
-    // for triggering the submission to the action.
-    // The <Form> component will trigger the action directly when submitted.
-    console.log("Client-side validation passed. Data:", data);
-    // No need to manually submit the form here; <Form> does it.
-  };
-
+        submit(formData, { method: 'post' }); 
+ }
 
   return (
     <div className="min-h-screen flex font-inter">
@@ -69,19 +50,21 @@ export default function SignUpPage() {
             className="p-5 md:p-8"
             action={isLoginMode ? '?mode=login' : '?mode=signup'}
             method='POST'
+            onSubmit={handleSubmit(handleClientSideValidation)}
           >
             <div className="flex flex-col gap-4">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-3xl font-bold text-gray-800">Welcome back</h1>
+                <h1 className="text-3xl font-bold text-orange-500"> {isLoginMode ? 'Welcome back' : 'Welcome' }</h1>
                 <p className="text-muted-foreground text-balance text-gray-600 mt-2">
                   {isLoginMode ? 'Login to your RestroNet account' : 'Sign up for a new RestroNet account'}
                 </p>
               </div>
-              <div className="grid gap-4">
+              <div className="grid gap-1">
                 <Label htmlFor="email" className="text-gray-700">Email</Label>
                 <Input
                   id="email"
                   type="email"
+                  name='email'
                   placeholder="m@example.com"
                   className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   {...register('email', {
@@ -96,26 +79,43 @@ export default function SignUpPage() {
               </div>
 
               {!isLoginMode && (
-                <div className="grid gap-4">
-                  <Label htmlFor="fullname" className="text-gray-700">Fullname</Label>
+                <div className="grid gap-1">
+                  <Label htmlFor="name" className="text-gray-700">Fullname</Label>
                   <Input
-                    id="fullname"
+                    id="name"
                     type="text"
+                    name="name"
                     placeholder="John Doe"
                     className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                    {...register('fullname', {
+                    {...register('name', {
                       required: 'Fullname is required'
                     })}
                   />
-                  {errors.fullname && <small className='text-red-600 text-sm'>{errors.fullname.message}</small>}
+                  {errors.name && <small className='text-red-600 text-sm'>{errors.name.message}</small>}
                 </div>
               )}
 
-              <div className="grid gap-4">
+              {!isLoginMode && (
+                <div className="grid gap-1">
+                  <Label htmlFor="phone" className="text-gray-700">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    type="number"
+                    name='phone'
+                    placeholder="Enter phone number"
+                    className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    {...register('phone')}
+                  />
+                  {errors.phone && <small className='text-red-600 text-sm'>{errors.phone.message}</small>}
+                </div>
+              )}
+
+              <div className="grid gap-1">
                 <Label htmlFor="password" className="text-gray-700">Password</Label>
                 <Input
                   id="password"
                   type="password"
+                  name='password'
                   className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   {...register('password', {
                     required: 'Password is required',
@@ -133,7 +133,7 @@ export default function SignUpPage() {
               </div>
 
               {!isLoginMode && (
-                <div className="grid gap-4">
+                <div className="grid gap-1">
                   <Label htmlFor="confirmPassword" className="text-gray-700">Confirm Password</Label>
                   <Input
                     id="confirmPassword"
@@ -151,7 +151,7 @@ export default function SignUpPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors duration-200"
+                className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Submitting...' : (isLoginMode ? 'Login' : 'Sign Up')}
