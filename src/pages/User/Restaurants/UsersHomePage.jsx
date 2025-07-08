@@ -281,6 +281,7 @@ const RestaurantRecommendationUI = () => {
         </div>
       </footer>
     </div>
+   
   );
 };
 

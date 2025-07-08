@@ -28,13 +28,27 @@ export async function action({ request }) {
   if (!email || !email.includes('@')) {
     errors.email = 'Please enter a valid email address.';
   }
-  if (!password || password.length < 8) {
-    errors.password = 'Password must be at least 8 characters long.';
-  }
-  // Add more robust password pattern validation if needed on the server side
-  if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
-    errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
-  }
+
+  if (mode === 'signup') {
+    console.log("mode: " , mode);
+    if (!password || password.length < 8) {
+      errors.password = 'Password must be at least 8 characters long.';
+    }
+
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)
+    ) {
+      errors.password =
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.';
+    }
+}
+
+
+if (Object.keys(errors).length > 0) {
+  console.log('Validation errors:', errors);
+  return { errors }; // will be handled by your frontend form component
+}
+
 
 
   let authData = { email, password };
@@ -52,8 +66,7 @@ export async function action({ request }) {
     authData = { email, password, name };
     url = baseUrl + "/user/signup";
   } else { // mode === 'login'
-    const username = email;
-    authData = { username, password };
+    authData = { email, password };
 
     url = baseUrl + "/user/login";
   }
