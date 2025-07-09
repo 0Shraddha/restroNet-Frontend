@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Input } from '../../components/ui/input'
 import { Textarea } from '../../components/ui/textarea'
+import { Form, useSubmit } from 'react-router-dom'
 import {
   Card,
   CardContent,
@@ -12,6 +13,7 @@ import {
 
 import './Restaurant.css'
 import DropImageUpload from '../../components/DropImageUpload'
+import { Button } from '../../components/ui/button'
 
 const AddRestaurant = () => {
   const {
@@ -20,19 +22,24 @@ const AddRestaurant = () => {
     formState: { errors }
   } = useForm()
 
+  const submit = useSubmit();
+
   const [submitted, setSubmitted] = useState(false)
 
   const onSubmit = (data) => {
-    const trimmedData = Object.fromEntries(
-      Object.entries(data).map(([key, val]) => [key, typeof val === 'string' ? val.trim() : val])
-    )
-    console.log('Cleaned Form Data:', trimmedData)
-    setSubmitted(true)
+    
+    const formData = new FormData();
+    for(const key in data){
+      formData.append(key, data[key]);
+    }
+
+    submit(formData, {method: 'post'})
   }
 
   return (
-    <form
-      className="max-w-6xl mx-auto flex flex-col gap-8 p-6 bg-white rounded-xl shadow-lg"
+    <Form
+      className="max-w-6xl mx-auto flex flex-col gap-8 p-6 my-12 bg-white rounded-xl shadow-lg"
+      method='POST'
       onSubmit={handleSubmit(onSubmit)}
     >
       <h2 className="text-2xl font-bold text-gray-800 text-center">Register New Restaurant</h2>
@@ -45,39 +52,39 @@ const AddRestaurant = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label htmlFor="restaurantName" className="block text-sm mb-2 font-medium text-gray-700">Restaurant Name *</label>
+              <label htmlFor="restaurant_name" className="block text-sm mb-2 font-medium text-gray-700">Restaurant Name *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="restaurantName"
+                id="restaurant_name"
                 type="text"
                 placeholder="Enter Restaurant Name"
-                {...register('restaurantName', { required: 'Restaurant name is required' })}
+                {...register('restaurant_name', { required: 'Restaurant name is required' })}
               />
-              {errors.restaurantName && <p className="error">{errors.restaurantName.message}</p>}
+              {errors.restaurant_name && <p className="error">{errors.restaurant_name.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="restaurantLocation" className="block text-sm mb-2 font-medium text-gray-700">Location *</label>
+              <label htmlFor="restaurant_location" className="block text-sm mb-2 font-medium text-gray-700">Location *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="restaurantLocation"
+                id="restaurant_location"
                 type="text"
                 placeholder="Enter Restaurant Location"
-                {...register('restaurantLocation', { required: 'Location is required' })}
+                {...register('restaurant_location', { required: 'Location is required' })}
               />
-              {errors.restaurantLocation && <p className="error">{errors.restaurantLocation.message}</p>}
+              {errors.restaurant_location && <p className="error">{errors.restaurant_location.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="restaurantPhone" className="block text-sm mb-2 font-medium text-gray-700">Phone Number *</label>
+              <label htmlFor="restaurant_contact" className="block text-sm mb-2 font-medium text-gray-700">Phone Number *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="restaurantPhone"
+                id="restaurant_contact"
                 type="tel"
                 placeholder="Enter Restaurant Phone Number"
-                {...register('restaurantPhone', { required: 'Phone number is required' })}
+                {...register('restaurant_contact', { required: 'Phone number is required' })}
               />
-              {errors.restaurantPhone && <p className="error">{errors.restaurantPhone.message}</p>}
+              {errors.restaurant_contact && <p className="error">{errors.restaurant_contact.message}</p>}
             </div>
 
             <div>
@@ -99,12 +106,12 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="restaurantDescription" className="block text-sm mb-2 font-medium text-gray-700">Description</label>
+              <label htmlFor="restaurant_Description" className="block text-sm mb-2 font-medium text-gray-700">Description</label>
               <Textarea
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="restaurantDescription"
+                id="restaurant_Description"
                 placeholder="Tell something about the restaurant..."
-                {...register('restaurantDescription')}
+                {...register('description')}
               />
             </div>
           </CardContent>
@@ -226,18 +233,18 @@ const AddRestaurant = () => {
 
 
       <div className="flex justify-end">
-        <button
+        <Button
           type="submit"
-          className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-all duration-200"
+          className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
         >
-          Submit
-        </button>
+          Create
+        </Button>
       </div>
 
       {submitted && (
         <p className="text-green-600 text-center font-medium">Restaurant added successfully!</p>
       )}
-    </form>
+    </Form>
   )
 }
 

@@ -72,12 +72,7 @@ if (Object.keys(errors).length > 0) {
   }
 
 
-
-  console.log({url});
-  console.log("making req to backend");
-
   try {
-    console.log("inside try");
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -95,7 +90,6 @@ if (Object.keys(errors).length > 0) {
 
     }
 
-  console.log("done making request");
 
     if (!response.ok) {
      console.log("Server error");
