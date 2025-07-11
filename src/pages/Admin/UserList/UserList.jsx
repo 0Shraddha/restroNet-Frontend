@@ -1,15 +1,17 @@
 import React from 'react';
 import { useQuery } from "@tanstack/react-query";
-import { fetchUsers } from "../../../api/fetchUsers"; // Assuming this path is correct
+import { fetchUsers } from "../../../api/fetchUsers";
 
 export default function UserList() {
-    // FIX 1: Correctly destructure the object returned by useQuery
+
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ['users'],
         queryFn: fetchUsers,
+        staleTime: 5000,
+        // gcTime: 1000
     });
+    const userCount = data?.count || 0;
 
-    // FIX 2: Handle loading, error, and no data states
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-48">
@@ -28,7 +30,6 @@ export default function UserList() {
         );
     }
 
-    // FIX 3: Check if data is available and render a proper list
     if (!data || data.length === 0) {
         return (
             <div className="flex justify-center items-center h-48">
@@ -38,8 +39,8 @@ export default function UserList() {
     }
 
     return (
-        <div className="p-4 bg-white shadow rounded-lg overflow-x-auto"> {/* Added overflow-x-auto for responsiveness */}
-            <h2 className="text-xl font-semibold mb-4">User List</h2>
+        <div className="p-4 bg-white shadow rounded-lg overflow-x-auto">
+            <h2 className="text-xl font-semibold mb-4">User List - {userCount} users</h2>
             <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
@@ -56,9 +57,9 @@ export default function UserList() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                     {data.map(user => (
-                        <tr key={user._id}> {/* Assuming user._id is the unique key */}
+                        <tr key={user._id}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {user.name} {/* Changed from user.username to user.name as per your code */}
+                                {user.name}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {user.email}

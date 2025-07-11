@@ -39,28 +39,24 @@ export async function addRestaurants({ request }){
 
 }
 
-export async function getRestaurants({ request }){
-let url = baseUrl + "/venue";
+export async function getRestaurants({signal, searchTerm}){
+// let url = baseUrl + "/venue";
+    let url = 'https://gist.githubusercontent.com/Shadid12/18642d735214920921f4f470300be11e/raw/6dcf7b456c40f110c313bbb1678474b01756bc1a/restaurants.json';
 
-    try{
-        const response = await fetch(url, {
-            method :  'GET',
-            headers : {
-                'Content-Type' : 'application/json'
-            },
-        });
+     if (searchTerm && searchTerm.trim()) {
+        url += `?filter=${encodeURIComponent(searchTerm.trim())}`;
+    }
+
+        const response = await fetch(url, {signal : signal});
+
 
         if(!response.ok){
             const errorText = await response.text();
-            toast.error('Server error : ', errorText)
-
+            toast.error('Server error: ' + errorText);
+            throw new Error('Failed to fetch restaurants');
         }
 
-        let responseData = await response.json();
-        console.log({responseData});
-        toast.success(responseData.message || 'Restaurant added successfully!')
+       const restaurants = await response.json();
+         return restaurants;
 
-    }catch(err){
-        console.log(err);
-    }
 }
