@@ -3,6 +3,9 @@ import './App.css'
 import SidebarLayout from './layout/sidebar/Sidebar'
 
 import { Outlet, useLocation } from 'react-router-dom'
+import { QueryClient,QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient();
 
 function App() {
   const location = useLocation();
@@ -11,7 +14,7 @@ const shouldHideSidebar = ['/auth', '/users'].some(path => location.pathname.inc
   console.log({shouldHideSidebar});
 
   return (
-
+    <QueryClientProvider client={queryClient}>
      <div className="flex h-screen w-full">
       <ToastContainer position='bottom-right' autoClose={3000} />
       {/* Sidebar */}
@@ -26,6 +29,7 @@ const shouldHideSidebar = ['/auth', '/users'].some(path => location.pathname.inc
           <Outlet />
         </main>
         </div>
+        </QueryClientProvider>
   )
 }
 

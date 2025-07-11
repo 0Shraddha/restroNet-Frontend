@@ -23,13 +23,15 @@ export async function addRestaurants({ request }){
             const errorMsg = await response.json();
            
             console.log({errorMsg});
-            toast.error('Server error : ', errorMsg)
+            toast.error('Server error : ', errorMsg.error)
+            throw errorMsg;
 
         }
 
         let responseData = await response.json();
         console.log({responseData});
         toast.success(responseData.msg || 'Restaurant added successfully!')
+        return responseData;
 
     }catch(err){
         console.log(err);

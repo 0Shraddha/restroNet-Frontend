@@ -14,6 +14,9 @@ import {
 import './Restaurant.css'
 import DropImageUpload from '../../components/DropImageUpload'
 import { Button } from '../../components/ui/button'
+import { useQuery } from '@tanstack/react-query'
+import { addRestaurants } from '../../api/restaurants'
+
 
 const AddRestaurant = () => {
   const {
@@ -36,6 +39,14 @@ const AddRestaurant = () => {
     submit(formData, {method: 'post'})
   }
 
+  const {data, isLoading, isError, error } = useQuery({
+    queryKey: ['restaurants'],
+    queryFn: addRestaurants
+  })
+
+  if(isLoading){
+    const loadingMsg = 'Submitting'
+  }
   return (
     <Form
       className="max-w-6xl mx-auto flex flex-col gap-8 p-6 my-12 bg-white rounded-xl shadow-lg"
@@ -237,7 +248,8 @@ const AddRestaurant = () => {
           type="submit"
           className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
         >
-          Create
+          
+          { isLoading ? "Loading" : "Create" }
         </Button>
       </div>
 
