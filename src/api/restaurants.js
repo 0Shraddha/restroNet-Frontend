@@ -2,23 +2,21 @@ import { toast } from "react-toastify";
 
 const baseUrl = "http://localhost:2700"; 
 
-export async function addRestaurants({ request }){
-    const data = await request.formData();
-    const formObject = Object.fromEntries(data);
-
-    console.log({formObject});
-
+export async function addRestaurants(formData){
+console.log({formData});
     let url = baseUrl + "/venue";
 
     try{
+        console.log("inside try");
         const response = await fetch(url, {
             method :  'POST',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body: JSON.stringify(formObject)
+            body: formData
         });
 
+        console.log("inside post");
         if(!response.ok){
             const errorMsg = await response.json();
            
@@ -28,7 +26,7 @@ export async function addRestaurants({ request }){
 
         }
 
-        let responseData = await response.json();
+        let { responseData } = await response.json();
         console.log({responseData});
         toast.success(responseData.msg || 'Restaurant added successfully!')
         return responseData;

@@ -5,10 +5,9 @@ import { Input } from '../../../components/ui/input';
 import { useState, useEffect, useMemo } from "react";
 
 export default function FindRestaurants() {
-      const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
-    // Debounce input
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearchTerm(searchTerm);
@@ -35,7 +34,6 @@ export default function FindRestaurants() {
         if (!data) return <p>No data of that searchoig</p>;
 
         if (!debouncedSearchTerm.trim()) {
-            // Show first 15 by default
             return data.slice(0, 15);
         }
 

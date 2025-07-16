@@ -5,7 +5,7 @@ import { cn } from "../lib/utils"
 import { X } from "lucide-react";
 
 
-const DropImageUpload = ({ multiple = true }) => {
+const DropImageUpload = ({ multiple = true, onFileSelect }) => {
     const [images, setImages] = useState([])
   
     const onDrop = useCallback((acceptedFiles) => {
@@ -26,6 +26,12 @@ const DropImageUpload = ({ multiple = true }) => {
       multiple
     })
   
+
+      const handleChange = (e) => {
+    const files = Array.from(e.target.files);
+    onFileSelect(multiple ? files : files[0]);
+  };
+
     return (
       <div className="space-y-4">
         <Label>Upload {multiple ? "Images" : "Image"}</Label>
@@ -54,6 +60,7 @@ const DropImageUpload = ({ multiple = true }) => {
                   src={URL.createObjectURL(file)}
                   alt={`preview-${index}`}
                   className="w-32 h-32 object-cover rounded-md shadow"
+                  onChange={handleChange}
                 />
                 {/* Remove Icon */}
                 <button
