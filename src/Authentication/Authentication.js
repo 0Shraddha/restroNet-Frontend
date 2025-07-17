@@ -19,7 +19,7 @@ export async function action({ request }) {
   const data = await request.formData();
   const email = data.get('email');
   const password = data.get('password');
-  const name = data.get('name');
+  const username = data.get('username');
   const confirmPassword = data.get('confirmPassword');
 
   const errors = {};
@@ -51,19 +51,19 @@ if (Object.keys(errors).length > 0) {
 
 
 
-  let authData = { email, password };
+  let authData = { email, password, username };
   const baseUrl = "http://localhost:2700"; 
   let url;
 
   if (mode === 'signup') { // Standardize to 'signup' lowercase
-    if (!name || name.trim() === '') {
-      errors.name = 'Fullname is required.';
+    if (!username || username.trim() === '') {
+      errors.username = 'Fullname is required.';
     }
     if (password !== confirmPassword) {
       errors.confirmPassword = 'Passwords do not match.';
     }
 
-    authData = { email, password, name };
+    authData = { email, password, username };
     url = baseUrl + "/user/signup";
   } else { // mode === 'login'
     authData = { email, password };
@@ -72,6 +72,7 @@ if (Object.keys(errors).length > 0) {
   }
 
 
+  console.log(authData, "auth data")
   try {
     const response = await fetch(url, {
       method: 'POST',

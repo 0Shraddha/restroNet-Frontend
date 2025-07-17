@@ -32,6 +32,7 @@ export default function SignUpPage() {
   
   const formData = new FormData();
   for (const key in data) {
+    // console.log(key, "kkkkkkk")
         formData.append(key, data[key]);
     }
 
@@ -80,18 +81,17 @@ export default function SignUpPage() {
 
               {!isLoginMode && (
                 <div className="grid gap-1">
-                  <Label htmlFor="name" className="text-gray-700">Fullname</Label>
+                  <Label htmlFor="username" className="text-gray-700">Fullname</Label>
                   <Input
-                    id="name"
+                    id="username"
                     type="text"
-                    name="name"
                     placeholder="John Doe"
                     className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                    {...register('name', {
+                    {...register('username', {
                       required: 'Fullname is required'
                     })}
                   />
-                  {errors.name && <small className='text-red-600 text-sm'>{errors.name.message}</small>}
+                  {errors.username && <small className='text-red-600 text-sm'>{errors.username.message}</small>}
                 </div>
               )}
 
@@ -151,13 +151,13 @@ export default function SignUpPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
+                className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200 cursor-pointer"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Submitting...' : (isLoginMode ? 'Login' : 'Sign Up')}
               </Button>
 
-              <div className="text-center text-sm text-gray-600 mt-4">
+              <div className="text-center text-sm text-gray-600 mt-4 cursor-pointer">
                 {isLoginMode ? (
                   <>
                     Don&apos;t have an account?{" "}
