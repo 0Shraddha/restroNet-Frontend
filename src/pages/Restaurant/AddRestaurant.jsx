@@ -13,9 +13,8 @@ import {
 import './Restaurant.css';
 import DropImageUpload from '../../components/DropImageUpload';
 import { Button } from '../../components/ui/button';
-import { useMutation } from '@tanstack/react-query';
-import { addRestaurants } from '../../api/restaurants';
-import { toast } from 'react-toastify';
+import { useAddRestaurantMutation } from '../../state/restaurants/restuarantApiSlice';
+import { toast, ToastContainer } from 'react-toastify';
 
 const AddRestaurant = () => {
   const {
@@ -25,59 +24,53 @@ const AddRestaurant = () => {
     reset,
   } = useForm();
 
+  const [addRestaurant, { isLoading, isSuccess, isError, error }] = useAddRestaurantMutation();
+
+  if(isSuccess){
+    toast.success("Restaurant added successfully!");
+  }
+
+  if(isError){
+    toast.error("Failed to add restaurant details : " , error);
+  }
+
   const [submitted, setSubmitted] = useState(false);
   const [logoFile, setLogoFile] = useState(null); // State to hold the single logo file
   const [imageFiles, setImageFiles] = useState([]); // State to hold multiple restaurant images
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: addRestaurants,
-    onSuccess: () => {
-      toast.success('Restaurant created successfully!');
-      setSubmitted(true);
-      reset(); // Resets form fields
-      setLogoFile(null); // Clear logo file state
-      setImageFiles([]); // Clear image files state
-    },
-    onError: (error) => {
-      console.error("Error creating restaurant:", error);
-      toast.error('Failed to create restaurant!');
-    },
-  });
-
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const formData = new FormData();
 
     // Append all form data from react-hook-form
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value);
     });
+    
+   // Append logo (single file)
+  if (logoFile) {
+    formData.append('logo', logoFile);  // Make sure backend expects `req.file` as `logo`
+  }
 
-    // Append the logo file if it exists
-    if (logoFile) {
-      // 'logo' should be the field name your backend expects for the restaurant logo
-      formData.append('logo', logoFile); 
-    }
-
-    // Append all general restaurant image files if they exist
-    imageFiles.forEach((file, index) => {
-      // 'images' should be the field name your backend expects for multiple images
-      // The backend might expect 'images[]' or just 'images' for an array of files.
-      // Using 'images' is common and many backends handle multiple files with the same key.
-      formData.append('images', file); 
+  if (imageFiles.length > 0) {
+    imageFiles.forEach(file => {
+      formData.append('images', file); // Backend should expect `req.files` with field name "images"
     });
+  }
 
-    // --- For debugging: Log FormData contents ---
-    console.log("--- FormData Contents ---");
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-    console.log("-------------------------");
-    // --- End debugging ---
-
-    mutate(formData);
+  try {
+    await addRestaurant(formData).unwrap();
+    setSubmitted(true);
+    reset();
+    setLogoFile(null);
+    setImageFiles([]);
+  } catch (err) {
+    console.error('Failed to submit restaurant:', err);
+  }
+   
   };
 
   return (
+   
     <form
       className="max-w-6xl mx-auto flex flex-col gap-8 p-6 my-12 bg-white rounded-xl shadow-lg"
       method='POST'
@@ -124,7 +117,13 @@ const AddRestaurant = () => {
                 id="restaurant_contact"
                 type="tel"
                 placeholder="Enter Restaurant Phone Number"
-                {...register('restaurant_contact', { required: 'Phone number is required' })}
+                {...register('restaurant_contact', 
+                  { required: 'Phone number is required',     
+                     pattern: {
+                      value: /^(?:\+977)?0?(9[78]\d{8}|1\d{7}|[2-9]\d{6,7})$/,
+                      message: 'Invalid phone number'
+                    }
+                  })}
               />
               {errors.restaurant_contact && <p className="error">{errors.restaurant_contact.message}</p>}
             </div>
@@ -148,10 +147,10 @@ const AddRestaurant = () => {
             </div>
 
             <div>
-              <label htmlFor="restaurant_Description" className="block text-sm mb-2 font-medium text-gray-700">Description</label>
+              <label htmlFor="description" className="block text-sm mb-2 font-medium text-gray-700">Description</label>
               <Textarea
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="restaurant_Description"
+                id="description"
                 placeholder="Tell something about the restaurant..."
                 {...register('description')}
               />
@@ -281,15 +280,14 @@ const AddRestaurant = () => {
         <Button
           type="submit"
           className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
-          disabled={isPending} // Disable button while submitting
         >
-          {isPending ? "Submitting..." : "Create"}
+        {isLoading ? "Submitting..." : "Submit" }
+
         </Button>
       </div>
 
-      {submitted && (
-        <p className="text-green-600 text-center font-medium">Restaurant added successfully!</p>
-      )}
+    {isSuccess && <p className="text-green-600 text-center font-medium">Restaurant added successfully!</p>}
+    {isError && <p className="text-red-600 text-center font-medium">Error: {error?.data?.message || "Something went wrong"}</p>}
     </form>
   )
 }

@@ -97,22 +97,24 @@ if (Object.keys(errors).length > 0) {
      const errorText = await response.text(); // Get raw text for more info
               toast.error('Server error : ', errorText);
 
-            // eslint-disable-next-line no-undef
-            return json({ message: 'Could not authenticate user. Server responded with an error.' }, { status: response.status });
+          
+            // return json({ message: 'Could not authenticate user. Server responded with an error.' }, { status: response.status });
         }
 
 const contentType = response.headers.get('content-type') || '';
 
 let responseData;
 if (contentType.includes('application/json')) {
-  responseData = await response.json();
+  responseData = await response?.json();
   console.log("successful JSON data:", responseData);
+  toast.success(responseData.message || 'User registered successfully!');
+  localStorage.setItem('restaurantUser', responseData.token);
+
 } else {
   const text = await response.text();
   console.log("successful TEXT data:", text);
   responseData = { message: text };
 }
-toast.success(responseData.message || 'User registered successfully!');
     
 if(mode === 'signup'){
           return redirect('/auth?mode=login')

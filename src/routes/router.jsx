@@ -6,7 +6,6 @@ import SignUpPage from "../pages/Registration";
 import { action as authAction } from "../Authentication/Authentication";
 import Dashboard from "../pages/Dashboard";
 import usersRestaurantRoutes from "../pages/User/Restaurants/usersRestaurantRoutes";
-import UserList from "../pages/Admin/UserList/UserList";
 
 
 const router = createBrowserRouter([
@@ -23,10 +22,10 @@ const router = createBrowserRouter([
                 element: <SignUpPage />,
                 action: authAction
             },
-            {
-                path: '/manager',
-                element: <UserList />
-            },
+            // {
+            //     path: '/manager',
+            //     element: <UserList />
+            // },
            ...restaurantRoutes,
            ...usersRestaurantRoutes
         ]

@@ -2,10 +2,8 @@ import { ToastContainer } from 'react-toastify';
 import './App.css';
 import SidebarLayout from './layout/sidebar/Sidebar';
 import { Outlet, useLocation } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
-const queryClient = new QueryClient();
 
 function App() {
   const location = useLocation();
@@ -16,7 +14,6 @@ function App() {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
       <div className="flex h-screen w-full">
         <ToastContainer position="bottom-right" autoClose={3000} />
 
@@ -36,11 +33,10 @@ function App() {
         )}
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto bg-gray-100 transition-all duration-300">
+        <main className="flex-1 bg-gray-100 transition-all duration-300">
           <Outlet />
         </main>
       </div>
-    </QueryClientProvider>
   );
 }
 

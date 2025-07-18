@@ -2,9 +2,10 @@
 import { Input } from '../components/ui/input'; // Assuming this path is correct
 import { Label } from '../components/ui/label'; // Assuming this path is correct
 import { Button } from '../components/ui/button'; // Assuming this path is correct
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useActionData, useNavigation, useSearchParams, Link, useSubmit } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function SignUpPage() {
   const navigation = useNavigation();
@@ -15,12 +16,15 @@ export default function SignUpPage() {
   const mode = searchParams.get('mode') || 'login';
   const isLoginMode = mode === 'login';
 
+  
   const {
     register,
     handleSubmit, // We will still use handleSubmit for client-side validation
     formState: { errors },
     getValues,
   } = useForm();
+
+  const [ isView, setIsView ] = useState(false);
 
   useEffect(()=>{
     if(actionData){
@@ -114,7 +118,7 @@ export default function SignUpPage() {
                 <Label htmlFor="password" className="text-gray-700">Password</Label>
                 <Input
                   id="password"
-                  type="password"
+                  type={isView ? "text": "password"}
                   name='password'
                   className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   {...register('password', {
@@ -129,6 +133,21 @@ export default function SignUpPage() {
                     }
                   })}
                 />
+                 {isView ? (
+                        <Eye
+                          size={14}
+                          className=" text-orange-400 cursor-pointer text-gray-500"
+                          onClick={() => {
+                            setIsView(!isView), console.log(isView)
+                          }}
+                        />
+                      ) : (
+                        <EyeOff
+                        size={14}
+                          className=" cursor-pointer text-gray-500"
+                          onClick={() => setIsView(!isView)}
+                        />
+                      )}
                 {errors.password && <small className='text-red-600 text-sm'>{errors.password.message}</small>}
               </div>
 
