@@ -4,7 +4,7 @@ import getAuthToken from "../util/auth";
 const baseUrl = "http://localhost:2700"; 
 
 export async function addRestaurants(formData){
-console.log({formData});
+    console.log({formData});
     let url = baseUrl + "/venue";
     const token = getAuthToken();
     console.log({token});
@@ -41,13 +41,13 @@ console.log({formData});
 
 }
 
-export async function getRestaurants({signal, searchTerm}){
+export async function getRestaurants({signal}){
  let url = baseUrl + "/venue";
     //let url = 'https://gist.githubusercontent.com/Shadid12/18642d735214920921f4f470300be11e/raw/6dcf7b456c40f110c313bbb1678474b01756bc1a/restaurants.json';
 
-     if (searchTerm && searchTerm.trim()) {
-        url += `?filter=${encodeURIComponent(searchTerm.trim())}`;
-    }
+    //  if (searchTerm && searchTerm.trim()) {
+    //     url += `?filter=${encodeURIComponent(searchTerm.trim())}`;
+    // }
 
         const response = await fetch(url, {signal : signal});
 
