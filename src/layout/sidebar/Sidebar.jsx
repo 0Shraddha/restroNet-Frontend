@@ -25,6 +25,7 @@ const items = [
   { title: "Admin/Manager", url: "/manager", icon: Calendar },
   { title: "Approval", url: "/approve", icon: Search },
   { title: "Settings", url: "/settings", icon: Settings },
+  {title: "Logout", url: "/auth", icon: Menu}
 ];
 
 export default function SidebarLayout({ collapsed, setCollapsed }) {

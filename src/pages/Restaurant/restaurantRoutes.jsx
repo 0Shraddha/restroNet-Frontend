@@ -1,6 +1,9 @@
-import AddRestaurant from './AddRestaurant';
-import RestaurantList from './RestaurantList';
-import RestaurantDetail from './RestaurantDetail';
+import { Suspense, lazy } from 'react';
+
+const RestaurantList = lazy(() => import('./RestaurantList'));
+const RestaurantDetail = lazy(() => import('./RestaurantDetail'));
+const AddRestaurant = lazy(() => import('./AddRestaurant'));
+const AddMenu = lazy(() => import('../Restaurant/Menu/AddMenu'))
 
 const restaurantRoutes = [
   {
@@ -9,11 +12,17 @@ const restaurantRoutes = [
   },
   {
     path: '/restaurant-detail/:id',
-    element: <RestaurantDetail />,
+    element: (
+    <Suspense fallback={<p>Loading....</p>}><RestaurantDetail />
+    </Suspense> )
   },
   {
     path: '/add-restaurant',
     element: <AddRestaurant />,
+  },
+  {
+    path: '/add-menu',
+    element: <AddMenu />,
   }
 ];
 

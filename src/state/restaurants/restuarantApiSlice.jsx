@@ -11,6 +11,10 @@ export const restaurantApiSlice = createApi({
                 query: () => '/venue'
             }),
 
+            getRestaurantById : builder.query({
+                query: (id) => `/venue/${id}`
+            }),
+
             addRestaurant: builder.mutation({
                 query: (formData) => ({
                     url: "/venue",
@@ -25,5 +29,6 @@ export const restaurantApiSlice = createApi({
 
 export const {
     useGetRestaurantsQuery,
+    useGetRestaurantByIdQuery,
     useAddRestaurantMutation
 } = restaurantApiSlice;

@@ -14,7 +14,7 @@ function App() {
   );
 
   return (
-      <div className="flex h-screen w-full">
+      <div className="flex h-full w-full">
         <ToastContainer position="bottom-right" autoClose={3000} />
 
         {/* Sidebar */}

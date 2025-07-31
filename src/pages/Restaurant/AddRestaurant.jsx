@@ -14,7 +14,7 @@ import './Restaurant.css';
 import DropImageUpload from '../../components/DropImageUpload';
 import { Button } from '../../components/ui/button';
 import { useAddRestaurantMutation } from '../../state/restaurants/restuarantApiSlice';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const AddRestaurant = () => {
   const {
