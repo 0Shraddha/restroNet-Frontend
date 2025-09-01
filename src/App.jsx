@@ -19,16 +19,12 @@ function App() {
 
         {/* Sidebar */}
         {!shouldHideSidebar && (
-        <aside
-  className={`transition-all duration-300 ${
-    collapsed ? 'w-16' : 'w-64'
-  } bg-white border-r h-full`}
->
-  <SidebarLayout
-    collapsed={collapsed}
-    setCollapsed={setCollapsed}
-  />
-</aside>
+        <aside className='sticky   top-0 left-0 h-screen'>
+          <SidebarLayout
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+          />
+        </aside>
 
         )}
 

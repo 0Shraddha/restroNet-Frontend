@@ -4,7 +4,7 @@ import ErrorPage from './error'
 import restaurantRoutes from "../pages/Restaurant/restaurantRoutes";
 import SignUpPage from "../pages/Registration";
 import { action as authAction } from "../Authentication/Authentication";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/Admin/Dashboard";
 import usersRestaurantRoutes from "../pages/User/Restaurants/usersRestaurantRoutes";
 
 

@@ -4,6 +4,8 @@ import { Search, Heart, Star, MapPin, Clock } from 'lucide-react';
 import Footer from '../Layout/Footer'
 import {useGetRestaurantsQuery} from '../../../state/restaurants/restuarantApiSlice'
 import { toast } from 'react-toastify';
+import { Button } from '../../../components/ui/button';
+import { Link } from 'react-router-dom';
 
 const RestaurantRecommendationUI = () => {
 const { data: restaurants, isLoading, isSuccess, isError, error } = useGetRestaurantsQuery();
@@ -44,6 +46,8 @@ console.log({restaurants});
   return (
     <div className="min-h-screen bg-gray-50">
      <Navbar/>
+<Link to="/add-review">
+<Button className='btn btn-primary'>Add Review</Button></Link>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -115,7 +119,7 @@ console.log({restaurants});
                     <div className="relative">
                       <img
                         src='../../../assets/restro.png'
-                        alt={restaurant.restaurant_name}
+                        alt='restaurant image'
                         className="w-full h-48 object-cover rounded-t-xl"
                       />
                       <div className="absolute top-3 left-3 bg-orange-400 text-white px-3 py-1 rounded-full text-sm font-semibold">

@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
    <Provider store={store}>
      <SidebarProvider>
-    <RouterProvider router={router}  />
+      <RouterProvider router={router}  />
     </SidebarProvider>
    </Provider>
   </StrictMode>
