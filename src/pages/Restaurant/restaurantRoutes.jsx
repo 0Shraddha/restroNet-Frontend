@@ -21,7 +21,7 @@ const restaurantRoutes = [
     element: <AddRestaurant />,
   },
   {
-    path: '/add-menu',
+    path: '/menu-manager',
     element: <AddMenu />,
   }
 ];

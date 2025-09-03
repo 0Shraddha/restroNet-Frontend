@@ -72,7 +72,7 @@ const AddRestaurant = () => {
   return (
    
     <form
-      className="max-w-6xl mx-auto flex flex-col gap-8 p-6 my-12 bg-white rounded-xl shadow-lg"
+      className="mx-auto p-6 space-y-10"
       method='POST'
       onSubmit={handleSubmit(onSubmit)}
       encType="multipart/form-data" // Ensure this is set for file uploads
@@ -80,7 +80,7 @@ const AddRestaurant = () => {
       <h2 className="text-2xl font-bold text-gray-800 text-center">Register New Restaurant</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Restaurant Details */}
-        <Card className="border-gray-100 bg-card text-card-foreground rounded-xl border py-6 shadow-sm">
+        <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Restaurant Details</CardTitle>
             <CardDescription className="text-sm">Fill the form to register the restaurant</CardDescription>
@@ -160,7 +160,7 @@ const AddRestaurant = () => {
 
         <div>
           {/* Restaurant Logo */}
-          <Card className="border-gray-100 bg-card text-card-foreground rounded-xl border py-6 mb-4 shadow-sm">
+          <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 mb-4 shadow-sm">
             <CardContent className="space-y-4">
               <CardTitle className="text-lg">Restaurant Logo</CardTitle>
               {/* Pass setLogoFile to update the state in parent */}
@@ -169,7 +169,7 @@ const AddRestaurant = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-100 bg-card text-card-foreground rounded-xl border py-6 shadow-sm">
+          <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
             <CardContent className="space-y-4">
               <div>
                 <label htmlFor="cuisine" className="block text-sm mb-2 font-medium text-gray-700">Cuisine *</label>
@@ -200,7 +200,7 @@ const AddRestaurant = () => {
       </div>
 
       {/* Owner Details */}
-      <Card className="border-gray-100 bg-card text-card-foreground rounded-xl border py-6 shadow-sm">
+      <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
         <CardHeader>
           <CardTitle className="text-lg">Owner Details</CardTitle>
           <CardDescription className="text-sm">Fill in the restaurant owner's information</CardDescription>
@@ -263,7 +263,7 @@ const AddRestaurant = () => {
       </Card>
 
       {/* Restaurant Images */}
-      <Card className="border-gray-100 bg-card text-card-foreground rounded-xl border py-6 shadow-sm">
+      <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
         <CardHeader>
           <CardTitle className="text-lg">Restaurant Images</CardTitle>
         </CardHeader>

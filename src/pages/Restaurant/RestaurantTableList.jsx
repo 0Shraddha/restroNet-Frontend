@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Search, Star, MapPin, Phone, Clock, DollarSign, Filter } from "lucide-react";
 import { useGetRestaurantsQuery } from "../../state/restaurants/restuarantApiSlice";
+import { Link } from "react-router-dom";
+import { Button } from "../../components/ui/button";
 
 const RestaurantTableList = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -101,6 +103,7 @@ const RestaurantTableList = () => {
                             <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Location</th>
                             <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Contact</th>
                             <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Cuisine</th>   
+                            <th  className="px-6 py-4 text-left text-sm font-medium text-gray-900">Manage Menu</th>
                         </tr>
                     
                     </thead>
@@ -111,6 +114,14 @@ const RestaurantTableList = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{restaurant.restaurant_location}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{restaurant.restaurant_contact || "N/A"}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{restaurant.cuisine || "Various"}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                     <Link to="/menu-manager">
+                                     <Button className="w-full border-1 border-orange-400 text-orange-600 py-2 px-4 rounded-md hover:bg-orange-500 hover:text-white transition-colors duration-200 cursor-pointer">
+                                        Manage
+                                     </Button>
+               
+                                     </Link> 
+                                </td>
                             </tr>
                         ))}
                     </tbody>

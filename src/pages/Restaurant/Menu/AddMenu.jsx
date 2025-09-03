@@ -7,9 +7,15 @@ import { toast } from 'react-toastify';
 import {
   Card,
   CardContent,
+  CardDescription,
+  CardHeader,
   CardTitle,
 } from '../../../components/ui/card';
+
+import DropImageUpload from '../../../components/DropImageUpload';
+import { Button } from '../../../components/ui/button';
 import { Plus } from 'lucide-react';
+import PreviewMenuItems from './PreviewMenuItems';
 
 
 const AddMenu = () => {
@@ -23,12 +29,15 @@ const AddMenu = () => {
     } = useForm();
 
     const [menuList, setMenuList] = useState([]);
+    const [imageFiles, setImageFiles] = useState([]); // State to hold multiple menu images
+
 
     const handleAddItem = () => {
         const name = getValues('name');
         const price = getValues('price');
+        const tags = getValues('tags');
 
-        if(!name || !price){
+        if(!name || !price || !tags){
             toast.warning('Please fill in both item and price');
             return;
         }
@@ -36,11 +45,14 @@ const AddMenu = () => {
         const newItem = {
             name,
             price,
+            tags
         }
 
         setMenuList([...menuList, newItem])
         setValue('name','');
         setValue('price','');
+        setValue('tags','');
+
     }
 
     const [addMenu, {isLoading, isSuccess, isError, error}] = useAddMenuMutation();
@@ -81,36 +93,46 @@ const AddMenu = () => {
 
       return(
       <form
-        className="max-w-6xl mx-auto flex flex-col gap-8 p-6 my-12 bg-white rounded-xl shadow-lg"
+        className="mx-auto p-6 space-y-10"
         method="POST"
         onSubmit={handleSubmit(onSubmit)}
         >
       <h2 className="text-2xl font-bold text-gray-800 text-center">Add New Menu</h2>
 
-      <Card className="border-gray-100 bg-card text-card-foreground rounded-xl border py-6 mb-4 shadow-sm">
-        <CardContent className="space-y-4">
-          <CardTitle className="text-lg">Add Menu Item</CardTitle>
+      <Card className="border-gray-100 bg-white text-card-foreground p-6 mb-4 ">
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="menuItem" className="block text-sm mb-2 font-medium text-gray-700">
-                Item Name
-              </label>
-              <Input
-                id="menuItem"
-                type="text"
-                placeholder="Enter menu item"
-                {...register('name')}
-              />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-            </div>
+            {/* Menu items- name and price */}
+             <div className="border-gray-100 text-card-foreground">
+                  <label htmlFor="category" className="block text-sm mb-2 font-medium text-gray-700">
+                    Category
+                  </label>
+                  <Input
+                    id="category"
+                    className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
+                    type="text"
+                    placeholder="Enter category"
+                    {...register('category')}
+                  />
+                  {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
+                  <label htmlFor="menuItem" className="block text-sm my-2 font-medium text-gray-700">
+                    Item Name
+                  </label>
+                  <Input
+                    id="menuItem"
+                    className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
+                    type="text"
+                    placeholder="Enter menu item"
+                    {...register('name')}
+                  />
+                  {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
 
-            <div>
-              <label htmlFor="menuPrice" className="block text-sm mb-2 font-medium text-gray-700">
+              <label htmlFor="menuPrice" className="block text-sm my-2 font-medium text-gray-700">
                 Price
               </label>
               <Input
                 id="menuPrice"
+                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 type="number"
                 placeholder="Enter price"
                 {...register('price', {
@@ -119,17 +141,37 @@ const AddMenu = () => {
                 })}
               />
               {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-            </div>
+
+                <label htmlFor="tags" className="block text-sm my-2 font-medium text-gray-700">Tags *</label>
+                <Input
+                  className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
+                  id="tags"
+                  type="text"
+                  placeholder="Chefs special, Spicy, Vegan ..."
+                  {...register('tags', { required: 'Atleast one tag is required' })}
+                />
+
+              </div>
+         
+              {/* Menu Images */}
+              <Card className="text-card-foreground bg-gray-100 border-0">
+                <CardContent className="space-y-4">
+                  {/* Pass setImageFiles to update the state in parent */}
+                  <DropImageUpload multiple={true} onFileChange={setImageFiles} /> 
+                  {imageFiles.length > 0 && (
+                    <p className="text-sm text-gray-600">Selected images: {imageFiles.map(file => file.name).join(', ')}</p>
+                  )}
+                </CardContent>
+              </Card>
+
           </div>
 
-          <button
-            type="button"
-            onClick={handleAddItem}
-            className="mt-4 flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
-          >
-            <Plus size={20} /> Add Item
-          </button>
-        </CardContent>
+
+        <Button
+          className="bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
+          onClick={handleAddItem}>
+          Add item
+        </Button>
       </Card>
 
       {menuList.length > 0 && (
@@ -151,13 +193,15 @@ const AddMenu = () => {
         </Card>
       )}
 
-      <button
-        type="submit"
-        className="self-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold"
-      >
-        Save Menu
-      </button>
+        <Button
+          type="submit"
+          className="bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
+          >
+          Save all items
+        </Button>
 
+
+<PreviewMenuItems />
 
 {menuItems.map((item, index) => (
     <li key={index} className="flex justify-between items-center p-2">
