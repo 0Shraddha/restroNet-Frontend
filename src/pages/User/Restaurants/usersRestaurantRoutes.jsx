@@ -1,11 +1,11 @@
 import AddReview from "../Review/ReviewForm";
 import FindRestaurants from "./FindRestaurants";
-import RestaurantRecommendationUI from "./UsersHomePage";
+import UsersHomePage from "./UsersHomePage";
 
 const usersRestaurantRoutes = [
   {
     path: '/users',
-    element: <RestaurantRecommendationUI />,
+    element: <UsersHomePage />,
   },
   {
     path : '/findRestaurants',

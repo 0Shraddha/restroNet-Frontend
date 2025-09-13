@@ -151,6 +151,34 @@ const AddMenu = () => {
                   {...register('tags', { required: 'Atleast one tag is required' })}
                 />
 
+                <label htmlFor="spice_level" className="block text-sm my-2 font-medium text-gray-700">Spice Level </label>
+                <Input
+                  className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
+                  id="spice_level"
+                  type="text"
+                  placeholder="Chefs special, Spicy, Vegan ..."
+                  {...register('spice_level', { required: 'Atleast one tag is required' })}
+                />
+
+
+              <label htmlFor="ingredients" className="block text-sm my-2 font-medium text-gray-700">Ingredients *</label>
+                <Input
+                  className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
+                  id="ingredients"
+                  type="text"
+                  placeholder="Chefs special, Spicy, Vegan ..."
+                  {...register('ingredients', { required: 'Atleast one tag is required' })}
+                />
+
+                 <label htmlFor="availability" className="block text-sm my-2 font-medium text-gray-700">Availability (Checkbox for status) *</label>
+                <Input
+                  className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
+                  id="availability"
+                  type="text"
+                  placeholder="Chefs special, Spicy, Vegan ..."
+                  {...register('availability', { required: 'Atleast one tag is required' })}
+                />
+
               </div>
          
               {/* Menu Images */}
