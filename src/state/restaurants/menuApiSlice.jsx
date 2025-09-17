@@ -11,6 +11,10 @@ export const menuApiSlice = createApi({
                 query: () => '/menu'
             }),
 
+            getMenuById : builder.query({
+                query: (id) => `/menu/${id}`
+            }),
+
             addMenu: builder.mutation({
                 query: (formData) => ({
                     url: '/menu',
@@ -22,4 +26,4 @@ export const menuApiSlice = createApi({
     }
 })
 
-export const { useGetMenuQuery, useAddMenuMutation } = menuApiSlice
+export const { useGetMenuQuery, useGetMenuByIdQuery, useAddMenuMutation } = menuApiSlice
