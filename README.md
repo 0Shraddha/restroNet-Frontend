@@ -22,5 +22,11 @@ git clone https://github.com/0Shraddha/restroNet-Frontend.git
 cd RestroNet
 npm install/ npm i
 npm run dev
+```
 
+
+## For Shadcn package install
+```bash
+npx shadcn@latest add [checkbox]
+```
 

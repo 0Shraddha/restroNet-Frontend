@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '../../../components/ui/input';
+import { Checkbox } from '../../../components/ui/checkbox';
 import { Textarea } from '../../../components/ui/textarea';
 import { useAddMenuMutation } from '../../../state/restaurants/menuApiSlice';
 import { toast } from 'react-toastify';
@@ -170,15 +171,14 @@ const AddMenu = () => {
                   {...register('ingredients', { required: 'Atleast one tag is required' })}
                 />
 
-                 <label htmlFor="availability" className="block text-sm my-2 font-medium text-gray-700">Availability (Checkbox for status) *</label>
-                <Input
-                  className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                  id="availability"
-                  type="text"
-                  placeholder="Chefs special, Spicy, Vegan ..."
-                  {...register('availability', { required: 'Atleast one tag is required' })}
-                />
-
+                <label htmlFor="availability" className="block text-sm my-2 font-medium text-gray-700">Availability *
+                  <Checkbox 
+                  id='availability'
+                  className='ms-2 mt-1'
+                  {...register('availability')}
+                  onCheckedChange={(checked) => setValue("availability", checked)}
+                  />
+                </label>
               </div>
          
               {/* Menu Images */}
