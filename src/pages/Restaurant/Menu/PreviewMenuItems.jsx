@@ -1,6 +1,7 @@
 import React from "react";
 import StatsCard from "../../../components/StatsCard"
 import { Beer, CupSoda, EggFried, IceCreamBowl, Pizza, Salad, Utensils } from "lucide-react";
+import { useGetMenuQuery } from "../../../state/restaurants/menuApiSlice";
 
 const PreviewMenuItems = () => {
      const cardsData = [
@@ -79,11 +80,66 @@ const PreviewMenuItems = () => {
 
 
     ];
+
+
+    const { data: menu,  isLoading, isSuccess, isError, error} = useGetMenuQuery();
+   
+    const response = {
+      count: 2,
+      data: [
+        {
+          _id: "68caf01100a92feb6489b7d4",
+          item_name: "Dieter Tillman",
+          description: "Adipisicing iste ali",
+          category: ["[Qui repudiandae ex d]"],
+          price: 902,
+          ingredients: ["[Qui expedita nulla c]"],
+          spice_level: 2,
+          preparation_time: 64,
+          availability: true,
+          ratings: 0,
+          createdAt: "2025-09-17T17:29:53.333Z",
+          updatedAt: "2025-09-17T17:29:53.333Z",
+          __v: 0
+        },
+        {
+          _id: "68cf6f13dfed3bb8432cf922",
+          item_name: "Spicy honey glazed wings",
+          description: "Spicy honey glazed wings Spicy honey glazed wings Spicy honey glazed wings",
+          category: ["[snacks]", "[fast food]"],
+          price: 450,
+          ingredients: ["[chicken wings]", "[spicy gochunjang]"],
+          spice_level: 5,
+          preparation_time: 34,
+          availability: true,
+          ratings: 0,
+          createdAt: "2025-09-21T03:20:51.768Z",
+          updatedAt: "2025-09-21T03:20:51.768Z",
+          __v: 0
+        }
+      ]
+    };
+
+
     return (
         <>
         <div className="category-section">
             <StatsCard cardsData={cardsData} layout={"grid-cols-1 md:grid-cols-5 gap-2"} />
         </div>
+
+       
+      <p>Total menu items = {menu?.count ?? 0}</p>
+
+      <div className="row flex gap-2">
+        {menu?.data?.map((item) => (
+          <div className="col-3 p-4 bg-white rounded" key={item._id}>
+            <p>{item.item_name}</p>
+            <p>Price: {item.price}</p>
+            <p>Spice level: {item.spice_level}</p>
+          </div>
+        ))}
+      </div>
+       
         </>
     )
 }

@@ -1,28 +1,28 @@
 import React, { useState,useEffect } from 'react';
+import HeroBanner from './HeroBanner';
+import FiltersComponent from './FiltersComponent';
+import Navbar from '../Layout/Navbar';
 
 const UsersHomePage = () => {
   return(
     <>
-      <nav>
-        Navbar hune vayo
-      </nav>
+      <Navbar />
 
       <main>
-        search bar component
-        <br/>
-        <div className="flex">
-          <div className="col-5">
+        <HeroBanner />
+      </main>
+
+        <div className="grid grid-cols-12 gap-4">
+          <div className="col-span-2 bg-gray-100">
+            <FiltersComponent />
+          </div>
+          <div className="col-span-10 bg-white">
             <div className="restaurant-cards">
               Restaurant ko card details
             </div>
           </div>
-          <div className="col bg-orange">
-            <div className="map-container">
-              Map
-            </div>
-          </div>
         </div>
-      </main>
+
     </>
   )
 }

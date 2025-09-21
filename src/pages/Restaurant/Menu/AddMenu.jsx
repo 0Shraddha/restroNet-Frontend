@@ -31,14 +31,14 @@ const AddMenu = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Restaurant added successfully!");
+      toast.success("Menu added successfully!");
     }
   }, [isSuccess])
 
 
   useEffect(() => {
     if (isError) {
-      toast.error("Failed to add restaurant details", { autoClose: 3000 });
+      toast.error("Failed to add menu items", { autoClose: 3000 });
     }
   }, [isError, error])
 
