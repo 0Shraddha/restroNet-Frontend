@@ -2,6 +2,7 @@ import React from "react";
 import StatsCard from "../../../components/StatsCard"
 import { Beer, CupSoda, EggFried, IceCreamBowl, Pizza, Salad, Utensils } from "lucide-react";
 import { useGetMenuQuery } from "../../../state/restaurants/menuApiSlice";
+import MenuCards from "./MenuCards";
 
 const PreviewMenuItems = () => {
      const cardsData = [
@@ -130,15 +131,8 @@ const PreviewMenuItems = () => {
        
       <p>Total menu items = {menu?.count ?? 0}</p>
 
-      <div className="row flex gap-2">
-        {menu?.data?.map((item) => (
-          <div className="col-3 p-4 bg-white rounded" key={item._id}>
-            <p>{item.item_name}</p>
-            <p>Price: {item.price}</p>
-            <p>Spice level: {item.spice_level}</p>
-          </div>
-        ))}
-      </div>
+      <MenuCards menu={menu} />
+     
        
         </>
     )

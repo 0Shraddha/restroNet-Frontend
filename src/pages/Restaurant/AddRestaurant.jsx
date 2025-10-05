@@ -28,6 +28,7 @@ const AddRestaurant = () => {
 
   if(isSuccess){
     toast.success("Restaurant added successfully!");
+    reset();
   }
 
   if(isError){

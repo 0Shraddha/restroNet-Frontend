@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import HeroBanner from './HeroBanner';
 import FiltersComponent from './FiltersComponent';
 import Navbar from '../Layout/Navbar';
+import RestaurantCard from '../../../components/RestaurantCard';
 
 const UsersHomePage = () => {
   return(
@@ -17,8 +18,13 @@ const UsersHomePage = () => {
             <FiltersComponent />
           </div>
           <div className="col-span-10 bg-white">
-            <div className="restaurant-cards">
-              Restaurant ko card details
+            <div className="grid grid-cols-12 gap-4">
+             <RestaurantCard />
+             <RestaurantCard />
+             <RestaurantCard />
+             <RestaurantCard />
+             <RestaurantCard />
+
             </div>
           </div>
         </div>
