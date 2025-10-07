@@ -1,6 +1,7 @@
 import AddReview from "../Review/ReviewForm";
 import FindRestaurants from "./FindRestaurants";
 import UsersHomePage from "./UsersHomePage";
+import RestaurantDetail from "./RestaurantDetail";
 
 const usersRestaurantRoutes = [
   {
@@ -10,6 +11,11 @@ const usersRestaurantRoutes = [
   {
     path : '/findRestaurants',
     element: <FindRestaurants />
+  },
+  {
+    // path: '/restaurant/:id',
+    path: '/restaurant/1',
+    element: <RestaurantDetail />
   },
   {
     path: '/add-review',

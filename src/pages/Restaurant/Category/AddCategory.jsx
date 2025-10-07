@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Input } from "../../../components/ui/input";
@@ -20,14 +20,23 @@ const AddCategory = () => {
 
     const [ iconFile, setIconFile ] = useState(null);
 
-    if(isSuccess){
-        toast.success("Category added successfully");
-        reset();
-    }
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      setIconFile(file);
+    };
 
-    if(isError){
-        toast.error(error?.data?.message || "Failed to add category");
-    }
+    useEffect(()=>{
+      if(isSuccess){
+          toast.success("Category added successfully");
+          reset();
+      }
+
+      if(isError){
+          toast.error(error?.data?.message || "Failed to add category");
+      }
+    },[isSuccess, isError, error, reset]);
+
+    
 
     const onSubmit = async (data) => {
        const formData = new FormData();
@@ -39,6 +48,10 @@ const AddCategory = () => {
        if(iconFile){
         formData.append('icon', iconFile);
        }
+
+       Object.entries(data).forEach(([key, value]) => {
+            console.log(key, value);
+       });
 
        try{
         await addCategory(formData).unwrap();
@@ -76,9 +89,10 @@ const AddCategory = () => {
 
             <div>
                 
-              <label htmlFor="label" className="block text-sm mb-2 font-medium text-gray-700">Category Icon *</label>
+              <label htmlFor="icon" className="block text-sm mb-2 font-medium text-gray-700">Category Icon *</label>
+              {/* <input type="file" name="icon" id="icon" onChange={handleFileChange} /> */}
               {/* Pass setIconFile to update the state in parent */}
-              <DropImageUpload multiple={false} onFileChange={setIconFile} /> 
+              <DropImageUpload multiple={false} onFileSelect={setIconFile}  /> 
               {iconFile && <p className="text-sm text-gray-600">Selected logo: {iconFile.name}</p>}
             </div>
 
@@ -86,7 +100,7 @@ const AddCategory = () => {
                 type="submit"
                 className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
             >
-                {isLoading ? "Submitting..." : "Submit" }
+            {isLoading ? "Submitting..." : "Submit" }
 
             </Button>
           </CardContent>
