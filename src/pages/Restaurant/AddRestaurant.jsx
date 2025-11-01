@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
@@ -26,14 +26,23 @@ const AddRestaurant = () => {
 
   const [addRestaurant, { isLoading, isSuccess, isError, error }] = useAddRestaurantMutation();
 
-  if(isSuccess){
-    toast.success("Restaurant added successfully!");
-    reset();
-  }
+  useEffect(() => {
+    if(isSuccess){
+      toast.success("Restaurant added successfully!");
+      reset();
+    }
 
-  if(isError){
-    toast.error("Failed to add restaurant details : " , error);
-  }
+    if(isError){
+      const errorMessages = error.data?.errors;
+      if (errorMessages) {
+        Object.values(errorMessages).forEach((msg) => {
+          toast.error(msg);
+        });
+      }
+      // toast.error("Failed to add restaurant details : " , error.data?.errors);
+    }
+    },[isSuccess, isError, error, reset]);
+
 
   const [submitted, setSubmitted] = useState(false);
   const [logoFile, setLogoFile] = useState(null); // State to hold the single logo file
@@ -65,7 +74,7 @@ const AddRestaurant = () => {
     setLogoFile(null);
     setImageFiles([]);
   } catch (err) {
-    console.error('Failed to submit restaurant:', err);
+    console.error('Failed to submit restaurant:', err.data?.errors?.restaurant_contact);
   }
    
   };
