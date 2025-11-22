@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, MapPin, Clock, Star, Filter, ChevronDown, Menu, X } from 'lucide-react';
 import HeroBanner from './HeroBanner'
 import GoogleMapComponent from '../../../components/Map';
+import RestaurantCard from '../../../components/RestaurantCard'
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -98,45 +99,6 @@ const FiltersComponent = () => {
   );
 };
 
-const RestaurantCard = ({ restaurant }) => {
-  return (
-    <div className="col-span-12 md:col-span-6 lg:col-span-4 bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer">
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={restaurant.image}
-          alt={restaurant.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
-        <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center shadow-md">
-          <Star size={16} className="text-yellow-500 fill-yellow-500 mr-1" />
-          <span className="font-semibold text-sm">{restaurant.rating}</span>
-        </div>
-      </div>
-      
-      <div className="p-5">
-        <h3 className="text-xl font-bold text-gray-800 mb-2">{restaurant.name}</h3>
-        
-        <div className="flex items-center text-gray-600 text-sm mb-2">
-          <MapPin size={16} className="mr-2 text-orange-600" />
-          <span>{restaurant.address}</span>
-        </div>
-        
-        <div className="flex items-center text-gray-600 text-sm mb-4">
-          <Clock size={16} className="mr-2 text-orange-600" />
-          <span>{restaurant.hours}</span>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <span className="text-orange-600 font-semibold">{restaurant.price}</span>
-          <button className="text-orange-600 hover:text-orange-700 font-semibold text-sm">
-            View Details →
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const UsersHomePage = () => {
   const mockRestaurants = [
     {
@@ -198,8 +160,30 @@ const UsersHomePage = () => {
       </main>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-12">
-<GoogleMapComponent
+
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-12 lg:col-span-3">
+            <FiltersComponent />
+          </div>
+          
+          <div className="col-span-12 lg:col-span-9">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
+                Popular Restaurants
+              </h2>
+              <span className="text-gray-600">{mockRestaurants.length} results</span>
+            </div>
+            
+            <div className="grid grid-cols-12 gap-6">
+              {mockRestaurants.map((restaurant, index) => (
+                <RestaurantCard key={index} restaurant={restaurant} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="my-5">
+          <GoogleMapComponent
           restaurants={[
             {
               name: "Mezze by Roadhouse",
@@ -226,28 +210,7 @@ const UsersHomePage = () => {
               image: "https://images.pexels.com/photos/3535387/pexels-photo-3535387.jpeg"
             }
           ]}
-      />        </div>
-
-        <div className="grid grid-cols-12 gap-8">
-          <div className="col-span-12 lg:col-span-3">
-            <FiltersComponent />
-          </div>
-          
-          <div className="col-span-12 lg:col-span-9">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
-                Popular Restaurants
-              </h2>
-              <span className="text-gray-600">{mockRestaurants.length} results</span>
-            </div>
-            
-            <div className="grid grid-cols-12 gap-6">
-              {mockRestaurants.map((restaurant, index) => (
-                <RestaurantCard key={index} restaurant={restaurant} />
-              ))}
-            </div>
-          </div>
-        </div>
+        /> </div>   
       </div>
 
       <footer className="bg-gray-900 text-white mt-20 py-12">
