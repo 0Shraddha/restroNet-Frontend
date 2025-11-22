@@ -209,69 +209,6 @@ const AddRestaurant = () => {
         </div>
       </div>
 
-      {/* Owner Details */}
-      <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg">Owner Details</CardTitle>
-          <CardDescription className="text-sm">Fill in the restaurant owner's information</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <label htmlFor="ownerName" className="block text-sm mb-2 font-medium text-gray-700">Full Name *</label>
-            <Input
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-              id="ownerName"
-              type="text"
-              placeholder="Enter Owner Fullname"
-              {...register('ownerName', { required: 'Full name is required' })}
-            />
-            {errors.ownerName && <p className="error">{errors.ownerName.message}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="ownerLocation" className="block text-sm mb-2 font-medium text-gray-700">Location *</label>
-            <Input
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-              id="ownerLocation"
-              type="text"
-              placeholder="Enter Owner Location"
-              {...register('ownerLocation', { required: 'Owner location is required' })}
-            />
-            {errors.ownerLocation && <p className="error">{errors.ownerLocation.message}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="ownerPhone" className="block text-sm mb-2 font-medium text-gray-700">Phone Number *</label>
-            <Input
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-              id="ownerPhone"
-              type="tel"
-              placeholder="Enter Owner Phone Number"
-              {...register('ownerPhone', { required: 'Phone number is required' })}
-            />
-            {errors.ownerPhone && <p className="error">{errors.ownerPhone.message}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="ownerEmail" className="block text-sm mb-2 font-medium text-gray-700">Email *</label>
-            <Input
-              className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-              id="ownerEmail"
-              type="email"
-              placeholder="Enter Owner Email"
-              {...register('ownerEmail', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Invalid email format'
-                }
-              })}
-            />
-            {errors.ownerEmail && <p className="error">{errors.ownerEmail.message}</p>}
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Restaurant Images */}
       <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
         <CardHeader>

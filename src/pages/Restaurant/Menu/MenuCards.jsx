@@ -29,7 +29,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                 <h3 className="flex-1 font-semibold text-lg leading-snug text-slate-900">
                   {item.item_name || "Untitled"}
                   <span
-                    className={`ml-2 align-middle text-[11px] px-2 py-0.5 rounded-full font-medium ${
+                    className={`ml-2 align-middle text-[11px] px-2 py-0.5 rounded-full font-medium text-nowrap ${
                       unavailable
                         ? "bg-red-50 text-red-700 border border-red-200"
                         : "bg-emerald-50 text-emerald-700 border border-emerald-200"
@@ -39,7 +39,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                   </span>
                 </h3>
 
-                <span className="shrink-0 text-sm font-bold px-2.5 py-1 rounded-md bg-orange-100 text-orange-800 border border-orange-200">
+                <span className="shrink-0 text-sm font-bold px-2.5 py-1 rounded-md">
                   {currency} {item.price}
                 </span>
               </div>
@@ -51,7 +51,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
 
               {/* Quick facts */}
               <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-200">
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                   <TimerIcon size={14} /> {item.preparation_time ?? 0} min
                 </span>
                 <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-200">
