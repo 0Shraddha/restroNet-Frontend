@@ -31,6 +31,7 @@ const AddRestaurant = () => {
       toast.success("Restaurant added successfully!");
       reset();
     }
+    
 
     if(isError){
       const errorMessages = error.data?.errors;
@@ -43,7 +44,6 @@ const AddRestaurant = () => {
     }
     },[isSuccess, isError, error, reset]);
 
-
   const [submitted, setSubmitted] = useState(false);
   const [logoFile, setLogoFile] = useState(null); // State to hold the single logo file
   const [imageFiles, setImageFiles] = useState([]); // State to hold multiple restaurant images
@@ -55,10 +55,12 @@ const AddRestaurant = () => {
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value);
     });
+
+    console.log({logoFile})
     
    // Append logo (single file)
   if (logoFile) {
-    formData.append('logo', logoFile);  // Make sure backend expects `req.file` as `logo`
+    formData.append("logo", logoFile);
   }
 
   if (imageFiles.length > 0) {
@@ -66,6 +68,8 @@ const AddRestaurant = () => {
       formData.append('images', file); // Backend should expect `req.files` with field name "images"
     });
   }
+
+  
 
   try {
     await addRestaurant(formData).unwrap();
@@ -78,6 +82,11 @@ const AddRestaurant = () => {
   }
    
   };
+
+  useEffect(() => {
+  console.log("Updated logoFile:", logoFile);
+}, [logoFile]);
+
 
   return (
    
@@ -173,8 +182,7 @@ const AddRestaurant = () => {
           <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 mb-4 shadow-sm">
             <CardContent className="space-y-4">
               <CardTitle className="text-lg">Restaurant Logo</CardTitle>
-              {/* Pass setLogoFile to update the state in parent */}
-              <DropImageUpload multiple={false} onFileChange={setLogoFile} /> 
+              <DropImageUpload multiple={false} onFileSelect={(file) => setLogoFile(file)} /> 
               {logoFile && <p className="text-sm text-gray-600">Selected logo: {logoFile.name}</p>}
             </CardContent>
           </Card>
@@ -216,7 +224,7 @@ const AddRestaurant = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Pass setImageFiles to update the state in parent */}
-          <DropImageUpload multiple={true} onFileChange={setImageFiles} /> 
+          <DropImageUpload multiple={true} onFileSelect={setImageFiles} /> 
           {imageFiles.length > 0 && (
             <p className="text-sm text-gray-600">Selected images: {imageFiles.map(file => file.name).join(', ')}</p>
           )}

@@ -16,6 +16,8 @@ const DropImageUpload = ({ multiple = true, onFileSelect }) => {
       if (onFileSelect) {
         onFileSelect(multiple ? newFiles : newFiles[0]);
       }
+
+      console.log(newFiles[0]);
     },
     [images, multiple, onFileSelect]
   );
