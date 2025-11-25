@@ -15,6 +15,8 @@ import DropImageUpload from '../../components/DropImageUpload';
 import { Button } from '../../components/ui/button';
 import { useAddRestaurantMutation } from '../../state/restaurants/restuarantApiSlice';
 import { toast } from 'react-toastify';
+import geocodeAddress from '../../util/searchAddress';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 const AddRestaurant = () => {
   const {
@@ -25,6 +27,23 @@ const AddRestaurant = () => {
   } = useForm();
 
   const [addRestaurant, { isLoading, isSuccess, isError, error }] = useAddRestaurantMutation();
+
+  const [address, setAddress] = useState("");
+  const [latLng, setLatLng] = useState(null);
+
+  const handleSearch = async () => {
+    const result = await geocodeAddress(address);
+
+    if (result) {
+      setLatLng({ 
+        lat: result.lat, 
+        lon: result.lon 
+      });
+    } else {
+      alert("Address not found");
+    }
+  };
+
 
   useEffect(() => {
     if(isSuccess){
@@ -124,9 +143,34 @@ const AddRestaurant = () => {
                 id="restaurant_location"
                 type="text"
                 placeholder="Enter Restaurant Location"
+                onChange={(e) => setAddress(e.target.value)}
                 {...register('restaurant_location', { required: 'Location is required' })}
               />
+
+                <button
+                type='button'
+    onClick={handleSearch}
+    className="bg-blue-500 text-white px-4 rounded"
+  >
+    Search
+  </button>
               {errors.restaurant_location && <p className="error">{errors.restaurant_location.message}</p>}
+
+              <MapContainer
+                center={latLng ? [latLng.lat, latLng.lon] : [27.7172, 85.3240]} // default Kathmandu
+                zoom={13}
+                style={{ height: "300px", width: "100%" }}
+              >
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+                {latLng && (
+                  <Marker position={[latLng.lat, latLng.lon]}>
+                    <Popup>{address}</Popup>
+                  </Marker>
+                )}
+              </MapContainer>
+
+
             </div>
 
             <div>
