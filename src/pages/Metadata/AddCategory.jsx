@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { Input } from "../../../components/ui/input";
+import { Input } from "../../components/ui/input";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '../../../components/ui/card';
-import DropImageUpload from "../../../components/DropImageUpload";
-import { Button } from "../../../components/ui/button";
-import { useAddCategoryMutation } from "../../../state/restaurants/categoryApiSlice"
+} from '../../components/ui/card';
+import DropImageUpload from "../../components/DropImageUpload";
+import { Button } from "../../components/ui/button";
+import { useAddCategoryMutation } from "../../state/restaurants/categoryApiSlice"
 
 const AddCategory = () => {
 
@@ -66,12 +66,12 @@ const AddCategory = () => {
     return (
         <>
         <form 
-        className="mx-auto p-6 space-y-10"
+        className="my-5"
         onSubmit={handleSubmit(onSubmit)}
         encType="multipart/form-data"
         >
-     <h2 className="text-2xl font-bold text-gray-800 text-center">Add New Category</h2>
-      <div className="grid mx-auto max-w-3xl gap-6 ">
+     <h2 className="text-xl font-semibold text-gray-800 mb-3">Add New Category</h2>
+      <div className="grid gap-6 ">
         {/* Restaurant Details */}
         <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
           <CardContent className="space-y-4">

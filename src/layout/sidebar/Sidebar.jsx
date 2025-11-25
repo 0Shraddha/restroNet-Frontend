@@ -18,13 +18,14 @@ const items = [
   { title: "Dashboard", url: "/", icon: Home },
   { title: "Restaurant", url: "/restaurant-list", icon: Inbox },
   { title: "Menu", url: "/menu-manager", icon: MenuIcon },
-  { title: "Infos", icon: TagsIcon, 
-    children: [
-       { title: "Category", url: "/categories" },
-      { title: "Cuisines", url: "/add-cuisines" },
-      { title: "Tags", url: "/add-tags" },
-    ]
-  },
+  // { title: "Metadata", icon: TagsIcon, 
+  //   children: [
+  //     { title: "Category", url: "/categories" },
+  //     { title: "Cuisines", url: "/add-cuisines" },
+  //     { title: "Tags", url: "/add-tags" },
+  //   ]
+  // },
+  { title: "Metadata", url: "/metadata", icon: TagIcon },
   { title: "Offers", url: "/add-offers", icon: TagIcon },
   { title: "Admin/Manager", url: "/manager", icon: Calendar },
   { title: "Approval", url: "/approve", icon: Search },
