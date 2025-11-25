@@ -39,8 +39,8 @@ const AddCategory = () => {
     
 
     const onSubmit = async (data) => {
+      console.log(data, "data..........")
        const formData = new FormData();
-        
        Object.entries(data).forEach(([key, value]) => {
             formData.append(key, value);
        });
