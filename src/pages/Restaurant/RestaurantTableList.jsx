@@ -37,7 +37,7 @@ const RestaurantTableList = () => {
                                     <img
                                             width={100}
                                             height={100}
-                                            src={`http://localhost:5000/${restaurant.logo}`}  
+                                            src={restaurant.logo}  
                                             alt={`logo`}
                                             className="rounded-md object-cover border"
                                             />
@@ -52,7 +52,7 @@ const RestaurantTableList = () => {
                                             key={index}
                                             width={100}
                                             height={100}
-                                            src={`http://localhost:5000/${img}`}  // <-- adjust if needed
+                                            src={img}  // <-- adjust if needed
                                             alt={`image-${index}`}
                                             className="rounded-md object-cover border"
                                             />
