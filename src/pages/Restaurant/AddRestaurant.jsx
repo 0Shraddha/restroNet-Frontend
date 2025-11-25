@@ -17,6 +17,7 @@ import { useAddRestaurantMutation } from '../../state/restaurants/restuarantApiS
 import { toast } from 'react-toastify';
 import geocodeAddress from '../../util/searchAddress';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { Search } from 'lucide-react';
 
 const AddRestaurant = () => {
   const {
@@ -65,8 +66,6 @@ function RecenterMap({ lat, lon }) {
   return null;
 }
 
-
-
   useEffect(() => {
     if(isSuccess){
       toast.success("Restaurant added successfully!");
@@ -97,8 +96,6 @@ function RecenterMap({ lat, lon }) {
       formData.append(key, value);
     });
 
-    console.log({logoFile})
-    
    // Append logo (single file)
   if (logoFile) {
     formData.append("logo", logoFile);
@@ -164,7 +161,8 @@ function RecenterMap({ lat, lon }) {
 
             <div>
               <label htmlFor="restaurant_location" className="block text-sm mb-2 font-medium text-gray-700">Location *</label>
-              <Input
+             <div className="flex">
+               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                 id="restaurant_location"
                 type="text"
@@ -174,11 +172,12 @@ function RecenterMap({ lat, lon }) {
 
                 <button
                 type='button'
-    onClick={handleSearch}
-    className="bg-blue-500 text-white px-4 rounded"
-  >
-    Search
-  </button>
+                onClick={handleSearch}
+                className="bg-orange-500 text-white px-4 rounded"
+              >
+                <Search />
+              </button>
+             </div>
               {errors.restaurant_location && <p className="error">{errors.restaurant_location.message}</p>}
 
               <MapContainer
