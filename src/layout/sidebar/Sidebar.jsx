@@ -17,7 +17,7 @@ const items = [
   { title: "Dashboard", url: "/", icon: Home },
   { title: "Restaurant", url: "/restaurant-list", icon: Inbox },
   { title: "Menu", url: "/menu-manager", icon: MenuIcon },
-  { title: "Category", url: "/add-category", icon: TagIcon },
+  { title: "Category", url: "/categories", icon: TagIcon },
   { title: "Admin/Manager", url: "/manager", icon: Calendar },
   { title: "Approval", url: "/approve", icon: Search },
   { title: "Settings", url: "/settings", icon: Settings },

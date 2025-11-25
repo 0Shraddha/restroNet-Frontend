@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 import {
@@ -15,16 +15,57 @@ import DropImageUpload from '../../components/DropImageUpload';
 import { Button } from '../../components/ui/button';
 import { useAddRestaurantMutation } from '../../state/restaurants/restuarantApiSlice';
 import { toast } from 'react-toastify';
+import geocodeAddress from '../../util/searchAddress';
+import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 
 const AddRestaurant = () => {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
 
   const [addRestaurant, { isLoading, isSuccess, isError, error }] = useAddRestaurantMutation();
+
+  const [latLng, setLatLng] = useState(null);
+   const address = useWatch({
+    control,
+    name: "restaurant_location",
+    defaultValue: "",
+   })
+
+const handleSearch = async () => {
+  console.log("Address:", address);
+
+  const result = await geocodeAddress({address});
+
+  if (result) {
+    setLatLng({
+      lat: result.lat,
+      lon: result.lon,
+    });
+
+    console.log({result});
+  } else {
+    alert("Address not found");
+  }
+};
+
+function RecenterMap({ lat, lon }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (lat && lon) {
+      map.flyTo([lat, lon], 16, { duration: 1.5 });
+    }
+  }, [lat, lon]);
+
+  return null;
+}
+
+
 
   useEffect(() => {
     if(isSuccess){
@@ -62,6 +103,10 @@ const AddRestaurant = () => {
   if (logoFile) {
     formData.append("logo", logoFile);
   }
+
+  formData.append('lat', latLng.lat);
+  formData.append('lng', latLng.lon);
+
 
   if (imageFiles.length > 0) {
     imageFiles.forEach(file => {
@@ -126,7 +171,32 @@ const AddRestaurant = () => {
                 placeholder="Enter Restaurant Location"
                 {...register('restaurant_location', { required: 'Location is required' })}
               />
+
+                <button
+                type='button'
+    onClick={handleSearch}
+    className="bg-blue-500 text-white px-4 rounded"
+  >
+    Search
+  </button>
               {errors.restaurant_location && <p className="error">{errors.restaurant_location.message}</p>}
+
+              <MapContainer
+                center={latLng ? [latLng.lat, latLng.lon] : [27.7172, 85.3240]} // default Kathmandu
+                zoom={13}
+                style={{ height: "300px", width: "100%" }}
+              >
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+                {latLng && (
+                  <Marker position={[latLng.lat, latLng.lon]}>
+                    <Popup>{address}</Popup>
+                  <RecenterMap lat={latLng.lat} lon={latLng.lon} />
+                  </Marker>
+                )}
+              </MapContainer>
+
+
             </div>
 
             <div>
