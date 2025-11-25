@@ -1,5 +1,6 @@
 export default async function geocodeAddress({address}) {
-  console.log({address});
+      console.log({address});
+  
   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
 
   const res = await fetch(url, {
