@@ -20,7 +20,7 @@ const items = [
   { title: "Menu", url: "/menu-manager", icon: MenuIcon },
   { title: "Infos", icon: TagsIcon, 
     children: [
-       { title: "Category", url: "/add-category" },
+       { title: "Category", url: "/categories" },
       { title: "Cuisines", url: "/add-cuisines" },
       { title: "Tags", url: "/add-tags" },
     ]

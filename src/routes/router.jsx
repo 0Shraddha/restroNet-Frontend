@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import ErrorPage from './error'
@@ -6,6 +7,7 @@ import SignUpPage from "../pages/Registration";
 import { action as authAction } from "../Authentication/Authentication";
 import Dashboard from "../pages/Admin/Dashboard";
 import usersRestaurantRoutes from "../pages/User/Restaurants/usersRestaurantRoutes";
+const AllCategories = lazy(()=>import("../pages/category/AllCategories"));
 
 
 const router = createBrowserRouter([
@@ -27,7 +29,11 @@ const router = createBrowserRouter([
             //     element: <UserList />
             // },
            ...restaurantRoutes,
-           ...usersRestaurantRoutes
+           ...usersRestaurantRoutes,
+           {
+            path: "/categories", element: <AllCategories />
+           },
+
         ]
     }
     
