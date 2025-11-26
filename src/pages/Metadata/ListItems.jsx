@@ -28,7 +28,7 @@ const ListItem = ({type}) => {
 
      <h2 className="text-xl font-semibold text-gray-800 my-5">List of items</h2>
 
-    <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+    <div className="flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
       <div className="flex-1">
          {type === 'categories' && 
          (
@@ -39,7 +39,7 @@ const ListItem = ({type}) => {
               category?.data?.map((cat) => (
                 <div
                   key={cat._id}
-                  className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-between p-3 mb-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <img

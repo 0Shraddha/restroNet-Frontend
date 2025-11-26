@@ -22,6 +22,21 @@ export const categoryApiSlice  = createApi({
                     method: 'POST',
                     body: FormData,
                 })
+            }),
+
+            updateCategory: builder.mutation({
+                query: ({FormData, id}) => ({
+                    url : `/category/${id}`,
+                    method: 'PUT',
+                    body: FormData,
+                })
+            }),
+
+            deleteCategory: builder.mutation({
+                query: (id) => ({
+                    url: `/category/${id}`,
+                    method: "DELETE",
+                })
             })
         }
     }
