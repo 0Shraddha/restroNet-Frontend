@@ -33,6 +33,9 @@ const router = createBrowserRouter([
            {
             path: "/metadata", element: <AllCategories />
            },
+ {
+            path: "/metadata/:id", element: <AllCategories />
+           },
 
         ]
     }

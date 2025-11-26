@@ -1,49 +1,57 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+export const categoryApiSlice = createApi({
+	reducerPath: "categories",
+	baseQuery: fetchBaseQuery({
+		baseUrl: "http://localhost:2700",
+	}),
+	tagTypes: ["Category"],
+	endpoints: (builder) => {
+		return {
+			getCategories: builder.query({
+				query: () => "/category",
+				providesTags: ["Category"],
+			}),
 
-export const categoryApiSlice  = createApi({
-    reducerPath: "categories",
-    baseQuery: fetchBaseQuery({
-        baseUrl : "http://localhost:2700",
-    }),
-    endpoints: (builder) => {
-        return{
-            getCategories : builder.query({
-                query: () => '/category'
-            }),
+			getCategoryById: builder.query({
+				query: ({ id }) => `/category/${id}`,
+				providesTags: (result, error, { id }) => [{ type: "Category", id }],
+			}),
 
-            getCategoryById: builder.query({
-                query: (id) => `/category/${id}`
-            }),
+			addCategory: builder.mutation({
+				query: (FormData) => ({
+					url: "/category",
+					method: "POST",
+					body: FormData,
+				}),
+				invalidatesTags: ["Category"],
+			}),
 
-            addCategory: builder.mutation({
-                query: (FormData) => ({
-                    url: "/category",
-                    method: 'POST',
-                    body: FormData,
-                })
-            }),
+			updateCategory: builder.mutation({
+				query: ({ data, id }) => ({
+					url: `/category/${id}`,
+					method: "PUT",
+					body: data,
+				}),
+				invalidatesTags: (result, error, { id }) => [
+					"Category",
+					{ type: "Category", id },
+				],
+			}),
 
-            updateCategory: builder.mutation({
-                query: ({FormData, id}) => ({
-                    url : `/category/${id}`,
-                    method: 'PUT',
-                    body: FormData,
-                })
-            }),
-
-            deleteCategory: builder.mutation({
-                query: (id) => ({
-                    url: `/category/${id}`,
-                    method: "DELETE",
-                })
-            })
-        }
-    }
-})
+			deleteCategory: builder.mutation({
+				query: (id) => ({
+					url: `/category/${id}`,
+					method: "DELETE",
+				}),
+			}),
+		};
+	},
+});
 
 export const {
-    useGetCategoriesQuery,
-    useGetCategoryByIdQuery,
-    useAddCategoryMutation,
+	useGetCategoriesQuery,
+	useGetCategoryByIdQuery,
+	useAddCategoryMutation,
+	useUpdateCategoryMutation,
 } = categoryApiSlice;

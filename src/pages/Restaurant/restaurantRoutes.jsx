@@ -28,7 +28,9 @@ const restaurantRoutes = [
   {
     path: '/add-category',
     element: <AddCategory />,
-  }
+  },
+  
+
 ];
 
 export default restaurantRoutes;
