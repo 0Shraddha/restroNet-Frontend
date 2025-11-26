@@ -23,6 +23,21 @@ export const restaurantApiSlice = createApi({
                 })
             }),
 
+            updateRestaurant: builder.mutation({
+                query: ({FormData, id}) => ({
+                    url : `/venue/${id}`,
+                    method: 'PUT',
+                    body: FormData,
+                })
+            }),
+
+            deleteRestaurant: builder.mutation({
+                query: (id) => ({
+                    url: `/venue/${id}`,
+                    method: "DELETE",
+                })
+            })
+
         }
     }
 })
