@@ -4,7 +4,7 @@ const RestaurantList = lazy(() => import('./RestaurantList'));
 const RestaurantDetail = lazy(() => import('./RestaurantDetail'));
 const AddRestaurant = lazy(() => import('./AddRestaurant'));
 const AddMenu = lazy(() => import('../Restaurant/Menu/AddMenu'))
-const AddCategory = lazy(() => import('../Restaurant/Category/AddCategory'))
+const AddCategory = lazy(() => import('../Metadata/AddCategory'))
 
 const restaurantRoutes = [
   {
