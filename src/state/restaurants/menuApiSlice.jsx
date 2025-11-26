@@ -22,6 +22,21 @@ export const menuApiSlice = createApi({
                     body: formData,
                 })
             }),
+
+            updateMenu: builder.mutation({
+                query: ({FormData, id}) => ({
+                    url : `/menu/${id}`,
+                    method: 'PUT',
+                    body: FormData,
+                })
+            }),
+
+            deleteMenu: builder.mutation({
+                query: (id) => ({
+                    url: `/menu/${id}`,
+                    method: "DELETE",
+                })
+            })
         }
     }
 })
