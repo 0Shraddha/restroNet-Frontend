@@ -3,6 +3,7 @@ import StatsCard from "../../../components/StatsCard"
 import { Beer, CupSoda, EggFried, IceCreamBowl, Pizza, Salad, Utensils } from "lucide-react";
 import { useGetMenuQuery } from "../../../state/restaurants/menuApiSlice";
 import MenuCards from "./MenuCards";
+import { useGetCategoriesQuery } from "../../../state/restaurants/categoryApiSlice";
 
 const PreviewMenuItems = () => {
      const cardsData = [
@@ -83,6 +84,8 @@ const PreviewMenuItems = () => {
     ];
 
     const { data: menu,  isLoading, isSuccess, isError, error} = useGetMenuQuery();
+    const { data: categories } = useGetCategoriesQuery();
+    
 
     useEffect(() => {
       isLoading && <p>Loading menu items...</p>;
@@ -94,7 +97,7 @@ const PreviewMenuItems = () => {
     return (
         <>
         <div className="category-section">
-            <StatsCard cardsData={cardsData} layout={"grid-cols-1 md:grid-cols-5 gap-2"} />
+            <StatsCard cardsData={categories?.data} layout={"grid-cols-1 md:grid-cols-5 gap-2"} />
         </div>
 
        

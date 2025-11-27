@@ -3,6 +3,7 @@ import { Search, MapPin, Clock, Star, Filter, ChevronDown, Menu, X } from 'lucid
 import HeroBanner from './HeroBanner'
 import GoogleMapComponent from '../../../components/Map';
 import RestaurantCard from '../../../components/RestaurantCard'
+import { useGetRestaurantsQuery } from '../../../state/restaurants/restuarantApiSlice';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -151,6 +152,9 @@ const UsersHomePage = () => {
     }
   ];
 
+
+  const {data: restaurants} = useGetRestaurantsQuery();
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <Navbar />
@@ -175,7 +179,7 @@ const UsersHomePage = () => {
             </div>
             
             <div className="grid grid-cols-12 gap-6">
-              {mockRestaurants.map((restaurant, index) => (
+              {restaurants?.data?.map((restaurant, index) => (
                 <RestaurantCard key={index} restaurant={restaurant} />
               ))}
             </div>

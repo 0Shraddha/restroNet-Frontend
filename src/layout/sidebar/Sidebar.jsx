@@ -11,6 +11,7 @@ import {
   MenuIcon,
   TagIcon,
   TagsIcon,
+  Percent,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -26,7 +27,7 @@ const items = [
   //   ]
   // },
   { title: "Metadata", url: "/metadata", icon: TagIcon },
-  { title: "Offers", url: "/add-offers", icon: TagIcon },
+  { title: "Offers", url: "/add-offers", icon: Percent },
   { title: "Admin/Manager", url: "/manager", icon: Calendar },
   { title: "Approval", url: "/approve", icon: Search },
   { title: "Settings", url: "/settings", icon: Settings },

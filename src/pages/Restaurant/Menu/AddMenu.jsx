@@ -17,7 +17,7 @@ import { Button } from '../../../components/ui/button';
 import PreviewMenuItems from './PreviewMenuItems';
 import { useAddMenuMutation, useGetMenuByIdQuery } from '../../../state/restaurants/menuApiSlice';
 import { useSearchParams } from 'react-router-dom';
-import { useUpdateCategoryMutation } from '../../../state/restaurants/categoryApiSlice';
+import { useGetCategoriesQuery, useUpdateCategoryMutation } from '../../../state/restaurants/categoryApiSlice';
 
 const AddMenu = () => {
   const {
@@ -26,6 +26,7 @@ const AddMenu = () => {
     formState: { errors },
     reset,
     setValue,
+    watch,
     getValues,
   } = useForm();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,7 +34,10 @@ const AddMenu = () => {
 
   const [ updateMenu ]= useUpdateCategoryMutation();
   const [addMenu, { isLoading, isSuccess, isError, error }] = useAddMenuMutation();
+  const {data: categoriesData} = useGetCategoriesQuery();
   const {data: singleMenu} = useGetMenuByIdQuery(id);
+  const selectedCategories = watch("category") || [];
+
 
   useEffect(() => {
       if (id && singleMenu?.data) {
@@ -261,15 +265,51 @@ const AddMenu = () => {
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
                   Category *
                 </label>
-                <input
-                  id="category"
-                  type="text"
-                  placeholder="Pizza, Vegetarian (comma separated)"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
-                  {...register('category', { required: 'Category is required' })}
-                />
+                <select
+  id="category"
+  className="w-full border border-gray-300 rounded-md px-4 py-2"
+  onChange={(e) => {
+    const newValue = e.target.value;
+
+    // Prevent duplicates
+    if (!selectedCategories.includes(newValue)) {
+      setValue("category", [...selectedCategories, newValue]);
+    }
+
+    // Reset select to stop auto-highlighted items
+    e.target.value = "";
+  }}
+>
+  <option value="">-- Select Category --</option>
+
+  {categoriesData?.data?.map((cat) => (
+    <option key={cat._id} value={cat.label}>
+      {cat.label}
+    </option>
+  ))}
+</select>
+
+<div className="flex flex-wrap gap-2 mt-3">
+  {selectedCategories.map((cat, index) => (
+    <div
+      key={index}
+      className="flex items-center gap-2 bg-orange-100 text-orange-700 px-3 py-1 rounded-full"
+    >
+      <span>{cat}</span>
+      <button
+        type="button"
+        onClick={() => {
+          const updated = selectedCategories.filter((c) => c !== cat);
+          setValue("category", updated);
+        }}
+        className="text-orange-600 font-bold hover:text-orange-800"
+      >
+        ✕
+      </button>
+    </div>
+  ))}
+</div>
                 {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
-                <p className="text-xs text-gray-500 mt-1">Separate multiple categories with commas</p>
               </div>
 
               <div>
@@ -279,11 +319,10 @@ const AddMenu = () => {
                 <input
                   id="tags"
                   type="text"
-                  placeholder="Chef's Special, Spicy, Popular (comma separated)"
+                  placeholder="Chef's Special, Spicy, Popular ..."
                   className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
                   {...register('tags')}
                 />
-                <p className="text-xs text-gray-500 mt-1">Separate multiple tags with commas</p>
               </div>
             </div>
           </div>
