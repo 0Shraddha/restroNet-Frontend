@@ -24,7 +24,7 @@ export const categoryApiSlice = createApi({
 					method: "POST",
 					body: FormData,
 				}),
-				invalidatesTags: ["Category"],
+				invalidatesTags: ["Category"], //InvalidatesTags - Used in mutations (POST, PUT, DELETE).
 			}),
 
 			updateCategory: builder.mutation({
@@ -44,6 +44,10 @@ export const categoryApiSlice = createApi({
 					url: `/category/${id}`,
 					method: "DELETE",
 				}),
+				invalidatesTags: (result, error, id) => [
+					"Category",
+					{ type: "Category", id },
+				]
 			}),
 		};
 	},

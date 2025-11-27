@@ -7,10 +7,7 @@ import { toast } from "react-toastify";
 import { Input } from "../../components/ui/input";
 import {
 	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+	CardContent
 } from "../../components/ui/card";
 import DropImageUpload from "../../components/DropImageUpload";
 import { Button } from "../../components/ui/button";
@@ -50,6 +47,9 @@ useEffect(() => {
         reset();
     }
 }, [singleCategory, id, setValue, reset]);
+
+const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
+console.log({imageUrl});
 
 
 	const onSubmit = async (data) => {
@@ -98,10 +98,9 @@ useEffect(() => {
 
 		try {
 			const response = await updateCategory({ data: formData, id }).unwrap();
-      if(response?.success){
-      toast.success("Category updated successfully");
-
-      }
+			if(response?.success){
+				toast.success("Category updated successfully");
+      		}
 			reset();
 			setIconFile(null);
 			setSearchParams({});
@@ -152,7 +151,7 @@ useEffect(() => {
 								</label>
 								{/* <input type="file" name="icon" id="icon" onChange={handleFileChange} /> */}
 								{/* Pass setIconFile to update the state in parent */}
-								<DropImageUpload multiple={false} onFileSelect={setIconFile} />
+								<DropImageUpload multiple={false} onFileSelect={setIconFile}  defaultImage={imageUrl}/>
 								{iconFile && (
 									<p className="text-sm text-gray-600">
 										Selected logo: {iconFile.name}

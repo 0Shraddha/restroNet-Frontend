@@ -1,23 +1,36 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Label } from "./ui/label";
 import { cn } from "../lib/utils";
 import { X } from "lucide-react";
 
-const DropImageUpload = ({ multiple = true, onFileSelect }) => {
+const DropImageUpload = ({ multiple = true, onFileSelect, defaultImage }) => {
   const [images, setImages] = useState([]);
+
+   // 🔥 Load default image when editing
+  useEffect(() => {
+    if (defaultImage) {
+      setImages([{ preview: defaultImage, file: null }]); // file is null (existing image)
+    }
+  }, [defaultImage]);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      const newFiles = multiple ? [...images, ...acceptedFiles] : [acceptedFiles[0]];
+      const mappedFiles = acceptedFiles.map((file) => ({
+        preview: URL.createObjectURL(file),
+        file,
+      }));
+
+      const newFiles = multiple ? [...images, ...mappedFiles] : [mappedFiles[0]];
+
       setImages(newFiles);
 
-      // ✅ Notify parent
+      // Send File(s) to parent
       if (onFileSelect) {
-        onFileSelect(multiple ? newFiles : newFiles[0]);
+        onFileSelect(
+          multiple ? newFiles.map((img) => img.file).filter(Boolean) : newFiles[0]?.file
+        );
       }
-
-      console.log(newFiles[0]);
     },
     [images, multiple, onFileSelect]
   );
@@ -28,7 +41,7 @@ const DropImageUpload = ({ multiple = true, onFileSelect }) => {
 
     // ✅ Update parent when image is removed
     if (onFileSelect) {
-      onFileSelect(multiple ? updated : null);
+      onFileSelect(multiple ? updated.map((img) => img.file).filter(Boolean) : updated[0]?.file);
     }
   };
 
@@ -64,7 +77,7 @@ const DropImageUpload = ({ multiple = true, onFileSelect }) => {
           {images.map((file, index) => (
             <div key={index} className="relative group">
               <img
-                src={URL.createObjectURL(file)}
+                src={file.preview}
                 alt={`preview-${index}`}
                 className="w-32 h-32 object-cover rounded-md shadow"
               />

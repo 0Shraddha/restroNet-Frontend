@@ -36,6 +36,7 @@ const ListItem = ({ type }) => {
 				<div className="flex-1">
 					{type === "categories" && (
 						<>
+						<h2 className="text-end mb-3 font-semibold">Total categories : <span className="text-lg font-semibold text-orange-800 bg-orange-100 py-1 px-3">{category?.count}</span></h2>
 							{isLoading && <p>Loading...</p>}
 
 							{!isLoading &&
