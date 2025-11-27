@@ -40,6 +40,7 @@ const AddCategory = () => {
 		const file = e.target.files[0];
 		setIconFile(file);
 	};
+
 useEffect(() => {
     if (id && singleCategory?.data) {
         setValue("label", singleCategory.data.label);
@@ -49,7 +50,6 @@ useEffect(() => {
 }, [singleCategory, id, setValue, reset]);
 
 const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
-console.log({imageUrl});
 
 
 	const onSubmit = async (data) => {

@@ -15,7 +15,9 @@ import {
 import DropImageUpload from '../../../components/DropImageUpload';
 import { Button } from '../../../components/ui/button';
 import PreviewMenuItems from './PreviewMenuItems';
-import { useAddMenuMutation } from '../../../state/restaurants/menuApiSlice';
+import { useAddMenuMutation, useGetMenuByIdQuery } from '../../../state/restaurants/menuApiSlice';
+import { useSearchParams } from 'react-router-dom';
+import { useUpdateCategoryMutation } from '../../../state/restaurants/categoryApiSlice';
 
 const AddMenu = () => {
   const {
@@ -26,8 +28,28 @@ const AddMenu = () => {
     setValue,
     getValues,
   } = useForm();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get('id');
 
+  const [ updateMenu ]= useUpdateCategoryMutation();
   const [addMenu, { isLoading, isSuccess, isError, error }] = useAddMenuMutation();
+  const {data: singleMenu} = useGetMenuByIdQuery(id);
+
+  useEffect(() => {
+      if (id && singleMenu?.data) {
+          setValue("item_name", singleMenu.data.item_name);
+          setValue("preparation_time", singleMenu.data.preparation_time);
+          setValue("price", singleMenu.data.price);
+          setValue("ratings", singleMenu.data.ratings);
+          setValue("spice_level", singleMenu.data.spice_level);
+          setValue("availability", singleMenu.data.availability);
+          setValue("description", singleMenu.data.description);
+      } else if (!id) {
+          reset();
+      }
+  }, [singleMenu, id, setValue, reset]);
+  console.log({singleMenu});
+
 
   useEffect(() => {
     if (isSuccess) {
@@ -76,13 +98,33 @@ const AddMenu = () => {
     }
   };
 
+  const onUpdate = async (data) => {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    
+    Object.entries(data).forEach(([key, value]) => {
+      console.log(key, value);
+    });
 
+    try {
+      const response = await updateMenu({ data: formData, id }).unwrap();
+      if(response?.success){
+        toast.success("menu updated successfully");
+          }
+      reset();
+      setSearchParams({});
+    } catch (err) {
+      console.error("Failed to add menu:", err);
+    }
+  };
 
   return (
     <form
       className="mx-auto p-6 space-y-10"
       method="POST"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(id ? onUpdate : onSubmit)}
     >
       <h2 className="text-2xl font-bold text-gray-800 text-center">Add New Menu</h2>
 
@@ -265,7 +307,7 @@ const AddMenu = () => {
         <Button
           className="bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
         >
-          Add item
+          {id ? `Update` : `Add`} item
         </Button>
       </Card>
 

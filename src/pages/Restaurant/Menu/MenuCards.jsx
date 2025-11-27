@@ -1,7 +1,19 @@
-import { Flame, Star, TimerIcon } from "lucide-react";
+import { Delete, Edit2, Flame, Star, TimerIcon, Trash2 } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const MenuCards = ({ menu, currency = "Rs" }) => {
+    const navigate = useNavigate();
+  
+  const onEdit = (id) => {
+		navigate(`/menu-manager?id=${id}`);
+	};
+
+
+	const onDelete = (id) => {
+		console.log("deleting : ", id);
+	};
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {menu?.data?.map((item) => {
@@ -100,6 +112,23 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                       )}
                     </div>
                   )}
+
+                  <div className="flex space-x-2">
+                                        <button
+                                        type="button"
+                                          onClick={() => onEdit(item._id)}
+                                          className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                                        >
+                                          <Edit2 size={16} />
+                                        </button>
+                                        <button
+                                        type="button"
+                                          onClick={() => onDelete(item._id)}
+                                          className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                        >
+                                          <Trash2 size={16} />
+                                        </button>
+                                      </div>
                 </>
               )}
             </div>

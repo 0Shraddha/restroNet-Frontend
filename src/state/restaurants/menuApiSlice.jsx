@@ -5,14 +5,17 @@ export const menuApiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl : "http://localhost:2700",
     }),
+    tagTypes: ["Menu"],
     endpoints: (builder) => {
         return{
             getMenu : builder.query({
-                query: () => '/menu'
+                query: () => '/menu',
+                providesTags: ["Menu"],
             }),
 
             getMenuById : builder.query({
-                query: (id) => `/menu/${id}`
+                query: (id) => `/menu/${id}`,
+                providesTags: (result, error, id) => [{ type: "Menu", id }],
             }),
 
             addMenu: builder.mutation({
@@ -20,7 +23,8 @@ export const menuApiSlice = createApi({
                     url: '/menu',
                     method: 'POST',
                     body: formData,
-                })
+                }),
+                invalidatesTags: ["Menu"], //InvalidatesTags - Used in mutations (POST, PUT, DELETE).
             }),
 
             updateMenu: builder.mutation({
@@ -28,17 +32,25 @@ export const menuApiSlice = createApi({
                     url : `/menu/${id}`,
                     method: 'PUT',
                     body: FormData,
-                })
+                }),
+                invalidatesTags: (result, error, { id }) => [
+                    "Menu",
+                    { type: "Menu", id },
+                ],
             }),
 
             deleteMenu: builder.mutation({
                 query: (id) => ({
                     url: `/menu/${id}`,
                     method: "DELETE",
-                })
+                }),
+                invalidatesTags: (result, error, id) => [
+                    "Menu",
+                    { type: "Menu", id },
+                ]
             })
         }
     }
 })
 
-export const { useGetMenuQuery, useGetMenuByIdQuery, useAddMenuMutation } = menuApiSlice
+export const { useGetMenuQuery, useGetMenuByIdQuery, useAddMenuMutation, useUpdateMenuMutation } = menuApiSlice
