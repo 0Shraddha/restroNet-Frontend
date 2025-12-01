@@ -5,6 +5,7 @@ const RestaurantDetail = lazy(() => import('./RestaurantDetail'));
 const AddRestaurant = lazy(() => import('./AddRestaurant'));
 const AddMenu = lazy(() => import('../Restaurant/Menu/AddMenu'))
 const AddCategory = lazy(() => import('../Metadata/AddCategory'))
+const AddOffers = lazy(() => import('./Offers/AddOffers'));
 
 const restaurantRoutes = [
   {
@@ -29,6 +30,10 @@ const restaurantRoutes = [
     path: '/add-category',
     element: <AddCategory />,
   },
+  {
+    path: '/add-offers',
+    element: <AddOffers />
+  }
   
 
 ];

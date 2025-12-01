@@ -7,7 +7,7 @@ const AllCategories = () => {
 	const tabs = [
 		{ id: 'categories', label: 'Categories' },
     { id: 'cuisines', label: 'Cuisines' },
-		{ id: 'tags', label: 'Tags' }
+		{ id: 'tags', label: 'Tags' },
 	];
 
   const [activeTab, setActiveTab] = useState('categories');

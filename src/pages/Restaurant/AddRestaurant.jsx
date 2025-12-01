@@ -41,6 +41,9 @@ const AddRestaurant = () => {
           setValue("restaurant_name", singleRestaurant.data.restaurant_name);
           setValue("restaurant_location", singleRestaurant.data.restaurant_location);
           setValue("restaurant_contact", singleRestaurant.data.restaurant_contact);
+          setValue("description", singleRestaurant.data.description);
+          setValue("cuisine", singleRestaurant.data.cuisine);
+
       } else if (!id) {
           reset();
       }
@@ -235,13 +238,13 @@ function RecenterMap({ lat, lon }) {
             </div>
 
             <div>
-              <label htmlFor="restaurantEmail" className="block text-sm mb-2 font-medium text-gray-700">Email *</label>
+              <label htmlFor="restaurant_email" className="block text-sm mb-2 font-medium text-gray-700">Email *</label>
               <Input
                 className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                id="restaurantEmail"
+                id="restaurant_email"
                 type="email"
                 placeholder="Enter Restaurant Email"
-                {...register('restaurantEmail', {
+                {...register('restaurant_email', {
                   required: 'Email is required',
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -249,7 +252,7 @@ function RecenterMap({ lat, lon }) {
                   }
                 })}
               />
-              {errors.restaurantEmail && <p className="error">{errors.restaurantEmail.message}</p>}
+              {errors.restaurant_email && <p className="error">{errors.restaurant_email.message}</p>}
             </div>
 
             <div>
