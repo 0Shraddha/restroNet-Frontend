@@ -58,4 +58,5 @@ export const {
 	useGetCategoryByIdQuery,
 	useAddCategoryMutation,
 	useUpdateCategoryMutation,
+	useDeleteCategoryMutation,
 } = categoryApiSlice;

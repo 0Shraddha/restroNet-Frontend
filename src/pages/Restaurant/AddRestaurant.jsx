@@ -13,22 +13,40 @@ import {
 import './Restaurant.css';
 import DropImageUpload from '../../components/DropImageUpload';
 import { Button } from '../../components/ui/button';
-import { useAddRestaurantMutation } from '../../state/restaurants/restuarantApiSlice';
+import { useAddRestaurantMutation, useGetRestaurantByIdQuery } from '../../state/restaurants/restuarantApiSlice';
 import { toast } from 'react-toastify';
 import geocodeAddress from '../../util/searchAddress';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { Search } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 
 const AddRestaurant = () => {
   const {
     register,
     control,
+    setValue,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get('id');
+
   const [addRestaurant, { isLoading, isSuccess, isError, error }] = useAddRestaurantMutation();
+  const { data : singleRestaurant } = useGetRestaurantByIdQuery(id);
+
+  useEffect(() => {
+      if (id && singleRestaurant?.data){
+          setValue("restaurant_name", singleRestaurant.data.restaurant_name);
+          setValue("restaurant_location", singleRestaurant.data.restaurant_location);
+          setValue("restaurant_contact", singleRestaurant.data.restaurant_contact);
+      } else if (!id) {
+          reset();
+      }
+  }, [singleRestaurant, id, setValue, reset]);
+  console.log({singleRestaurant});
+  
 
   const [latLng, setLatLng] = useState(null);
    const address = useWatch({

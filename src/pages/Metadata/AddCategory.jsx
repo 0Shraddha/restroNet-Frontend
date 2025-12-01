@@ -29,10 +29,8 @@ const AddCategory = () => {
 	const id = searchParams.get("id");
 
 	const [updateCategory] = useUpdateCategoryMutation();
-	const [addCategory, { isLoading, isSuccess, isError, error }] =
-		useAddCategoryMutation();
-	const { data: singleCategory, isLoading: singleCategoryLoading } =
-		useGetCategoryByIdQuery({ id });
+	const [addCategory, { isLoading, isSuccess, isError, error }] =useAddCategoryMutation();
+	const { data: singleCategory, isLoading: singleCategoryLoading } =useGetCategoryByIdQuery({ id });
 
 	const [iconFile, setIconFile] = useState(null);
 
@@ -117,7 +115,7 @@ const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 				encType="multipart/form-data"
 			>
 				<h2 className="text-xl font-semibold text-gray-800 mb-3">
-					Add New Category
+					{id ? `Update` : `Add New`} Category
 				</h2>
 				<div className="grid gap-6 ">
 					{/* Restaurant Details */}
@@ -163,7 +161,7 @@ const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 								type="submit"
 								className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
 							>
-								{isLoading ? "Submitting..." : "Submit"}
+								{id ? "Update" : "Submit"}
 							</Button>
 						</CardContent>
 					</Card>

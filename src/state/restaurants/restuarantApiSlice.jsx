@@ -45,5 +45,7 @@ export const restaurantApiSlice = createApi({
 export const {
     useGetRestaurantsQuery,
     useGetRestaurantByIdQuery,
-    useAddRestaurantMutation
+    useAddRestaurantMutation, 
+    useUpdateRestaurantMutation,
+    useDeleteRestaurantMutation
 } = restaurantApiSlice;
