@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import GoogleMapComponent from "../../../components/Map";
 import { useParams } from "react-router-dom";
 import { useGetRestaurantByIdQuery } from "../../../state/restaurants/restuarantApiSlice";
+import AddReview from "../Review/ReviewForm";
 
 const mockRestaurant = {
   id: 1,
@@ -170,6 +171,10 @@ export default function RestaurantDetail() {
   const {id} = useParams();
 
   const [restaurant] = useState(mockRestaurant);
+  const [toggleReview, setToggleReview] = useState(false);
+  const handleToggleReview = () => {
+    setToggleReview(!toggleReview);
+  }
   const {data: restaurantData} = useGetRestaurantByIdQuery(id);
   console.log({restaurantData});
 
@@ -382,6 +387,8 @@ export default function RestaurantDetail() {
               <ReviewsSection
                 rating={restaurant.rating}
                 reviews={restaurant.reviews}
+                toggleReview={toggleReview}
+                onToggleReview={handleToggleReview}
               />
             )}
           </div>
@@ -608,7 +615,7 @@ function MenuSection({
   );
 }
 
-function ReviewsSection({ rating, reviews }) {
+function ReviewsSection({ rating, reviews, toggleReview, onToggleReview }) {
   return (
     <section className="space-y-4 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-900/5 sm:p-5 lg:p-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -626,10 +633,13 @@ function ReviewsSection({ rating, reviews }) {
             </p>
           </div>
         </div>
-        <button className="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 text-xs font-medium text-slate-700 shadow-sm shadow-slate-900/5 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2">
+        <button className="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 text-xs font-medium text-slate-700 shadow-sm shadow-slate-900/5 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2" onClick={onToggleReview}>
           Write a review
         </button>
       </div>
+      { toggleReview && 
+        <AddReview />
+      }
 
       <div className="space-y-3">
         {reviews.map((review) => (

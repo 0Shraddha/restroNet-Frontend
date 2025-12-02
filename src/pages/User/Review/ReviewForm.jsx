@@ -1,50 +1,90 @@
-import React from 'react'
-import { Card, CardContent, CardHeader } from '../../../components/ui/card'
-import { Input } from '../../../components/ui/input'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Textarea } from '../../../components/ui/textarea'
+import { Button } from '../../../components/ui/button'
+import { Star } from 'lucide-react'
 
 const AddReview = () => {
+  const [hover, setHover] = useState(null);
+const [selectedRating, setSelectedRating] = useState(0);
 
     const {
         register,
         handleSubmit,
+        setValue,
         formState: {errors},
         rsest,
     } = useForm();
+
+    const onSubmit = (data) => {
+        console.log(data);
+    }
+
     return(
-        <form 
-            method="POST" 
-            className='max-w-6xl mx-auto flex flex-col gap-8 p-6 my-12 bg-white rounded-xl shadow-lg'
-            encType="mutlipart/form-data">
+       <form
+      method="POST"
+      className="flex flex-col gap-4 p-8 my-12 border border-gray-200 rounded-xl shadow-sm bg-white"
+      encType="multipart/form-data"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+     <div className="flex align-center justify-between">
+         <h3 className="text-xl font-semibold text-gray-800">Give a Review</h3>
+        <div>
+            <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                    key={star}
+                    size={20}
+                    className="cursor-pointer transition"
+                    color={(hover || selectedRating) >= star ? "#fbbf24" : "#d1d5db"}
+                    onMouseEnter={() => setHover(star)}
+                    onMouseLeave={() => setHover(null)}
+                    onClick={() => {
+                    setSelectedRating(star);
+                    setValue("rating", star, { shouldValidate: true });
+                    }}
+                />
+                ))}
+            </div>
 
-            
-            <Card>
-                <CardHeader>Add Review</CardHeader>
-                <CardContent>
-                    <div>
-                        <label htmlFor="title" className="block text-sm mb-2 font-medium text-gray-700">Title *</label>
-                        <Input 
-                                    className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                            id="title"
-                            type="text"
-                            placeholder="Enter title"
-                            {...register('title', { required: 'Title is required' })}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="description" className="block text-sm mb-2 font-medium text-gray-700">Description *</label>
-                        <Textarea
-                            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                            id="description"
-                            placeholder="Tell something about the restaurant..."
-                            {...register('description')}
-                        />
-                    </div>
-                </CardContent>
-            </Card>
+            <input
+                type="hidden"
+                {...register("rating", { required: "Rating is required" })}
+            />
 
-            </form>
+            {errors.rating && (
+                <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>
+            )}
+        </div>
+     </div>
+
+      {/* Description */}
+      <div>
+        <Textarea
+          className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+          placeholder="Tell something about the restaurant..."
+          {...register("description", {
+            required: "Description is required",
+          })}
+        />
+        {errors.description && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.description.message}
+          </p>
+        )}
+      </div>
+
+
+
+
+      {/* Submit Button */}
+      <Button
+        type="submit"
+        className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition-all"
+      >
+        Submit Review
+      </Button>
+    </form>
     )
 }
 
