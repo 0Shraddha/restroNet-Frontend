@@ -14,7 +14,7 @@ const usersRestaurantRoutes = [
   },
   {
     // path: '/restaurant/:id',
-    path: '/restaurant/:id',
+    path: '/restaurant/',
     element: <RestaurantDetail />
   },
   {

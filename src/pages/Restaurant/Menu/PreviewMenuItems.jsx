@@ -96,13 +96,14 @@ const PreviewMenuItems = () => {
 
     return (
         <>
-        <div className="category-section">
-            <StatsCard cardsData={categories?.data} layout={"grid-cols-1 md:grid-cols-5 gap-2"} />
-        </div>
+          {/* Header */}
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Our Menu ({menu?.count ?? 0})</h2>
+        <p className="text-gray-600">Discover our delicious offerings</p>
+      </div>
 
-       
-      <p>Total menu items = {menu?.count ?? 0}</p>
-
+      <StatsCard cardsData={categories?.data} layout={"grid-cols-1 md:grid-cols-8 gap-2"} />
+     
       <MenuCards menu={menu} />
      
        

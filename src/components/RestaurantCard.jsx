@@ -6,7 +6,7 @@ const RestaurantCard = ({restaurant}) => {
     return (
 
     <div className="col-span-12 md:col-span-6 lg:col-span-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group cursor-pointer">
-      <Link to={ `/restaurant/${restaurant._id}`}>
+      <Link to={ `/restaurant/?id=${restaurant._id}`}>
       <div className="relative h-48 overflow-hidden">
         
         <img

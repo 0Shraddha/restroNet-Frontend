@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import { Star, Clock, Flame, ChefHat, Edit2, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Edit2, Flame, Star, Clock, Trash2, ChefHat } from "lucide-react";
-
 
 const MenuCards = ({ menu, currency = "Rs" }) => {
-    const navigate = useNavigate();
-  
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const navigate = useNavigate();
+
+  // Extract unique categories (if you have category field)
+  const categories = ["all", ...new Set(menu?.data?.map(item => item.category).filter(Boolean))];
+
+  const filteredMenu = selectedCategory === "all" 
+    ? menu?.data 
+    : menu?.data?.filter(item => item.category === selectedCategory);
+
   const handleEdit = (id) => {
 		navigate(`/menu-manager?id=${id}`);
 	};
@@ -16,153 +23,154 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
 	};
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-      {menu?.data?.map((item) => {
-        const unavailable = item.availability === false;
+    <div className="px-4 pb-8 pt-3">
 
-      return (
-          <div
-            key={item._id}
-            className={`group relative bg-white rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
-              unavailable
-                ? "border-gray-200 opacity-75"
-                : "border-orange-100 hover:border-orange-300 hover:shadow-xl hover:-translate-y-1"
-            }`}
-          >
-            {/* Image Container */}
-            <div className="relative h-48 overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100">
-              <img
-                src={item.image || `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400`}
-                alt={item.item_name}
-                className={`w-full h-full object-cover transition-transform duration-500 ${
-                  unavailable ? "grayscale" : "group-hover:scale-110"
-                }`}
-              />
-              
-              {/* Availability Badge */}
-              <div className="absolute top-3 right-3">
-                <span
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm ${
-                    unavailable
-                      ? "bg-red-500/90 text-white"
-                      : "bg-emerald-500/90 text-white"
+      {/* Menu Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredMenu?.map((item) => {
+          const unavailable = item.availability === false;
+
+          return (
+            <div
+              key={item._id}
+              className={`group bg-white rounded-2xl overflow-hidden border transition-all duration-300 ${
+                unavailable
+                  ? "border-gray-200 opacity-70"
+                  : "border-gray-100 hover:border-orange-200 hover:shadow-xl hover:-translate-y-1"
+              }`}
+            >
+              {/* Image Container */}
+              <div className="relative h-48 overflow-hidden bg-gray-100">
+                <img
+                  src={item.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"}
+                  alt={item.item_name}
+                  className={`w-full h-full object-cover transition-transform duration-500 ${
+                    unavailable ? "grayscale" : "group-hover:scale-110"
                   }`}
-                >
-                  {unavailable ? "Unavailable" : "Available"}
-                </span>
-              </div>
+                />
 
-              {/* Price Tag */}
-              <div className="absolute bottom-3 left-3">
-                <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                  <span className="text-orange-600 font-bold text-lg">
-                    {currency} {item.price}
+                {/* Availability Badge */}
+                <div className="absolute top-3 left-3">
+                  <span
+                    className={`px-3 py-1 text-xs rounded-full font-semibold shadow-lg ${
+                      unavailable
+                        ? "bg-red-500 text-white"
+                        : "bg-emerald-500 text-white"
+                    }`}
+                  >
+                    {unavailable ? "Unavailable" : "Available"}
                   </span>
                 </div>
-              </div>
-            </div>
 
-            {/* Content */}
-            <div className="p-5">
-              {/* Title */}
-              <h3 className="font-bold text-xl text-gray-900 mb-2 line-clamp-1">
-                {item.item_name || "Untitled"}
-              </h3>
-
-              {/* Description */}
-              <p className="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[40px]">
-                {item.description?.trim() || "No description available"}
-              </p>
-
-              {/* Quick Info Tags */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 text-xs font-medium">
-                  <Clock size={14} />
-                  <span>{item.preparation_time ?? 0} min</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-50 text-orange-700 text-xs font-medium">
-                  {Array.from({ length: item.spice_level ?? 0 }).map((_, i) => (
-                    <Flame key={i} className="w-4 h-4 text-red-500" />
-                  ))}
-
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-yellow-50 text-yellow-700 text-xs font-medium">
-                  <Star size={14} fill="currentColor" />
-                  <span>{item.ratings ?? 0}</span>
-                </div>
-              </div>
-
-              {/* Tags */}
-              {/* {item?.tas?.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {item.category.slice(0, 3).map((cat, i) => (
-                    <span
-                      key={`cat-${item._id}-${i}`}
-                      className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white text-xs font-medium"
-                    >
-                      {cat}
+                {/* Price Badge */}
+                <div className="absolute bottom-3 right-3">
+                  <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+                    <span className="text-orange-600 font-bold text-lg">
+                      {currency} {item.price}
                     </span>
-                  ))}
-            
-                </div>
-              )} */}
-
-              {/* Ingredients */}
-              {item?.ingredients?.length > 0 && (
-                <div className="mb-4">
-                      
-                  <p className="flex gap-1 items-center text-xs font-semibold text-gray-500 mb-2"><ChefHat size={12} />INGREDIENTS </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {item.ingredients.slice(0, 4).map((ing, i) => (
-                      <span
-                        key={`ing-${item._id}-${i}`}
-                        className="px-2.5 py-1 rounded-md bg-gray-50 border border-gray-200 text-gray-700 text-xs"
-                      >
-                        {ing}
-                      </span>
-                    ))}
-                    {item.ingredients.length > 4 && (
-                      <span className="px-2.5 py-1 text-xs text-gray-500 font-medium">
-                        +{item.ingredients.length - 4} more
-                      </span>
-                    )}
                   </div>
                 </div>
-              )}
+              </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2 pt-4 border-t border-gray-100">
-                <button
-                  type="button"
-                  onClick={() => handleEdit(item._id)}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg font-medium text-sm transition-colors"
-                >
-                  <Edit2 size={16} />
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDelete(item._id)}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg font-medium text-sm transition-colors"
-                >
-                  <Trash2 size={16} />
-                  Delete
-                </button>
+              {/* Content */}
+              <div className="p-5">
+                {/* Title */}
+                <h3 className="font-bold text-xl text-gray-900 mb-2 line-clamp-1">
+                  {item.item_name}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 text-sm line-clamp-2 mb-4">
+                  {item.description || "Delicious dish prepared with care"}
+                </p>
+
+                {/* Tags Row */}
+                <div className="flex items-center gap-3 mb-4">
+                  {/* Prep Time */}
+                  <div className="flex items-center gap-1 text-blue-600">
+                    <Clock size={14} />
+                    <span className="text-xs font-medium">{item.preparation_time}m</span>
+                  </div>
+
+                  {/* Spice Level */}
+                  {item.spice_level > 0 && (
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: Math.min(item.spice_level, 3) }).map((_, i) => (
+                        <Flame key={i} className="w-3.5 h-3.5 text-red-500" fill="currentColor" />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-1 text-yellow-500 ml-auto">
+                    <Star size={14} fill="currentColor" />
+                    <span className="text-xs font-medium text-gray-700">
+                      {item.ratings || "4.5"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Ingredients */}
+                {item?.ingredients?.length > 0 && (
+                  <div className="pt-3 border-t border-gray-100">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <ChefHat size={12} className="text-gray-400" />
+                      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        Ingredients
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {item.ingredients.slice(0, 3).map((ing, i) => (
+                        <span
+                          key={i}
+                          className="px-2 py-1 bg-gray-50 text-xs rounded-md text-gray-600"
+                        >
+                          {ing}
+                        </span>
+                      ))}
+                      {item.ingredients.length > 3 && (
+                        <span className="px-2 py-1 text-xs text-gray-400">
+                          +{item.ingredients.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                 {/* ACTION BUTTONS */}
+            <div className="flex gap-2 pt-2 border-t border-gray-100">
+              <button
+               type="button"
+               onClick={() => handleEdit(item?._id)}
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-medium"
+              >
+              <Edit2 size={16} />
+                Edit
+              </button>
+
+              <button
+               type="button"
+               onClick={() => handleDelete(item?._id)}
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium"
+              >
+                <Trash2 size={16} />
+                Delete
+              </button>
+            </div>
               </div>
             </div>
+          );
+        })}
+      </div>
 
-            {/* Unavailable Overlay */}
-            {unavailable && (
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/40 pointer-events-none" />
-            )}
-
-
-
-
-            
-          </div>
-        );
-      })}
+      {/* Empty State */}
+      {(!filteredMenu || filteredMenu.length === 0) && (
+        <div className="text-center py-16">
+          <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">No items found</h3>
+          <p className="text-gray-500">Check back later for delicious options!</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -80,6 +80,9 @@ const getColumns = (navigate, handleDelete) => [
     name: "Actions",
     cell: row => (
      <div className="flex gap-2">
+      <button 
+        className="px-4 py-2 rounded-lg bg-gray-500 text-white shadow hover:bg-gray-600 transition-all"
+        onClick={() => navigate(`/restaurant/?id=${row._id}`)}>View</button>
       <button
         className="px-4 py-2 rounded-lg bg-yellow-500 text-white shadow hover:bg-yellow-600 transition-all"
         onClick={() => navigate(`/add-restaurant/?id=${row._id}`)}
@@ -93,7 +96,7 @@ const getColumns = (navigate, handleDelete) => [
         Delete
       </button></div>
     ),
-    width: "200px",
+    width: "280px",
   },
 ];
 

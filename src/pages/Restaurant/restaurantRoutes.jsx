@@ -13,7 +13,7 @@ const restaurantRoutes = [
     element: <RestaurantList />,
   },
   {
-    path: '/restaurant-detail/:id',
+    path: '/restaurant-detail/',
     element: (
     <Suspense fallback={<p>Loading....</p>}><RestaurantDetail />
     </Suspense> )
