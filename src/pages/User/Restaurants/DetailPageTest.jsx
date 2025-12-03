@@ -38,6 +38,56 @@ const restaurants = [
   },
 ];
 
+const FiltersComponent = () => {
+  const [openFilter, setOpenFilter] = useState('cuisine');
+
+  const filters = {
+    cuisine: ['Italian', 'Chinese', 'Indian', 'Japanese', 'Mexican'],
+    price: ['$', '$$', '$$$', '$$$$'],
+    rating: ['4+ Stars', '3+ Stars', 'All'],
+    distance: ['< 1 km', '< 5 km', '< 10 km', 'Any']
+  };
+
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-sm h-full">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-bold text-gray-800">Filters</h3>
+        <Filter size={20} className="text-gray-600" />
+      </div>
+
+      {Object.keys(filters).map((filterKey) => (
+        <div key={filterKey} className="mb-6">
+          <button
+            onClick={() => setOpenFilter(openFilter === filterKey ? null : filterKey)}
+            className="flex items-center justify-between w-full text-left mb-3"
+          >
+            <span className="font-semibold text-gray-700 capitalize">{filterKey}</span>
+            <ChevronDown 
+              size={18} 
+              className={`transition-transform ${openFilter === filterKey ? 'rotate-180' : ''}`}
+            />
+          </button>
+          
+          {openFilter === filterKey && (
+            <div className="space-y-2 pl-2">
+              {filters[filterKey].map((option) => (
+                <label key={option} className="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded">
+                  <input type="checkbox" className="mr-3 accent-orange-600" />
+                  <span className="text-gray-600 text-sm">{option}</span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+
+      <button className="w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition mt-4">
+        Clear All
+      </button>
+    </div>
+  );
+};
+
 export default function DetailPageTest() {
   const [selected, setSelected] = useState(null);
 
@@ -84,6 +134,11 @@ export default function DetailPageTest() {
           </button>
         ))}
       </div>
+
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-12 lg:col-span-3">
+            <FiltersComponent />
+          </div>
 
       {/* Main Layout */}
       <div className="flex flex-1 overflow-hidden">
