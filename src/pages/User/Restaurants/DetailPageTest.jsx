@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Clock, MapPin, Search, Users, Calendar } from "lucide-react";
+import GoogleMapComponent from "../../../components/Map";
 
 // Mock data for restaurants
 const restaurants = [
@@ -11,7 +12,7 @@ const restaurants = [
     reviews: 20,
     cuisine: "Japanese",
     city: "Canberra City",
-    tags: ["Peaceful", "Great Ambiance", "Delicious", "Dining"],
+    tags: ["Peaceful", "Great Ambiance", "Delicious"],
     logo: "https://images.unsplash.com/photo-1552566626-52f8b828add9",
     position: [-0.2202, -78.5127],
   },
@@ -25,13 +26,23 @@ const restaurants = [
     logo: "https://images.unsplash.com/photo-1559339352-11d035aa65de",
     position: [-0.225, -78.51],
   },
+  {
+    name: "Window pane Cafe and Restaurant",
+    rating: 4.5,
+    reviews: 55,
+    cuisine: "Continental",
+    city: "Canberra City",
+    tags: ["Great Ambiance", "Delicious", "Dining"],
+    logo: "https://images.unsplash.com/photo-1559339352-11d035aa65de",
+    position: [-0.225, -78.51],
+  },
 ];
 
 export default function DetailPageTest() {
   const [selected, setSelected] = useState(null);
 
   return (
-    <div className="flex flex-col h-screen bg-[#F8F7F4] text-[#3A3F47]">
+    <div className="max-w-7xl mx-auto space-y-3 flex flex-col h-screen bg-[#F8F7F4] text-[#3A3F47]">
 
       {/* Top Search Bar */}
       <div className="bg-white px-6 py-3 flex items-center gap-4 shadow-sm border-b border-[#e5e5e5]">
@@ -112,7 +123,7 @@ export default function DetailPageTest() {
 
         {/* Right: Map */}
         <div className="w-2/3 min-h-screen">
-          <MapContainer center={[-0.22, -78.51]} zoom={13} style={{ height: "100%", width: "100%" }}>
+          {/* <MapContainer center={[-0.22, -78.51]} zoom={13} style={{ height: "100%", width: "100%" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
             {restaurants.map((res, i) => (
@@ -132,7 +143,37 @@ export default function DetailPageTest() {
                 pathOptions={{ color: "#FB8500", weight: 4 }}
               />
             )}
-          </MapContainer>
+          </MapContainer> */}
+
+          <GoogleMapComponent
+                    restaurants={[
+                      {
+                        name: "Mezze by Roadhouse",
+                        lat: 27.7123,
+                        lng: 85.3123,
+                        address: "Durbar Marg, Kathmandu",
+                        hours: "11 AM - 10 PM",
+                        image: "https://images.pexels.com/photos/3535387/pexels-photo-3535387.jpeg"
+                      },
+                      {
+                        name: "Bota Donuts",
+                        lat: 27.7140,
+                        lng: 85.3188,
+                        address: "New Road, Kathmandu",
+                        hours: "9 AM - 8 PM",
+                        image: "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                      },
+                      {
+                        name: "Vesper Cafe",
+                        lat: 27.7192,
+                        lng: 85.3274,
+                        address: "Jhamsikhel, Lalitpur",
+                        hours: "8 AM - 9 PM",
+                        image: "https://images.pexels.com/photos/3535387/pexels-photo-3535387.jpeg"
+                      }
+                    ]}
+                  /> 
+
         </div>
       </div>
     </div>

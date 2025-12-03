@@ -44,11 +44,9 @@ export default function GoogleMapComponent({ restaurants = [] }) {
   });
 
   return (
-    <div ref={containerRef} className="w-full h-100 rounded-lg overflow-hidden shadow-lg">
+    <div ref={containerRef} className="w-full rounded-lg overflow-hidden shadow-lg" style={{height: "80%"}}>
       <MapContainer
-        center={[data[0].lat, data[0].lng]}
-        zoom={20}
-        style={{ height: '100%', width: '100%' }}
+       center={[-0.22, -78.51]} zoom={13} style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
