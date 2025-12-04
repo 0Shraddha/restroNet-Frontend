@@ -60,21 +60,9 @@ const AllCategories = () => {
          {/* List Section */}
           <ListItem
             type={activeTab}
-            // items={getCurrentData()}
-            // onEdit={handleEdit}
-            // onDelete={handleDelete}
           />
 		</div>
-		  {/* <DataTable
-				// tableFor="audio"
-				data={audiosList?.data ?? []}
-				columns={columns}
-				isLoading={isLoading}
-				searchFor="audio"
-				categoryType="audio"
-				filterData="audio"
-				sortData="audio"
-			/> */}
+		
 		</div>
            
           

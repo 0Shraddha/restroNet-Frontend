@@ -39,6 +39,7 @@ const AddRestaurant = () => {
   useEffect(() => {
       if (id && singleRestaurant?.data){
           setValue("restaurant_name", singleRestaurant.data.restaurant_name);
+          setValue("restaurant_email", singleRestaurant.data.restaurant_email);
           setValue("restaurant_location", singleRestaurant.data.restaurant_location);
           setValue("restaurant_contact", singleRestaurant.data.restaurant_contact);
           setValue("description", singleRestaurant.data.description);
