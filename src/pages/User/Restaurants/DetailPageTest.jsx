@@ -107,7 +107,7 @@ export default function DetailPageTest() {
 	const [selected, setSelected] = useState(null);
 
 	return (
-		<div className="max-w-7xl mx-auto space-y-3 flex flex-col h-screen bg-[#F8F7F4] text-[#3A3F47]">
+		<div className=" space-y-3 flex flex-col h-screen bg-[#F8F7F4] text-[#3A3F47]">
 			{/* Top Search Bar */}
 			<div className="bg-white px-6 py-3 flex items-center gap-4 shadow-sm border-b border-[#e5e5e5]">
 				{/* Location Select */}
@@ -137,7 +137,7 @@ export default function DetailPageTest() {
 			</div>
 
 			{/* Filter Chips */}
-			<div className="border-b bg-white px-6 py-3 flex items-center gap-3 overflow-x-auto shadow-inner">
+			<div className="border-b bg-white px-6 py-6 flex items-center gap-3 overflow-x-auto overflow-y-hidden">
 				{[
 					"Featured",
 					"Romantic",
@@ -158,12 +158,12 @@ export default function DetailPageTest() {
 			</div>
 
 			<div className="grid grid-cols-12 gap-8">
-				<div className="col-span-12 lg:col-span-3">
+				<div className="col-span-2 lg:col-span-2">
 					<FiltersComponent />
 				</div>
 
 				{/* Main Layout */}
-				<div className="flex flex-1 overflow-hidden">
+				<div className="col-span-10 lg:col-span-10 flex overflow-hidden">
 					{/* Left: Restaurant List */}
 					<div className="w-1/3 overflow-y-auto border-r border-[#ddd] p-4 bg-[#FDFCFB]">
 						{restaurants.map((data, idx) => (

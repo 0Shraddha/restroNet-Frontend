@@ -14,8 +14,8 @@ export const cuisineApi  = createApi({
             }),
 
             getCuisineById: builder.query({
-                query: (id) => `/cuisine/${id}`
-                ,providesTags: (result, error, id) => [{ type: "Cuisine", id }],
+                query: (id) => `/cuisine/${id}`,
+                providesTags: (result, error, id) => [{ type: "Cuisine", id }],
             }),
 
             addCuisine: builder.mutation({

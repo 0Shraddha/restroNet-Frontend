@@ -19,6 +19,8 @@ import geocodeAddress from '../../util/searchAddress';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { Search } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { useGetCuisineByIdQuery, useGetCuisinesQuery } from '../../state/restaurants/cuisineApi';
+import MultiSelect from '../../components/common/MultiSelect';
 
 const AddRestaurant = () => {
   const {
@@ -33,8 +35,17 @@ const AddRestaurant = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get('id');
 
+  const [selectedCuisines, setSelectedCuisines] = useState([]);
+
+  const handleSelectCuisine = (items) => {
+    setSelectedCuisines(items);   // items = array of cuisine objects
+    console.log({selectedCuisines});
+  };
+
+
   const [addRestaurant, { isLoading, isSuccess, isError, error }] = useAddRestaurantMutation();
   const { data : singleRestaurant } = useGetRestaurantByIdQuery(id);
+  const { data: singleCuisine } = useGetCuisinesQuery();
 
   useEffect(() => {
       if (id && singleRestaurant?.data){
@@ -49,7 +60,6 @@ const AddRestaurant = () => {
           reset();
       }
   }, [singleRestaurant, id, setValue, reset]);
-  console.log({singleRestaurant});
   
 
   const [latLng, setLatLng] = useState(null);
@@ -60,8 +70,6 @@ const AddRestaurant = () => {
    })
 
 const handleSearch = async () => {
-  console.log("Address:", address);
-
   const result = await geocodeAddress({address});
 
   if (result) {
@@ -125,6 +133,8 @@ function RecenterMap({ lat, lon }) {
 
   formData.append('lat', latLng.lat);
   formData.append('lng', latLng.lon);
+formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
+
 
 
   if (imageFiles.length > 0) {
@@ -282,13 +292,18 @@ function RecenterMap({ lat, lon }) {
             <CardContent className="space-y-4">
               <div>
                 <label htmlFor="cuisine" className="block text-sm mb-2 font-medium text-gray-700">Cuisine *</label>
-                <Input
+                <MultiSelect
+                  options={singleCuisine?.data}
+                  placeholder='Select cuisines'
+                  onChange={handleSelectCuisine}
+                />
+                {/* <Input
                   className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
                   id="cuisine"
                   type="text"
                   placeholder="Enter Cuisine (Nepali, Indian, Chinese)"
                   {...register('cuisine', { required: 'Cuisine is required' })}
-                />
+                /> */}
                 {errors.cuisine && <p className="error">{errors.cuisine.message}</p>}
               </div>
 
