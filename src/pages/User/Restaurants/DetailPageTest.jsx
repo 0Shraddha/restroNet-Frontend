@@ -9,40 +9,42 @@ import {
 import "leaflet/dist/leaflet.css";
 import { Clock, MapPin, Search, Users, Calendar, Filter, ChevronDown } from "lucide-react";
 import GoogleMapComponent from "../../../components/Map";
+import { useGetRestaurantsQuery } from "../../../state/restaurants/restuarantApiSlice";
+
 
 // Mock data for restaurants
-const restaurants = [
-	{
-		name: "Chop Chop",
-		rating: 4.8,
-		reviews: 20,
-		cuisine: "Japanese",
-		city: "Canberra City",
-		tags: ["Peaceful", "Great Ambiance", "Delicious"],
-		logo: "https://images.unsplash.com/photo-1552566626-52f8b828add9",
-		position: [-0.2202, -78.5127],
-	},
-	{
-		name: "Flui Restaurant",
-		rating: 4.9,
-		reviews: 61,
-		cuisine: "Modern Australian",
-		city: "Canberra City",
-		tags: ["Great Ambiance", "Delicious", "Dining"],
-		logo: "https://images.unsplash.com/photo-1559339352-11d035aa65de",
-		position: [-0.225, -78.51],
-	},
-	{
-		name: "Window pane Cafe and Restaurant",
-		rating: 4.5,
-		reviews: 55,
-		cuisine: "Continental",
-		city: "Canberra City",
-		tags: ["Great Ambiance", "Delicious", "Dining"],
-		logo: "https://images.unsplash.com/photo-1559339352-11d035aa65de",
-		position: [-0.225, -78.51],
-	},
-];
+// const restaurants = [
+// 	{
+// 		name: "Chop Chop",
+// 		rating: 4.8,
+// 		reviews: 20,
+// 		cuisine: "Japanese",
+// 		city: "Canberra City",
+// 		tags: ["Peaceful", "Great Ambiance", "Delicious"],
+// 		logo: "https://images.unsplash.com/photo-1552566626-52f8b828add9",
+// 		position: [-0.2202, -78.5127],
+// 	},
+// 	{
+// 		name: "Flui Restaurant",
+// 		rating: 4.9,
+// 		reviews: 61,
+// 		cuisine: "Modern Australian",
+// 		city: "Canberra City",
+// 		tags: ["Great Ambiance", "Delicious", "Dining"],
+// 		logo: "https://images.unsplash.com/photo-1559339352-11d035aa65de",
+// 		position: [-0.225, -78.51],
+// 	},
+// 	{
+// 		name: "Window pane Cafe and Restaurant",
+// 		rating: 4.5,
+// 		reviews: 55,
+// 		cuisine: "Continental",
+// 		city: "Canberra City",
+// 		tags: ["Great Ambiance", "Delicious", "Dining"],
+// 		logo: "https://images.unsplash.com/photo-1559339352-11d035aa65de",
+// 		position: [-0.225, -78.51],
+// 	},
+// ];
 
 const FiltersComponent = () => {
 	const [openFilter, setOpenFilter] = useState("cuisine");
@@ -105,6 +107,7 @@ const FiltersComponent = () => {
 
 export default function DetailPageTest() {
 	const [selected, setSelected] = useState(null);
+	const { data: restaurants, isLoading } = useGetRestaurantsQuery();
 
 	return (
 		<div className=" space-y-3 flex flex-col h-screen bg-[#F8F7F4] text-[#3A3F47]">
@@ -166,37 +169,34 @@ export default function DetailPageTest() {
 				<div className="col-span-10 lg:col-span-10 flex overflow-hidden">
 					{/* Left: Restaurant List */}
 					<div className="w-1/3 overflow-y-auto border-r border-[#ddd] p-4 bg-[#FDFCFB]">
-						{restaurants.map((data, idx) => (
+						{restaurants?.data.map((item, idx) => (
 							<div
 								key={idx}
 								className="border rounded-xl overflow-hidden mb-6 shadow-md bg-white border-[#ececec] hover:shadow-lg transition"
 							>
 								<img
-									src={data.logo}
+									src={item.logo}
 									alt=""
 									className="w-full h-40 object-cover"
 								/>
 
 								<div className="p-4">
 									<h2 className="text-lg font-semibold text-[#3A3F47]">
-										{data.name}
+										{item.restaurant_name}
 									</h2>
 
 									<div className="text-sm text-[#4A5058] mt-1">
-										⭐ {data.rating}{" "}
-										<span className="text-gray-500">({data.reviews})</span> •{" "}
-										{data.cuisine} • {data.city}
+										⭐ 
+										{/* <span className="text-gray-500">({item.reviews})</span> •{" "} */}
+										{item.cuisine} • {item.restaurant_location}
 									</div>
 
 									<div className="flex flex-wrap gap-2 mt-3">
-										{data.tags.map((t) => (
 											<button
-												key={t}
 												className="bg-[#FB8500]/10 text-[#FB8500] px-3 py-1 text-sm rounded hover:bg-[#FB8500]/30 transition"
 											>
-												{t}
+												View More
 											</button>
-										))}
 									</div>
 								</div>
 							</div>

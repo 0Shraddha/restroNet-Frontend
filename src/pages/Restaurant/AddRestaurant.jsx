@@ -13,14 +13,15 @@ import {
 import './Restaurant.css';
 import DropImageUpload from '../../components/DropImageUpload';
 import { Button } from '../../components/ui/button';
-import { useAddRestaurantMutation, useGetRestaurantByIdQuery } from '../../state/restaurants/restuarantApiSlice';
+import { useAddRestaurantMutation, useGetRestaurantByIdQuery, useUpdateRestaurantMutation } from '../../state/restaurants/restuarantApiSlice';
 import { toast } from 'react-toastify';
 import geocodeAddress from '../../util/searchAddress';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { Search } from 'lucide-react';
-import { useSearchParams } from 'react-router-dom';
-import { useGetCuisineByIdQuery, useGetCuisinesQuery } from '../../state/restaurants/cuisineApi';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useGetCuisinesQuery } from '../../state/restaurants/cuisineApi';
 import MultiSelect from '../../components/common/MultiSelect';
+import { useGetTagsQuery } from '../../state/restaurants/tagApi';
 
 const AddRestaurant = () => {
   const {
@@ -34,18 +35,35 @@ const AddRestaurant = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get('id');
+  const navigate = useNavigate();     
 
   const [selectedCuisines, setSelectedCuisines] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  
+  const [latLng, setLatLng] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [logoFile, setLogoFile] = useState(null); // State to hold the single logo file
+  const [imageFiles, setImageFiles] = useState([]); // State to hold multiple restaurant images
+
 
   const handleSelectCuisine = (items) => {
     setSelectedCuisines(items);   // items = array of cuisine objects
-    console.log({selectedCuisines});
   };
+
+  const handleSelectedTag = (items) => {
+    setSelectedTags(items)
+  }
 
 
   const [addRestaurant, { isLoading, isSuccess, isError, error }] = useAddRestaurantMutation();
+  const [ updateRestaurant ] = useUpdateRestaurantMutation();
   const { data : singleRestaurant } = useGetRestaurantByIdQuery(id);
-  const { data: singleCuisine } = useGetCuisinesQuery();
+  const { data: allCuisines } = useGetCuisinesQuery();
+  const { data: allTags } = useGetTagsQuery();
+
+//get image url
+  const imageUrl = id && singleRestaurant?.data ? singleRestaurant.data.logo : null;
+  const imagesUrl = id && singleRestaurant?.data ? singleRestaurant.data.images : null;
 
   useEffect(() => {
       if (id && singleRestaurant?.data){
@@ -54,15 +72,32 @@ const AddRestaurant = () => {
           setValue("restaurant_location", singleRestaurant.data.restaurant_location);
           setValue("restaurant_contact", singleRestaurant.data.restaurant_contact);
           setValue("description", singleRestaurant.data.description);
-          setValue("cuisine", singleRestaurant.data.cuisine);
+
+        setLogoFile(imageUrl || null);
+        setImageFiles(imagesUrl || [])
+        
+
+          // Pre-fill cuisines
+          if (singleRestaurant.data.cuisine) {
+            const matchedCuisines = allCuisines?.data.filter(c => 
+              singleRestaurant.data.cuisine.includes(c.name)
+            );
+            setSelectedCuisines(matchedCuisines || []);
+          }
+
+          // Pre-fill tags
+          if (singleRestaurant.data.tag) {
+            const matchedTags = allTags?.data.filter(t => 
+              singleRestaurant.data.tag.includes(t.name)
+            );
+            setSelectedTags(matchedTags || []);
+          }
 
       } else if (!id) {
           reset();
       }
-  }, [singleRestaurant, id, setValue, reset]);
+  }, [singleRestaurant, imageUrl, imagesUrl, allCuisines, allTags, id, setValue, reset]);
   
-
-  const [latLng, setLatLng] = useState(null);
    const address = useWatch({
     control,
     name: "restaurant_location",
@@ -77,8 +112,6 @@ const handleSearch = async () => {
       lat: result.lat,
       lon: result.lon,
     });
-
-    console.log({result});
   } else {
     alert("Address not found");
   }
@@ -99,7 +132,17 @@ function RecenterMap({ lat, lon }) {
   useEffect(() => {
     if(isSuccess){
       toast.success("Restaurant added successfully!");
-      reset();
+      
+      reset(); // reset form fields
+
+      // Reset custom states
+      setLogoFile(null);
+      setImageFiles([]);
+      setSelectedCuisines([]);
+      setSelectedTags([]);
+      setLatLng(null); // remove marker
+
+      setSubmitted(true);
     }
     
 
@@ -110,13 +153,8 @@ function RecenterMap({ lat, lon }) {
           toast.error(msg);
         });
       }
-      // toast.error("Failed to add restaurant details : " , error.data?.errors);
     }
     },[isSuccess, isError, error, reset]);
-
-  const [submitted, setSubmitted] = useState(false);
-  const [logoFile, setLogoFile] = useState(null); // State to hold the single logo file
-  const [imageFiles, setImageFiles] = useState([]); // State to hold multiple restaurant images
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -132,10 +170,9 @@ function RecenterMap({ lat, lon }) {
   }
 
   formData.append('lat', latLng.lat);
-  formData.append('lng', latLng.lon);
-formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
-
-
+  formData.append('long', latLng.lon);
+  formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
+  formData.append("tag", JSON.stringify(selectedTags.map(c => c.name)));
 
   if (imageFiles.length > 0) {
     imageFiles.forEach(file => {
@@ -145,21 +182,71 @@ formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
 
   
 
-  try {
-    await addRestaurant(formData).unwrap();
-    setSubmitted(true);
-    reset();
-    setLogoFile(null);
-    setImageFiles([]);
-  } catch (err) {
-    console.error('Failed to submit restaurant:', err.data?.errors?.restaurant_contact);
-  }
-   
+    try {
+      await addRestaurant(formData).unwrap();
+      setSubmitted(true);
+      reset();
+      setLogoFile(null);
+      setImageFiles([]);
+      setSelectedCuisines([]);
+      setSelectedTags([]);
+      setLatLng(null);    
+      navigate('/restaurant-list');
+    } catch (err) {
+      console.error('Failed to submit restaurant:', err.data?.errors?.restaurant_contact);
+    }
+    
   };
 
-  useEffect(() => {
-  console.log("Updated logoFile:", logoFile);
-}, [logoFile]);
+const onUpdate = async (data) => {
+  if (!id) return;
+
+  const formData = new FormData();
+
+  // Append basic fields
+  Object.entries(data).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  // Add cuisine + tags
+  formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
+  formData.append("tag", JSON.stringify(selectedTags.map(t => t.name)));
+
+  // Add location
+  if (latLng) {
+    formData.append("lat", latLng.lat);
+    formData.append("long", latLng.lon);
+  }
+
+  // Add logo (new or existing)
+  if (logoFile instanceof File) {
+    formData.append("logo", logoFile);
+  }
+
+  // Separate new Files from existing URLs for images
+  const newFiles = imageFiles.filter(img => img instanceof File);
+  const oldImages = imageFiles.filter(img => typeof img === "string");
+
+  // Send new files
+  newFiles.forEach((file) => {
+    formData.append("images", file);
+  });
+
+  // Send old images back as JSON array
+  formData.append("existingImages", JSON.stringify(oldImages));
+
+  try {
+    const response = await updateRestaurant({ id, data: formData }).unwrap();
+
+    if (response?.success) {
+      toast.success("Restaurant updated successfully!");
+      navigate("/restaurant-list");
+    }
+
+  } catch (err) {
+    console.error("Failed to update restaurant:", err);
+  }
+};
 
 
   return (
@@ -167,10 +254,10 @@ formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
     <form
       className="mx-auto p-6 space-y-10"
       method='POST'
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(id? onUpdate : onSubmit)}
       encType="multipart/form-data" // Ensure this is set for file uploads
     >
-      <h2 className="text-2xl font-bold text-gray-800 text-center">Register New Restaurant</h2>
+      <h2 className="text-2xl font-bold text-gray-800 text-center">{ id ? "Update" : "Register New"} Restaurant</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Restaurant Details */}
         <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
@@ -283,7 +370,7 @@ formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
           <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 mb-4 shadow-sm">
             <CardContent className="space-y-4">
               <CardTitle className="text-lg">Restaurant Logo</CardTitle>
-              <DropImageUpload multiple={false} onFileSelect={(file) => setLogoFile(file)} /> 
+              <DropImageUpload multiple={false} onFileSelect={(file) => setLogoFile(file)} defaultImages={imageUrl ? [imageUrl] : []} /> 
               {logoFile && <p className="text-sm text-gray-600">Selected logo: {logoFile.name}</p>}
             </CardContent>
           </Card>
@@ -293,7 +380,8 @@ formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
               <div>
                 <label htmlFor="cuisine" className="block text-sm mb-2 font-medium text-gray-700">Cuisine *</label>
                 <MultiSelect
-                  options={singleCuisine?.data}
+                  options={allCuisines?.data}
+                  value={selectedCuisines}
                   placeholder='Select cuisines'
                   onChange={handleSelectCuisine}
                 />
@@ -309,13 +397,13 @@ formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
 
               <div>
                 <label htmlFor="tags" className="block text-sm mb-2 font-medium text-gray-700">Tags *</label>
-                <Input
-                  className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-100"
-                  id="tags"
-                  type="text"
-                  placeholder="Chefs special, Spicy, Vegan ..."
-                  {...register('tags', { required: 'Atleast one tag is required' })}
+                <MultiSelect
+                  options={allTags?.data}
+                  value={selectedTags}
+                  placeholder='Select tags'
+                  onChange={handleSelectedTag}
                 />
+                
                 {errors.tags && <p className="error">{errors.tags.message}</p>}
               </div>
             </CardContent>
@@ -330,7 +418,7 @@ formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Pass setImageFiles to update the state in parent */}
-          <DropImageUpload multiple={true} onFileSelect={setImageFiles} /> 
+          <DropImageUpload multiple={true} onFileSelect={setImageFiles} defaultImages={imagesUrl ?? []} /> 
           {imageFiles.length > 0 && (
             <p className="text-sm text-gray-600">Selected images: {imageFiles.map(file => file.name).join(', ')}</p>
           )}
@@ -342,7 +430,7 @@ formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
           type="submit"
           className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
         >
-        {isLoading ? "Submitting..." : "Submit" }
+        { id ? "Update" : "Submit" } Restaurant
 
         </Button>
       </div>

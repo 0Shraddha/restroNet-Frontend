@@ -4,51 +4,61 @@ import { Label } from "./ui/label";
 import { cn } from "../lib/utils";
 import { X } from "lucide-react";
 
-const DropImageUpload = ({ multiple = true, onFileSelect, defaultImage }) => {
+const DropImageUpload = ({ multiple = true, onFileSelect, defaultImages = [] }) => {
   const [images, setImages] = useState([]);
 
-   // 🔥 Load default image when editing
+  // Load default images (single or multiple)
   useEffect(() => {
-    if (defaultImage) {
-      setImages([{ preview: defaultImage, file: null }]); // file is null (existing image)
+    if (defaultImages?.length > 0) {
+      const normalized = defaultImages.map((img) => ({
+        preview: img,
+        file: null, // existing image from server
+      }));
+      setImages(normalized);
+
+      // For single-image mode → parent expects ONE file (null)
+      onFileSelect?.(multiple ? [] : null);
     }
-  }, [defaultImage]);
+  }, [defaultImages, multiple, onFileSelect]);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      const mappedFiles = acceptedFiles.map((file) => ({
+      const mapped = acceptedFiles.map((file) => ({
         preview: URL.createObjectURL(file),
         file,
       }));
 
-      const newFiles = multiple ? [...images, ...mappedFiles] : [mappedFiles[0]];
+      const newImages = multiple ? [...images, ...mapped] : [mapped[0]];
 
-      setImages(newFiles);
+      setImages(newImages);
 
-      // Send File(s) to parent
-      if (onFileSelect) {
-        onFileSelect(
-          multiple ? newFiles.map((img) => img.file).filter(Boolean) : newFiles[0]?.file
-        );
-      }
+      // Parent receives:
+      //   multiple = array of files
+      //   single   = one file
+      onFileSelect?.(
+        multiple
+          ? newImages.map((img) => img.file).filter(Boolean)
+          : newImages[0]?.file
+      );
     },
     [images, multiple, onFileSelect]
   );
 
-  const removeImage = (indexToRemove) => {
-    const updated = images.filter((_, index) => index !== indexToRemove);
+  const removeImage = (index) => {
+    const updated = images.filter((_, i) => i !== index);
     setImages(updated);
 
-    // ✅ Update parent when image is removed
-    if (onFileSelect) {
-      onFileSelect(multiple ? updated.map((img) => img.file).filter(Boolean) : updated[0]?.file);
-    }
+    onFileSelect?.(
+      multiple
+        ? updated.map((img) => img.file).filter(Boolean)
+        : updated[0]?.file || null
+    );
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [] },
     multiple,
+    accept: { "image/*": [] },
   });
 
   return (
@@ -57,36 +67,23 @@ const DropImageUpload = ({ multiple = true, onFileSelect, defaultImage }) => {
 
       <div
         {...getRootProps()}
-        className={cn(
-          "flex items-center justify-center border-2 border-dashed rounded-xl p-6 transition-colors cursor-pointer",
-          isDragActive
-            ? "border-blue-500 bg-blue-50"
-            : "border-gray-300 hover:border-gray-400 bg-gray-50"
-        )}
+        className="border-2 border-gray-300 border-dashed rounded-xl p-6 cursor-pointer hover:border-orange-300"
       >
         <input {...getInputProps()} />
-        <p className="text-gray-500 text-center">
-          {isDragActive
-            ? "Drop the image here..."
-            : `Drag & drop ${multiple ? "images" : "an image"} here, or click to select`}
-        </p>
+        <p>{isDragActive ? "Drop images..." : "Drag & drop or click to upload"}</p>
       </div>
 
       {images.length > 0 && (
         <div className="flex flex-wrap gap-4 mt-4">
-          {images.map((file, index) => (
-            <div key={index} className="relative group">
-              <img
-                src={file.preview}
-                alt={`preview-${index}`}
-                className="w-32 h-32 object-cover rounded-md shadow"
-              />
+          {images.map((img, idx) => (
+            <div key={idx} className="relative">
+              <img src={img.preview} className="w-32 h-32 object-cover rounded-md" />
               <button
                 type="button"
-                onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 bg-white rounded-full p-1 text-sm text-red-600 shadow group-hover:opacity-100 opacity-0 transition"
+                onClick={() => removeImage(idx)}
+                className="absolute top-1 right-1 bg-white text-red-600 rounded-full p-1 shadow"
               >
-                <X size={16} />
+                <X size={14} />
               </button>
             </div>
           ))}
@@ -95,5 +92,6 @@ const DropImageUpload = ({ multiple = true, onFileSelect, defaultImage }) => {
     </div>
   );
 };
+
 
 export default DropImageUpload;

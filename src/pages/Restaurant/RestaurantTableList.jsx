@@ -60,10 +60,32 @@ const getColumns = (navigate, handleDelete) => [
     name: "Contact",
     selector: row => row.restaurant_contact || "N/A",
   },
-  {
-    name: "Cuisine",
-    selector: row => row.cuisine || "Various",
+ {
+  name: "Cuisine",
+  cell: row => {
+    // Convert "Indian,Korean" → ["Indian", "Korean"]
+    const cuisines = typeof row.cuisine === "string"
+      ? row.cuisine.replace(/[\[\]"]/g, "").split(",").map(c => c.trim())
+      : [];
+
+    return (
+      <div className="flex flex-wrap gap-1">
+        {cuisines.length > 0 ? (
+          cuisines.map((name, index) => (
+            <span
+              key={index}
+              className="px-2 py-1 rounded-full bg-orange-100 text-orange-700 text-xs"
+            >
+              {name}
+            </span>
+          ))
+        ) : (
+          <span className="text-gray-500 text-xs">Various</span>
+        )}
+      </div>
+    );
   },
+},
   {
     name: "Menu Manager",
     cell: row => (

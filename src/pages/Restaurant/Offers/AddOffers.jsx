@@ -106,7 +106,7 @@ const AddOffer = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Offer Name *
               </label>
-              <Input
+              <Input className="border-gray-200"
                 placeholder="Black Friday, Dashain Sale, Christmas Offer"
                 {...register("name", { required: "Offer name is required" })}
               />
@@ -118,7 +118,7 @@ const AddOffer = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Discount (%) *
               </label>
-              <Input
+              <Input className="border-gray-200"
                 type="number"
                 placeholder="e.g. 20"
                 {...register("discount", { required: true, min: 1, max: 100 })}
@@ -132,12 +132,12 @@ const AddOffer = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <label className="text-sm text-gray-700">Start Date *</label>
-                <Input type="date" {...register("startDate", { required: true })} />
+                <Input className="border-gray-200" type="date" {...register("startDate", { required: true })} />
               </div>
 
               <div>
                 <label className="text-sm text-gray-700">End Date *</label>
-                <Input type="date" {...register("endDate", { required: true })} />
+                <Input className="border-gray-200" type="date" {...register("endDate", { required: true })} />
               </div>
             </div>
 
@@ -148,7 +148,7 @@ const AddOffer = () => {
               </label>
               <textarea
                 rows="3"
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full border border-gray-200 rounded-md px-3 py-2"
                 placeholder="Short offer details..."
                 {...register("description")}
               ></textarea>
@@ -173,7 +173,7 @@ const AddOffer = () => {
                 Status *
               </label>
               <select
-                className="border border-gray-300 w-full rounded-md px-3 py-2"
+                className="border border-gray-200 w-full rounded-md px-3 py-2"
                 {...register("status", { required: true })}
               >
                 <option value="active">Active</option>

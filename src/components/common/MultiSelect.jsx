@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const MultiSelect = ({ options = [], placeholder = "Select options", onChange }) => {
+const MultiSelect = ({ options = [], placeholder = "Select options", onChange, value =[] }) => {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState([]);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef(null);
+
+  const [selected, setSelected] = useState(value);
+
+useEffect(() => {
+  setSelected(value);
+}, [value]);
+
 
   // Filter options
   const filteredOptions = options.filter((item) =>
@@ -39,7 +45,7 @@ const MultiSelect = ({ options = [], placeholder = "Select options", onChange })
       
       {/* INPUT AREA */}
       <div
-        className="border rounded-lg p-2 flex flex-wrap items-center gap-2 cursor-pointer bg-white"
+        className="border border-gray-200 rounded-lg p-2 flex flex-wrap items-center gap-2 cursor-pointer bg-white"
         onClick={() => setOpen(!open)}
       >
         {selected.length === 0 && (
@@ -49,7 +55,7 @@ const MultiSelect = ({ options = [], placeholder = "Select options", onChange })
         {selected.map((item) => (
           <span
             key={item._id}
-            className="bg-blue-100 text-blue-700 px-2 py-1 rounded-lg flex items-center gap-1"
+            className="bg-orange-100 text-orange-700 px-2 py-1 rounded-lg flex items-center gap-1"
           >
             {item.name}
             <button

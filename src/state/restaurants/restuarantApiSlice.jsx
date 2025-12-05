@@ -24,10 +24,10 @@ export const restaurantApiSlice = createApi({
             }),
 
             updateRestaurant: builder.mutation({
-                query: ({FormData, id}) => ({
+                query: ({data, id}) => ({
                     url : `/venue/${id}`,
                     method: 'PUT',
-                    body: FormData,
+                    body: data,
                 })
             }),
 
