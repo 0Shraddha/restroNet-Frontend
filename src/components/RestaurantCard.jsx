@@ -26,21 +26,21 @@ const RestaurantCard = ({restaurant}) => {
         <span className="text-gray-700 text-md leading-5 min-h-[40px] line-clamp-2">{restaurant.description}</span>
         
         <div className="flex items-center text-gray-600 text-sm my-2">
-          <MapPin size={16} className="mr-2 text-orange-600" />
+          <MapPin size={16} className="mr-2 text-red-600" />
           <span>{restaurant.restaurant_location}</span>
         </div>
         
         <div className="flex items-center text-gray-600 text-sm mb-2">
-          <Clock size={16} className="mr-2 text-orange-600" />
+          <Clock size={16} className="mr-2 text-red-600" />
           <span>{restaurant.hours || '00:00'}</span>
         </div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center text-gray-600 text-sm mb-2">
-            <Phone size={16} className="mr-2 text-orange-600" />
+            <Phone size={16} className="mr-2 text-red-600" />
             <span>{restaurant.restaurant_contact}</span>
           </div>
-          <button className="text-orange-600 hover:text-orange-700 font-semibold text-sm">
+          <button className="text-red-600 hover:text-red-700 font-semibold text-sm">
             View Details →
           </button>
         </div>

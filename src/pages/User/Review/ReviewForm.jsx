@@ -61,7 +61,7 @@ const [selectedRating, setSelectedRating] = useState(0);
       {/* Description */}
       <div>
         <Textarea
-          className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+          className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-300"
           placeholder="Tell something about the restaurant..."
           {...register("description", {
             required: "Description is required",
@@ -80,7 +80,7 @@ const [selectedRating, setSelectedRating] = useState(0);
       {/* Submit Button */}
       <Button
         type="submit"
-        className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 transition-all"
+        className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-all"
       >
         Submit Review
       </Button>

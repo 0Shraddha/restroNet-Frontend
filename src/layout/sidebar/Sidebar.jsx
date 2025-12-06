@@ -27,10 +27,7 @@ const items = [
   //   ]
   // },
   { title: "Metadata", url: "/metadata", icon: TagIcon },
-  { title: "Offers", url: "/add-offers", icon: Percent },
-  { title: "Admin/Manager", url: "/manager", icon: Calendar },
-  { title: "Approval", url: "/approve", icon: Search },
-  { title: "Settings", url: "/settings", icon: Settings },
+  // { title: "Offers", url: "/add-offers", icon: Percent },
   { title: "Logout", url: "/auth", icon: LogOut },
 ];
 
@@ -55,7 +52,7 @@ export default function AppLayout() {
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center justify-between">
             {!isCollapsed && (
-              <h4 className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text text-transparent">
+              <h4 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-400 bg-clip-text text-transparent">
                 RESTRONET
               </h4>
             )}
@@ -64,9 +61,9 @@ export default function AppLayout() {
               className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 group"
             >
               {isCollapsed ? (
-                <Menu className="w-7 h-7 text-gray-700 group-hover:text-orange-500 hover:transform hover:scale-105" />
+                <Menu className="w-7 h-7 text-gray-700 group-hover:text-red-500 hover:transform hover:scale-105" />
               ) : (
-                <ChevronLeft className="w-5 h-5 text-gray-700 group-hover:text-orange-500 hover:transform hover:scale-105" />
+                <ChevronLeft className="w-5 h-5 text-gray-700 group-hover:text-red-500 hover:transform hover:scale-105" />
               )}
             </button>
           </div>
@@ -87,7 +84,7 @@ export default function AppLayout() {
             <button
               onClick={() => toggleMenu(item.title)}
               className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group 
-                ${openMenu === item.title ? "bg-orange-50 text-orange-600" : "text-gray-700 hover:bg-orange-50 hover:text-orange-600"}`}
+                ${openMenu === item.title ? "bg-red-50 text-red-600" : "text-gray-700 hover:bg-red-50 hover:text-red-600"}`}
             >
               <Icon className={`w-5 h-5 flex-shrink-0`} />
               {!isCollapsed && (
@@ -118,8 +115,8 @@ export default function AppLayout() {
                       className={({ isActive }) =>
                         `block px-3 py-2 rounded-lg text-sm transition ${
                           isActive
-                            ? "bg-orange-500 text-white shadow"
-                            : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
+                            ? "bg-red-500 text-white shadow"
+                            : "text-gray-600 hover:bg-red-50 hover:text-red-600"
                         }`
                       }
                     >
@@ -142,8 +139,8 @@ export default function AppLayout() {
           className={({ isActive }) =>
             `w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group ${
               isActive
-                ? "bg-gradient-to-r from-orange-500 to-orange-400 text-white shadow-md transform scale-105"
-                : "text-gray-700 hover:bg-orange-50 hover:text-orange-600 hover:transform hover:scale-105"
+                ? "bg-gradient-to-r from-red-500 to-red-400 text-white shadow-md transform scale-105"
+                : "text-gray-700 hover:bg-red-50 hover:text-red-600 hover:transform hover:scale-105"
             }`
           }
         >
@@ -170,7 +167,7 @@ export default function AppLayout() {
           >
             <Menu className="w-6 h-6 text-gray-700" />
           </button>
-          <span className="ml-3 font-bold text-xl bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text text-transparent">
+          <span className="ml-3 font-bold text-xl bg-gradient-to-r from-red-500 to-red-400 bg-clip-text text-transparent">
             RESTRONET
           </span>
         </div>

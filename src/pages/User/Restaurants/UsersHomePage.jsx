@@ -90,7 +90,7 @@ const FiltersComponent = () => {
 									key={option}
 									className="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded"
 								>
-									<input type="checkbox" className="mr-3 accent-orange-600" />
+									<input type="checkbox" className="mr-3 accent-red-600" />
 									<span className="text-gray-600 text-sm">{option}</span>
 								</label>
 							))}

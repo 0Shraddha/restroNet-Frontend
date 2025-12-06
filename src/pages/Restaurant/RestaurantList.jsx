@@ -17,7 +17,7 @@ const RestaurantList = () => {
 
         },
         { heading: "Top Rated", total: 14, icon: <Star className="w-6 h-6 text-yellow-600" />, color:"yellow" },
-        { heading: "Total Cuisisne", total: 35, icon: <Tag className="w-6 h-6 text-orange-600" />, color:"purple" },
+        { heading: "Total Cuisisne", total: 35, icon: <Tag className="w-6 h-6 text-red-600" />, color:"purple" },
         { heading: "Active", 
             total: 40, 
             icon: <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@ const RestaurantList = () => {
             <p className="text-gray-600">Manage your restaurant listings and details</p>
           </div>
           <Link to="/add-restaurant">
-            <button className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-3 rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-200 font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2">
+            <button className="bg-gradient-to-r from-red-500 to-red-400 text-white px-6 py-3 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2">
               <Plus size={20} />
               Add New Restaurant
             </button>
@@ -63,7 +63,7 @@ const RestaurantList = () => {
       </div>
 
       {/* Stats */}
-      <StatsCard cardsData={cardsData} />
+      {/* <StatsCard cardsData={cardsData} /> */}
 
   
 <RestaurantTableList />

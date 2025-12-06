@@ -20,7 +20,7 @@ const RestaurantTopCard = ({
           <p
             className={`${
               menu
-                ? "font-semibold text-orange-600 text-lg mb-1"
+                ? "font-semibold text-red-600 text-lg mb-1"
                 : "font-medium text-gray-500 text-sm mb-1"
             }`}
           >

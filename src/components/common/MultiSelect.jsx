@@ -55,7 +55,7 @@ useEffect(() => {
         {selected.map((item) => (
           <span
             key={item._id}
-            className="bg-orange-100 text-orange-700 px-2 py-1 rounded-lg flex items-center gap-1"
+            className="bg-red-100 text-red-700 px-2 py-1 rounded-lg flex items-center gap-1"
           >
             {item.name}
             <button

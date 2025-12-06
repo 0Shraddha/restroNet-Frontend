@@ -59,7 +59,7 @@ export default function SignUpPage() {
           >
             <div className="flex flex-col gap-4">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-3xl font-bold text-orange-500"> {isLoginMode ? 'Welcome back' : 'Welcome' }</h1>
+                <h1 className="text-3xl font-bold text-red-500"> {isLoginMode ? 'Welcome back' : 'Welcome' }</h1>
                 <p className="text-muted-foreground text-balance text-gray-600 mt-2">
                   {isLoginMode ? 'Login to your RestroNet account' : 'Sign up for a new RestroNet account'}
                 </p>
@@ -136,7 +136,7 @@ export default function SignUpPage() {
                  {isView ? (
                         <Eye
                           size={14}
-                          className=" text-orange-400 cursor-pointer text-gray-500"
+                          className=" text-red-400 cursor-pointer text-gray-500"
                           onClick={() => {
                             setIsView(!isView), console.log(isView)
                           }}
@@ -170,7 +170,7 @@ export default function SignUpPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200 cursor-pointer"
+                className="w-full bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200 cursor-pointer"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Submitting...' : (isLoginMode ? 'Login' : 'Sign Up')}

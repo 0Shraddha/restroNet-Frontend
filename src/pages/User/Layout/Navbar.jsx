@@ -7,7 +7,7 @@ export default function Navbar(){
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-red-400 to-yellow-400 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-lg">🍽️</span>
               </div>
               <span className="text-xl font-bold text-gray-900">RestroNet</span>
@@ -15,13 +15,13 @@ export default function Navbar(){
 
             {/* Navigation */}
             <nav className="hidden md:flex space-x-8">
-              <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">Home</a>
-              <a href="#" className="text-gray-700 hover:text-orange-500 font-medium">Restaurants</a>
+              <a href="#" className="text-gray-700 hover:text-red-500 font-medium">Home</a>
+              <a href="#" className="text-gray-700 hover:text-red-500 font-medium">Restaurants</a>
             </nav>
 
             {/* Right section */}
             <div className="flex items-center space-x-4">
-              <User className="w-6 h-6 p-1 text-gray-600 cursor-pointer bg-orange-100 rounded-xl hover:text-orange-500" />
+              <User className="w-6 h-6 p-1 text-gray-600 cursor-pointer bg-red-100 rounded-xl hover:text-red-500" />
             </div>
           </div>
         </div>

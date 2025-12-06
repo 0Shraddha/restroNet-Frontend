@@ -184,7 +184,7 @@ const AddOffer = () => {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600"
+              className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600"
             >
               {id ? "Update Offer" : "Submit Offer"}
             </Button>

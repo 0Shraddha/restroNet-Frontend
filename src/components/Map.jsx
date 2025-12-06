@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import '../../src/map.css'
 
 import markerIcon from '../assets/marker1.png';
+import { Star } from 'lucide-react';
 
 const customIcon = new Icon({
   iconUrl: markerIcon,
@@ -44,9 +45,11 @@ export default function GoogleMapComponent({ restaurants = [] }) {
   });
 
   return (
-    <div ref={containerRef} className="w-full rounded-lg overflow-hidden shadow-lg" style={{height: "80%"}}>
+    <div ref={containerRef} className="w-full h-full rounded-lg overflow-hidden shadow-lg">
       <MapContainer
-       center={[-0.22, -78.51]} zoom={13} style={{ height: "100%", width: "100%" }}
+        center={[27.7172, 85.3240]}
+        zoom={12}
+        style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
@@ -80,10 +83,14 @@ export default function GoogleMapComponent({ restaurants = [] }) {
                   />
                 )}
                 <h3 style={{ margin: 0, fontSize: 16 }}>{r.name}</h3>
-                {r.address && <p>{r.address}</p>}
                 <p style={{ fontSize: 13 }}>
                   <strong>Hours:</strong> {r.hours}
                 </p>
+                <div className="flex" style={{ fontSize: 13 }}>
+                  <Star className="w-3 h-3 me-2 text-yellow-500 fill-yellow-500" /> <span>{r.ratings}</span>
+                </div>
+                {r.address && <p>{r.address}</p>}
+
               </div>
             </Popup>
           </Marker>

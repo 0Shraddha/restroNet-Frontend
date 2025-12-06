@@ -115,7 +115,7 @@ const ListItem = ({ type }) => {
 				<div className="flex-1">
 					{type === "categories" && (
 						<>
-						<h2 className="text-end mb-3 font-semibold">Total Categories : <span className="text-lg font-semibold text-orange-800 bg-orange-100 py-1 px-3">{category?.count > 0 ? category?.count : 0}</span></h2>
+						<h2 className="text-end mb-3 font-semibold">Total Categories : <span className="text-lg font-semibold text-red-800 bg-red-100 py-1 px-3">{category?.count > 0 ? category?.count : 0}</span></h2>
 							{isLoading && <p>Loading...</p>}
 
 							{!isLoading &&
@@ -152,7 +152,7 @@ const ListItem = ({ type }) => {
 					)}
 					{type === "tags" && (
 						<>
-						<h2 className="text-end mb-3 font-semibold">Total Tags : <span className="text-lg font-semibold text-orange-800 bg-orange-100 py-1 px-3">{tags?.count > 0 ? tags?.count : 0}</span></h2>
+						<h2 className="text-end mb-3 font-semibold">Total Tags : <span className="text-lg font-semibold text-red-800 bg-red-100 py-1 px-3">{tags?.count > 0 ? tags?.count : 0}</span></h2>
 							{isLoading && <p>Loading...</p>}
 
 							{!isLoading &&
@@ -182,7 +182,7 @@ const ListItem = ({ type }) => {
 					)}
 					{type === "cuisines" && (
 						<>
-						<h2 className="text-end mb-3 font-semibold">Total Cuisines : <span className="text-lg font-semibold text-orange-800 bg-orange-100 py-1 px-3">{cuisines?.count > 0 ? cuisines?.count : 0}</span></h2>
+						<h2 className="text-end mb-3 font-semibold">Total Cuisines : <span className="text-lg font-semibold text-red-800 bg-red-100 py-1 px-3">{cuisines?.count > 0 ? cuisines?.count : 0}</span></h2>
 							{isLoading && <p>Loading...</p>}
 
 							{!isLoading &&

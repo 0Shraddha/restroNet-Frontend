@@ -67,7 +67,7 @@ const DropImageUpload = ({ multiple = true, onFileSelect, defaultImages = [] }) 
 
       <div
         {...getRootProps()}
-        className="border-2 border-gray-300 border-dashed rounded-xl p-6 cursor-pointer hover:border-orange-300"
+        className="border-2 border-gray-300 border-dashed rounded-xl p-6 cursor-pointer hover:border-red-300"
       >
         <input {...getInputProps()} />
         <p>{isDragActive ? "Drop images..." : "Drag & drop or click to upload"}</p>

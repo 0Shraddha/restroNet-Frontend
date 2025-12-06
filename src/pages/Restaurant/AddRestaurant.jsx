@@ -292,7 +292,7 @@ const onUpdate = async (data) => {
                 <button
                 type='button'
                 onClick={handleSearch}
-                className="bg-orange-500 text-white px-4 rounded"
+                className="bg-red-500 text-white px-4 rounded"
               >
                 <Search />
               </button>
@@ -428,7 +428,7 @@ const onUpdate = async (data) => {
       <div className="flex justify-end">
         <Button
           type="submit"
-          className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
+          className="w-full bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200"
         >
         { id ? "Update" : "Submit" } Restaurant
 

@@ -152,7 +152,7 @@ console.log({data});
                   id="item_name"
                   type="text"
                   placeholder="e.g., Margherita Pizza"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
                   {...register('item_name', { required: 'Item name is required' })}
                 />
                 {errors.item_name && <p className="text-red-500 text-sm mt-1">{errors.item_name.message}</p>}
@@ -166,7 +166,7 @@ console.log({data});
                   id="description"
                   rows="3"
                   placeholder="Brief description of the item..."
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
                   {...register('description')}
                 />
               </div>
@@ -182,7 +182,7 @@ console.log({data});
                     step="0.01"
                     min="0"
                     placeholder="0.00"
-                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
                     {...register('price', {
                       required: 'Price is required',
                       min: { value: 0.01, message: 'Price must be greater than 0' },
@@ -201,7 +201,7 @@ console.log({data});
                     type="number"
                     min="1"
                     placeholder="20"
-                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
                     {...register('preparation_time', { valueAsNumber: true })}
                   />
                 </div>
@@ -222,7 +222,7 @@ console.log({data});
                   id="ingredients"
                   type="text"
                   placeholder="Flour, Tomato, Mozzarella, Basil (comma separated)"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
                   {...register('ingredients', { required: 'Ingredients are required' })}
                 />
                 {errors.ingredients && <p className="text-red-500 text-sm mt-1">{errors.ingredients.message}</p>}
@@ -235,7 +235,7 @@ console.log({data});
                 </label>
                 <select
                   id="spice_level"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
                   {...register('spice_level', { valueAsNumber: true })}
                 >
                   <option value={0}>0 - No Spice</option>
@@ -251,7 +251,7 @@ console.log({data});
                 <input
                   id="availability"
                   type="checkbox"
-                  className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
                   {...register('availability')}
                 />
                 <label htmlFor="availability" className="ml-2 block text-sm text-gray-700">
@@ -271,7 +271,7 @@ console.log({data});
                   Category *
                 </label>
                 <select name="category" id="category"
-                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-transparent"
+                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
                   {...register('category', { required: 'Ingredients are required' })}
                 >
                   {categoriesData?.data.map((item) => (
@@ -312,7 +312,7 @@ console.log({data});
 
 
         <Button
-          className="bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
+          className="bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200"
         >
           {id ? `Update` : `Add`} item
         </Button>
@@ -339,7 +339,7 @@ console.log({data});
 
       <Button
         type="submit"
-        className="bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
+        className="bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200"
       >
         Save all items
       </Button>

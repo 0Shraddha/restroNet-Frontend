@@ -58,7 +58,7 @@ const OffersCard = () => {
                 </div>
 
                 {/* Discount */}
-                <p className="text-orange-600 font-bold text-xl mb-2">
+                <p className="text-red-600 font-bold text-xl mb-2">
                 {offer.discount}% OFF
                 </p>
 

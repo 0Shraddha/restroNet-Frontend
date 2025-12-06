@@ -159,7 +159,7 @@ const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 
 							<Button
 								type="submit"
-								className="w-full bg-orange-400 text-white py-2 px-4 rounded-md hover:bg-orange-500 transition-colors duration-200"
+								className="w-full bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200"
 							>
 								{id ? "Update" : "Submit"}
 							</Button>

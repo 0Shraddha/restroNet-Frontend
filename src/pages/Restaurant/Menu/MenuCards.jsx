@@ -36,7 +36,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
               className={`group bg-white rounded-2xl overflow-hidden border transition-all duration-300 ${
                 unavailable
                   ? "border-gray-200 opacity-70"
-                  : "border-gray-100 hover:border-orange-200 hover:shadow-xl hover:-translate-y-1"
+                  : "border-gray-100 hover:border-red-200 hover:shadow-xl hover:-translate-y-1"
               }`}
             >
               {/* Image Container */}
@@ -65,7 +65,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                 {/* Price Badge */}
                 <div className="absolute bottom-3 right-3">
                   <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                    <span className="text-orange-600 font-bold text-lg">
+                    <span className="text-red-600 font-bold text-lg">
                       {currency} {item.price}
                     </span>
                   </div>

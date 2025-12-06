@@ -19,9 +19,9 @@ const RestaurantDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600 font-medium">Loading restaurant details...</p>
         </div>
       </div>
@@ -30,7 +30,7 @@ const RestaurantDetail = () => {
 
   if (!restaurantData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-xl text-gray-800 font-semibold">No restaurant found.</p>
           <p className="text-gray-600 mt-2">Please check the restaurant ID and try again.</p>
@@ -138,7 +138,7 @@ const RestaurantDetail = () => {
                     onClick={() => setActiveTab("overview")}
                     className={`pb-2 font-bold ${
                       activeTab === "overview"
-                        ? "text-orange-600 border-b-2 border-orange-600"
+                        ? "text-red-600 border-b-2 border-red-600"
                         : "text-gray-500"
                     }`}
                   >
@@ -149,7 +149,7 @@ const RestaurantDetail = () => {
                     onClick={() => setActiveTab("menu")}
                     className={`pb-2 font-bold ${
                       activeTab === "menu"
-                        ? "text-orange-600 border-b-2 border-orange-600"
+                        ? "text-red-600 border-b-2 border-red-600"
                         : "text-gray-500"
                     }`}
                   >
@@ -160,7 +160,7 @@ const RestaurantDetail = () => {
                     onClick={() => setActiveTab("offers")}
                     className={`pb-2 font-bold ${
                       activeTab === "offers"
-                        ? "text-orange-600 border-b-2 border-orange-600"
+                        ? "text-red-600 border-b-2 border-red-600"
                         : "text-gray-500"
                     }`}
                   >
@@ -171,7 +171,7 @@ const RestaurantDetail = () => {
                     onClick={() => setActiveTab("reviews")}
                     className={`pb-2 font-bold ${
                       activeTab === "reviews"
-                        ? "text-orange-600 border-b-2 border-orange-600"
+                        ? "text-red-600 border-b-2 border-red-600"
                         : "text-gray-500"
                     }`}
                   >
@@ -198,15 +198,12 @@ const RestaurantDetail = () => {
                   </>
                 )}
 
-                {activeTab === "offers" && (
+                {/* {activeTab === "offers" && (
                 <OffersCard />
-                )}
+                )} */}
 
                 {activeTab === "reviews" && (
                   <p className="text-gray-600">
-                    Customer reviews will appear here...
-
-                    
                     <AddReview />
                     
                   </p>
@@ -262,7 +259,7 @@ const RestaurantDetail = () => {
                     </p>
                   </div>
 
-                  <button className="mt-3 text-xs font-semibold text-orange-600 hover:text-orange-700 underline">
+                  <button className="mt-3 text-xs font-semibold text-red-600 hover:text-red-700 underline">
                     View larger map →
                   </button>
                 </div>

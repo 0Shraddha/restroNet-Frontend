@@ -74,7 +74,7 @@ const getColumns = (navigate, handleDelete) => [
           cuisines.map((name, index) => (
             <span
               key={index}
-              className="px-2 py-1 rounded-full bg-orange-100 text-orange-700 text-xs"
+              className="px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs"
             >
               {name}
             </span>
@@ -170,7 +170,7 @@ const RestaurantTableList = () => {
           <input
             type="text"
             placeholder="Search restaurants..."
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-1 focus:ring-orange-200 focus:outline-none bg-white"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-1 focus:ring-red-200 focus:outline-none bg-white"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />

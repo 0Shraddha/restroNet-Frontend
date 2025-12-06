@@ -4,7 +4,7 @@ export default function RestaurantList() {
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-red-400 to-yellow-400 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-lg">🍽️</span>
                 </div>
                 <span className="text-xl font-bold">RestroNet</span>
