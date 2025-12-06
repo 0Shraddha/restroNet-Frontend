@@ -157,17 +157,6 @@ const RestaurantDetail = () => {
                   </button>
 
                   <button
-                    onClick={() => setActiveTab("offers")}
-                    className={`pb-2 font-bold ${
-                      activeTab === "offers"
-                        ? "text-red-600 border-b-2 border-red-600"
-                        : "text-gray-500"
-                    }`}
-                  >
-                    Offers
-                  </button>
-
-                  <button
                     onClick={() => setActiveTab("reviews")}
                     className={`pb-2 font-bold ${
                       activeTab === "reviews"

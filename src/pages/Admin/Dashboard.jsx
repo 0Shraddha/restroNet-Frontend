@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import StatCard from '../../components/common/StatCard';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GoogleMapComponent from '../../components/Map';
+import { useGetRestaurantsQuery } from '../../state/restaurants/restuarantApiSlice';
 
 
 
@@ -75,6 +76,9 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const navigate = useNavigate();
 
+ const { data: restaurants, isLoading } = useGetRestaurantsQuery();
+  console.log({restaurants});
+
   const activeRestaurants = dummyRestaurants.filter(r => r.status === 'active');
   const pendingRestaurants = dummyRestaurants.filter(r => r.status === 'pending');
   const topRated = [...activeRestaurants].sort((a, b) => b.rating - a.rating).slice(0, 5);
@@ -96,14 +100,14 @@ const Dashboard = () => {
           <StatCard
             icon={Users}
             title="Total Restaurants"
-            value={dummyRestaurants.length}
-            subtitle={`${activeRestaurants.length} active`}
+            value={"0"}
+            subtitle={`No. of active restaurants`}
             color="border-red-500"
             onClick={() => navigate('restaurant-list')}
           />
           <StatCard
             icon={Clock}
-            title="Pending Requests"
+            title="High Rated Restaurants"
             value={pendingRestaurants.length}
             subtitle="Awaiting approval"
             color="border-orange-500"
@@ -239,79 +243,9 @@ const Dashboard = () => {
           </h2>
           <div className="h-96 rounded-lg overflow-hidden">
             <GoogleMapComponent
-                                        restaurants={[
-                                            {
-                                                name: "Mezze by Roadhouse",
-                                                lat: 27.7123,
-                                                lng: 85.3123,
-                                                address: "Durbar Marg, Kathmandu",
-                                                hours: "11 AM - 10 PM",
-                                                ratings: 4.5,
-                                                image:
-                                                    "https://images.pexels.com/photos/3535387/pexels-photo-3535387.jpeg",
-                                            },
-                                            {
-                                                name: "Bota Donuts",
-                                                lat: 27.714,
-                                                lng: 85.3188,
-                                                address: "New Road, Kathmandu",
-                                                hours: "9 AM - 8 PM",
-                                                ratings: 4,
-                                                image:
-                                                    "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1200",
-                                            },
-                                            {
-                                                name: "Vesper Cafe",
-                                                lat: 27.7192,
-                                                lng: 85.3274,
-                                                address: "Jhamsikhel, Lalitpur",
-                                                hours: "8 AM - 9 PM",
-                                                ratings: 3.5,
-                                                image:
-                                                    "https://images.pexels.com/photos/3535387/pexels-photo-3535387.jpeg",
-                                            },
-                                            {
-                                                name: "Nepali Cafe",
-                                                lat: 27.7192,
-                                                lng: 85.3274,
-                                                address: "Dillibazar, Lalitpur",
-                                                hours: "8 AM - 9 PM",
-                                                ratings: 3.5,
-                                                image:
-                                                    "https://images.pexels.com/photos/3535387/pexels-photo-3535387.jpeg",
-                                            },
-                                        ]}
-                                    />
-            {/* <MapContainer
-              center={[27.7172, 85.3240]}
-              zoom={12}
-              style={{ height: '100%', width: '100%' }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              {activeRestaurants.map((restaurant) => (
-                <Marker
-                  key={restaurant.id}
-                  position={[restaurant.lat, restaurant.lng]}
-                  eventHandlers={{
-                    click: () => setSelectedRestaurant(restaurant),
-                  }}
-                >
-                  <Popup>
-                    <div className="p-2">
-                      <h3 className="font-bold text-gray-800">{restaurant.name}</h3>
-                      <p className="text-sm text-gray-600">{restaurant.cuisine}</p>
-                      <div className="flex items-center mt-1">
-                        <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                        <span className="text-sm ml-1">{restaurant.rating}</span>
-                      </div>
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer> */}
+                restaurants={restaurants?.data || []} 
+            />
+          
           </div>
         </div>
 

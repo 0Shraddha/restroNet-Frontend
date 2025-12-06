@@ -233,7 +233,7 @@ export default function DetailPageTest() {
               {/* Tags and Order Button */}
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
-                  {item.cuisine.split(', ').map((tag, i) => (
+                  {item.cuisine.replace(/[\[\]"]/g, "").split(', ').map((tag, i) => (
                     <span
                       key={i}
                       className="px-4 py-1.5 border border-[#ddd] rounded-full text-sm text-[#2b2b2b] hover:border-[#999] transition-colors"
@@ -257,58 +257,10 @@ export default function DetailPageTest() {
 
 					{/* Right: Map */}
 					<div className="w-2/3 min-h-screen">
-						{/* <MapContainer center={[-0.22, -78.51]} zoom={13} style={{ height: "100%", width: "100%" }}>
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-            {restaurants.map((res, i) => (
-              <Marker key={i} position={res.position} eventHandlers={{
-                click: () => setSelected(res)
-              }}>
-                <Popup className="text-[#3A3F47] font-medium">{res.name}</Popup>
-              </Marker>
-            ))}
-
-            {selected && (
-              <Polyline
-                positions={[
-                  [-0.225, -78.515], // Mock "user" location
-                  selected.position,
-                ]}
-                pathOptions={{ color: "#FB8500", weight: 4 }}
-              />
-            )}
-          </MapContainer> */}
+		
 
 						<GoogleMapComponent
-							restaurants={[
-								{
-									name: "Mezze by Roadhouse",
-									lat: 27.7123,
-									lng: 85.3123,
-									address: "Durbar Marg, Kathmandu",
-									hours: "11 AM - 10 PM",
-									image:
-										"https://images.pexels.com/photos/3535387/pexels-photo-3535387.jpeg",
-								},
-								{
-									name: "Bota Donuts",
-									lat: 27.714,
-									lng: 85.3188,
-									address: "New Road, Kathmandu",
-									hours: "9 AM - 8 PM",
-									image:
-										"https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1200",
-								},
-								{
-									name: "Vesper Cafe",
-									lat: 27.7192,
-									lng: 85.3274,
-									address: "Jhamsikhel, Lalitpur",
-									hours: "8 AM - 9 PM",
-									image:
-										"https://images.pexels.com/photos/3535387/pexels-photo-3535387.jpeg",
-								},
-							]}
+							restaurants={restaurants?.data || []}
 						/>
 					</div>
 				</div>

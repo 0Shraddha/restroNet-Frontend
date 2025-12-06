@@ -13,11 +13,11 @@ const customIcon = new Icon({
   iconSize: [38, 38],
 });
 
-function Recenter({ lat, lng }) {
+function Recenter({ lat, long }) {
   const map = useMap();
   useEffect(() => {
-    map.setView([lat, lng], 16);
-  }, [lat, lng, map]);
+    map.setView([lat, long], 16);
+  }, [lat, long, map]);
   return null;
 }
 
@@ -26,11 +26,11 @@ export default function GoogleMapComponent({ restaurants = [] }) {
   const defaultRestaurants = [
     {
       name: 'Sample Restaurant',
-      lat: 27.7172,
-      lng: 85.3240,
-      address: 'Sample Road 1, Kathmandu',
+      lat: 27.6932347,
+      long: 85.3247236,
+      restaurant_location: 'Sample Road 1, Kathmandu',
       hours: '10:00 AM - 9:00 PM',
-      image: markerIcon,
+      logo: markerIcon,
     },
   ];
 
@@ -47,8 +47,8 @@ export default function GoogleMapComponent({ restaurants = [] }) {
   return (
     <div ref={containerRef} className="w-full h-full rounded-lg overflow-hidden shadow-lg">
       <MapContainer
-        center={[27.7172, 85.3240]}
-        zoom={12}
+        center={[27.6932347, 85.3247236]}
+         zoom={12}
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
@@ -72,24 +72,24 @@ export default function GoogleMapComponent({ restaurants = [] }) {
   }}>
         {/* LOOP THROUGH ALL RESTAURANTS */}
         {data.map((r, index) => (
-          <Marker key={index} position={[r.lat, r.lng]} icon={customIcon}>
+          <Marker key={index} position={[r.lat, r.long]} icon={customIcon}>
             <Popup>
               <div style={{ maxWidth: 200 }}>
-                {r.image && (
+                {r.logo && (
                   <img
-                    src={r.image}
-                    alt={r.name}
+                    src={r.logo}
+                    alt={r.restaurant_name}
                     style={{ width: '100%', borderRadius: 6, marginBottom: 8 }}
                   />
                 )}
-                <h3 style={{ margin: 0, fontSize: 16 }}>{r.name}</h3>
+                <h3 style={{ margin: 0, fontSize: 16 }}>{r.restaurant_name}</h3>
                 <p style={{ fontSize: 13 }}>
-                  <strong>Hours:</strong> {r.hours}
+                  <strong>Hours:</strong> 10:00 AM - 8:00 PM
                 </p>
                 <div className="flex" style={{ fontSize: 13 }}>
-                  <Star className="w-3 h-3 me-2 text-yellow-500 fill-yellow-500" /> <span>{r.ratings}</span>
+                  <Star className="w-3 h-3 me-2 text-yellow-500 fill-yellow-500" /> <span>4.5</span>
                 </div>
-                {r.address && <p>{r.address}</p>}
+                {r.restaurant_location && <p>{r.restaurant_location}</p>}
 
               </div>
             </Popup>
@@ -98,7 +98,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
         </MarkerClusterGroup>
 
         {/* Recenter map to first restaurant */}
-        <Recenter lat={data[0].lat} lng={data[0].lng} />
+        <Recenter lat={data[0].lat} long={data[0].long} />
       </MapContainer>
     </div>
   );
