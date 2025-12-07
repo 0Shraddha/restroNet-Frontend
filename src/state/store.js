@@ -4,6 +4,7 @@ import { menuApiSlice } from "./restaurants/menuApiSlice";
 import { categoryApiSlice } from "./restaurants/categoryApiSlice";
 import { cuisineApi } from "./restaurants/cuisineApi";
 import { tagApi } from "./restaurants/tagApi";
+import { reviewApi } from "./restaurants/reviewApi";
 
 export const store = configureStore({
     reducer: {  //reducer property specifies a reducer for updating the state
@@ -12,6 +13,8 @@ export const store = configureStore({
         [categoryApiSlice.reducerPath] : categoryApiSlice.reducer,
         [cuisineApi.reducerPath] : cuisineApi.reducer,
         [tagApi.reducerPath] : tagApi.reducer,
+        [reviewApi.reducerPath] : reviewApi.reducer,
+
     },
     middleware: (getDefaultMiddleware) => { //middleware for handling asynchronous state updates
         return getDefaultMiddleware()
@@ -19,6 +22,7 @@ export const store = configureStore({
         .concat(menuApiSlice.middleware)
         .concat(categoryApiSlice.middleware)
         .concat(cuisineApi.middleware)
-        .concat(tagApi.middleware);
+        .concat(tagApi.middleware)
+        .concat(reviewApi.middleware);
     }
 })

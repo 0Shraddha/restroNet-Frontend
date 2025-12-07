@@ -172,7 +172,7 @@ function RecenterMap({ lat, lon }) {
   formData.append('lat', latLng.lat);
   formData.append('long', latLng.lon);
   formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
-  formData.append("tag", JSON.stringify(selectedTags.map(c => c.name)));
+  formData.append("tags", JSON.stringify(selectedTags.map(c => c.name)));
 
   if (imageFiles.length > 0) {
     imageFiles.forEach(file => {

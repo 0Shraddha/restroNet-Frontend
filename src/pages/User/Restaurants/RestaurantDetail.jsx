@@ -6,6 +6,26 @@ import { MapPin, Phone, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import AddReview from "../Review/ReviewForm";
 import PreviewMenuItems from "../../Restaurant/Menu/PreviewMenuItems";
 import OffersCard from "../../Restaurant/Offers/OffersCard";
+import GoogleMapComponent from "../../../components/Map";
+import ReviewCard from "../Review/Review";
+
+const reviews = [
+  {
+    name: "Aarati Sharma",
+    description: "Loved the coffee and cozy atmosphere!",
+    rating: 5,
+  },
+  {
+    name: "Sushan Thapa",
+    description: "Food was okay but service was slow.",
+    rating: 3,
+  },
+  {
+    name: "Riya Basnet",
+    description: "Perfect place to hang out with friends!",
+    rating: 4,
+  }
+];
 
 const RestaurantDetail = () => {
   const [searchParams] = useSearchParams();
@@ -121,9 +141,8 @@ const RestaurantDetail = () => {
                 )}
               </div>
             </div>
-
+     
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 my-5">
-
           {/* LEFT COLUMN */}
           <div className="lg:col-span-2 space-y-6">
 
@@ -131,12 +150,12 @@ const RestaurantDetail = () => {
 
             {/* ⭐⭐⭐ TAB SECTION START ⭐⭐⭐ */}
             <div className="bg-white rounded-3xl shadow-lg border-0">
-              <div className="border-b px-6">
+              <div className="px-6">
                 <div className="flex gap-6 overflow-x-auto py-4">
 
                   <button
                     onClick={() => setActiveTab("overview")}
-                    className={`pb-2 font-bold ${
+                    className={`pb-2 font-bold text-lg ${
                       activeTab === "overview"
                         ? "text-red-600 border-b-2 border-red-600"
                         : "text-gray-500"
@@ -147,7 +166,7 @@ const RestaurantDetail = () => {
 
                   <button
                     onClick={() => setActiveTab("menu")}
-                    className={`pb-2 font-bold ${
+                    className={`pb-2 font-bold text-lg ${
                       activeTab === "menu"
                         ? "text-red-600 border-b-2 border-red-600"
                         : "text-gray-500"
@@ -158,7 +177,7 @@ const RestaurantDetail = () => {
 
                   <button
                     onClick={() => setActiveTab("reviews")}
-                    className={`pb-2 font-bold ${
+                    className={`pb-2 font-bold text-lg ${
                       activeTab === "reviews"
                         ? "text-red-600 border-b-2 border-red-600"
                         : "text-gray-500"
@@ -173,13 +192,66 @@ const RestaurantDetail = () => {
               {/* TAB CONTENT */}
               <CardContent className="p-6">
 
-                {activeTab === "overview" && (
-                  <>
-                    <h2 className="text-3xl font-bold mb-2">{data.restaurant_name}</h2>
-                    <p className="text-gray-600 leading-relaxed mb-4">{data.description}</p>
-                    <span className="badge badge-soft-info">CUISINE {data.cuisine}</span>
-                  </>
-                )}
+               {activeTab === "overview" && (
+  <div className="space-y-6">
+
+    {/* Restaurant Name */}
+    <div>
+      <h2 className="text-3xl font-bold text-red-600">
+        {data.restaurant_name}
+      </h2>
+      <p className="text-gray-600 mt-2 leading-relaxed">
+        {data.description}
+      </p>
+    </div>
+
+    {/* Key Highlights */}
+    <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+      <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+        <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+        Highlights
+      </h3>
+
+      {/* Cuisine */}
+      <div className="mb-4">
+        <p className="text-sm font-medium text-gray-700 mb-2">Cuisines</p>
+        <div className="flex flex-wrap gap-2">
+          {JSON.parse(data.cuisine).map((c, i) => (
+            <span
+              key={i}
+              className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm border border-red-200"
+            >
+              {c}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Rating & Popularity Example (optional) */}
+      <div className="flex items-center gap-6 mt-3">
+        <div className="flex items-center gap-2">
+          <span className="text-yellow-500 text-xl">★</span>
+          <span className="font-semibold">{data.rating || "4.5"}</span>
+        </div>
+
+        <div className="text-gray-500 text-sm">
+          {data.total_reviews || "120+"} Reviews
+        </div>
+      </div>
+    </div>
+
+    {/* About Card */}
+    <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+        About This Restaurant
+      </h3>
+      <p className="text-gray-700 leading-relaxed text-sm">
+        {data.long_description ||
+          "Experience a delightful fusion of flavors with exceptional ambience and top-notch service."}
+      </p>
+    </div>
+  </div>
+)}
 
                 {activeTab === "menu" && (
                  <>
@@ -192,10 +264,13 @@ const RestaurantDetail = () => {
                 )} */}
 
                 {activeTab === "reviews" && (
-                  <p className="text-gray-600">
+                  <div className="text-gray-600">
+                    {reviews.map((item, i) => (
+                      <ReviewCard key={i} review={item} />
+                    ))}
                     <AddReview />
                     
-                  </p>
+                  </div>
                 )}
               </CardContent>
             </div>
@@ -242,15 +317,12 @@ const RestaurantDetail = () => {
                   </p>
 
                   <div className="h-48 w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 flex flex-col justify-center items-center">
-                    <MapPin className="w-10 h-10 text-slate-400 mb-2" />
+                    <GoogleMapComponent restaurants={data} />
+                    {/* <MapPin className="w-10 h-10 text-slate-400 mb-2" />  
                     <p className="text-xs text-slate-500">
-                      Lat: {data.lat}, Lng: {data.lng}
-                    </p>
+                      Lat: {data.lat}, Lng: {data.long}
+                    </p> */}
                   </div>
-
-                  <button className="mt-3 text-xs font-semibold text-red-600 hover:text-red-700 underline">
-                    View larger map →
-                  </button>
                 </div>
               </div>
             </div>
