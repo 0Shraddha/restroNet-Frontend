@@ -20,6 +20,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useGetCategoriesQuery, useUpdateCategoryMutation } from '../../../state/restaurants/categoryApiSlice';
 import MultiSelect from '../../../components/common/MultiSelect';
 import { useGetTagsQuery } from '../../../state/restaurants/tagApi';
+import { Plus } from 'lucide-react';
 
 const AddMenu = () => {
   const {
@@ -135,7 +136,10 @@ console.log({data});
       method="POST"
       onSubmit={handleSubmit(id ? onUpdate : onSubmit)}
     >
-      <h2 className="text-2xl font-bold text-gray-800 text-center">Add New Menu</h2>
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-4">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Menu Management</h1>
+            <p className="text-gray-600">Manage your menu listings and details</p>
+      </div>
 
       <Card className="border-gray-100 bg-white text-card-foreground p-6 mb-4 ">
 

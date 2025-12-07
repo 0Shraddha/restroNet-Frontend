@@ -47,7 +47,7 @@ const RestaurantList = () => {
   return (
     <div className="mx-auto p-6 space-y-8">
       {/* Header Section */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Restaurant Management</h1>

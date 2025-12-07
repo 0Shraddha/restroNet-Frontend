@@ -9,9 +9,7 @@ const StatsCard = ({ cardsData, layout = "grid-cols-1 md:grid-cols-4 gap-6" }) =
           key={index}
           heading={card.label}
           total={card.total}
-          icon={card.icon}
           color={card.color}
-          iconPosition={card.iconPosition}
           padding={card.padding}
           menu={card.menu}
         />

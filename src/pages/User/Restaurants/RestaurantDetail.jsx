@@ -197,7 +197,7 @@ const RestaurantDetail = () => {
 
     {/* Restaurant Name */}
     <div>
-      <h2 className="text-3xl font-bold text-red-600">
+      <h2 className="text-3xl font-bold text-gray-800">
         {data.restaurant_name}
       </h2>
       <p className="text-gray-600 mt-2 leading-relaxed">

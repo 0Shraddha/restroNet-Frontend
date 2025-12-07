@@ -9,7 +9,7 @@ function App() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
 
-  const shouldHideSidebar = ['/auth', '/users'].some(path =>
+  const shouldHideSidebar = ['/auth', '/users', '/get-preferences'].some(path =>
     location.pathname.includes(path)
   );
 

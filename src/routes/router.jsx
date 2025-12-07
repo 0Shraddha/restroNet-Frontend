@@ -7,6 +7,7 @@ import SignUpPage from "../pages/Registration";
 import { action as authAction } from "../Authentication/Authentication";
 import Dashboard from "../pages/Admin/Dashboard";
 import usersRestaurantRoutes from "../pages/User/Restaurants/usersRestaurantRoutes";
+import GetPreferences from "../pages/User/Preference/GetPreferenceForm";
 const AllCategories = lazy(()=>import("../pages/Metadata/Metadata"));
 
 
@@ -33,9 +34,12 @@ const router = createBrowserRouter([
            {
             path: "/metadata", element: <AllCategories />
            },
- {
+            {
             path: "/metadata/:id", element: <AllCategories />
            },
+           {
+            path: "/get-preferences", element: <GetPreferences />
+           }
 
         ]
     }
