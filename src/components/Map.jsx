@@ -13,11 +13,11 @@ const customIcon = new Icon({
   iconSize: [38, 38],
 });
 
-function Recenter({ lat, long }) {
+function Recenter({ lat, lng }) {
   const map = useMap();
   useEffect(() => {
-    map.setView([lat, long], 16);
-  }, [lat, long, map]);
+    map.setView([lat, lng], 16);
+  }, [lat, lng, map]);
   return null;
 }
 
@@ -27,7 +27,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
     {
       name: 'Sample Restaurant',
       lat: 27.6932347,
-      long: 85.3247236,
+      lng: 85.3247236,
       restaurant_location: 'Sample Road 1, Kathmandu',
       hours: '10:00 AM - 9:00 PM',
       logo: markerIcon,
@@ -72,7 +72,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
   }}>
         {/* LOOP THROUGH ALL RESTAURANTS */}
         {data.map((r, index) => (
-          <Marker key={index} position={[r.lat, r.long]} icon={customIcon}>
+          <Marker key={index} position={[r.lat, r.lng]} icon={customIcon}>
             <Popup>
               <div style={{ maxWidth: 200 }}>
                 {r.logo && (
@@ -98,7 +98,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
         </MarkerClusterGroup>
 
         {/* Recenter map to first restaurant */}
-        <Recenter lat={data[0].lat} long={data[0].long} />
+        <Recenter lat={data[0].lat} lng={data[0].lng} />
       </MapContainer>
     </div>
   );
