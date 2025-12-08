@@ -12,11 +12,13 @@ export const reviewApi = createApi({
             }),
 
             addReview: builder.mutation({
-                query: (formData) => ({
+                query: (formData) => {
+                    console.log(formData, "form data")
+                    return({
                     url: "/review",
                     method: 'POST',
                     body: formData,
-                })
+                })}
             }),
 
             updateReview: builder.mutation({

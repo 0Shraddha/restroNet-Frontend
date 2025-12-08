@@ -24,16 +24,17 @@ const [addReview, { isLoading, isSuccess }] = useAddReviewMutation();
   } = useForm();
 
 const onSubmit = async (data) => {
-  const formData = new FormData();
   const user_id = '6878638d8f0567e00c8bb26a';
-  formData.append("user_id", user_id);
-  formData.append("rating", data.rating);
-  formData.append("review", data.review);
-  formData.append("venue_id", id);
+  const reviewData = {
+    user_id: user_id,
+    rating: data.rating,
+    review: data.review,
+    venue_id: id,
+};
 
 
   try {
-    const res = await addReview(formData).unwrap();
+    const res = await addReview(reviewData).unwrap();
     toast.success('Review added successfully')
 
   } catch (err) {
