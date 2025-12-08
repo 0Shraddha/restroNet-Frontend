@@ -77,7 +77,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
  const { data: restaurants, isLoading } = useGetRestaurantsQuery();
-  console.log({restaurants});
+  console.log(restaurants, ".restsa.................");
 
   const activeRestaurants = dummyRestaurants.filter(r => r.status === 'active');
   const pendingRestaurants = dummyRestaurants.filter(r => r.status === 'pending');

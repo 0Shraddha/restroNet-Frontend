@@ -150,11 +150,11 @@ const [latLng, setLatLng] = useState({
 
 const handleSearch = async () => {
   const result = await geocodeAddress({address});
-
+  console.log("resssssssssss>>>>>>>>>>>>>>", result)
   if (result) {
     setLatLng({
       lat: result.lat,
-      lng: result.lng,
+      lng: result.lon,
     });
   } else {
     alert("Address not found");
@@ -213,8 +213,13 @@ function RecenterMap({ lat, lng }) {
     formData.append("logo", logoFile);
   }
 
-  formData.append('lat', latLng?.lat);
-  formData.append('lng', latLng?.lng);
+  // formData.append('lat', latLng?.lat);
+  // formData.append('lng', latLng?.lng);
+  const locationObject = {
+    "type": "Point",
+   "coordinates": [parseFloat(latLng?.lng), parseFloat(latLng?.lat)],
+  }
+  formData.append("location", JSON.stringify(locationObject))
   console.log(selectedTags, selectedCuisines, "sele")
 
   formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
@@ -258,10 +263,10 @@ const onUpdate = async (data) => {
   formData.append("tags", JSON.stringify(selectedTags.map(t => t.name)));
 
   // Add location
-  if (latLng) {
-    formData.append("lat", latLng?.lat);
-    formData.append("lng", latLng?.lng);
-  }
+  // if (latLng) {
+  //   formData.append("lat", latLng?.lat);
+  //   formData.append("lng", latLng?.lng);
+  // }
 
   // Add logo (new or existing)
   if (logoFile instanceof File) {
