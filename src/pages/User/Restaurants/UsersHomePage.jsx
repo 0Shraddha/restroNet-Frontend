@@ -24,8 +24,8 @@ export default function DetailPageTest() {
 		
 		return restaurants.data.filter(restaurant => {
 			// Check if restaurant matches cuisine preferences
-			const restaurantCuisines = restaurant.cuisine.replace(/[\[\]"]/g, "").split(', ');
-			const matchesCuisine = userPreferences.cuisines.some(pref => 
+			const restaurantCuisines = restaurant?.cuisine?.replace(/[\[\]"]/g, "").split(', ');
+			const matchesCuisine = userPreferences?.cuisine?.some(pref => 
 				restaurantCuisines.some(cuisine => 
 					cuisine.toLowerCase().includes(pref.toLowerCase())
 				)
@@ -234,7 +234,7 @@ export default function DetailPageTest() {
 											{/* Tags and Order Button */}
 											<div className="flex items-center justify-between">
 												<div className="flex gap-2 flex-wrap">
-													{item.cuisine.replace(/[\[\]"]/g, "").split(', ').slice(0, 3).map((tag, i) => (
+													{item?.cuisine?.replace(/[\[\]"]/g, "")?.split(', ').slice(0, 3).map((tag, i) => (
 														<span
 															key={i}
 															className="px-4 py-1.5 border border-[#ddd] rounded-full text-sm text-[#2b2b2b] hover:border-[#999] transition-colors"

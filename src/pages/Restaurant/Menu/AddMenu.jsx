@@ -157,8 +157,13 @@ const AddMenu = () => {
 			<Card className="border-gray-100 bg-white text-card-foreground p-6 mb-4 ">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					{/* Basic Information */}
-					<div>
-						<div>
+					
+					<div className="bg-gray-50 p-4 rounded-lg">
+						<h3 className="text-lg font-semibold mb-4 text-gray-700">
+							Basic Information
+						</h3>
+						<div className="space-y-4 mb-1">
+							<div>
 							<label
 								htmlFor="tags"
 								className="block text-sm font-medium text-gray-700 mb-1"
@@ -187,11 +192,7 @@ const AddMenu = () => {
 								</select>
 							)}
 						</div>
-					</div>
-					<div className="bg-gray-50 p-4 rounded-lg">
-						<h3 className="text-lg font-semibold mb-4 text-gray-700">
-							Basic Information
-						</h3>
+						</div>
 						<div className="space-y-4">
 							<div>
 								<label
