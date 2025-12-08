@@ -164,10 +164,6 @@ const AddMenu = () => {
 						<h3 className="text-lg font-semibold mb-4 text-gray-700">
 							Basic Information
 						</h3>
-						<div className="space-y-4 mb-1" className="bg-gray-50 p-4 rounded-lg">
-						<h3 className="text-lg font-semibold mb-4 text-gray-700">
-							Basic Information
-						</h3>
 						<div className="space-y-4">
 								<div>
 							<label
@@ -425,7 +421,6 @@ const AddMenu = () => {
 						</CardContent>
 					</Card>
 				</div>
-
 				<Button className="bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200">
 					{id ? `Update` : `Add`} item
 				</Button>

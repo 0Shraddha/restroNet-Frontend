@@ -72,7 +72,6 @@ if (Object.keys(errors).length > 0) {
   }
 
 
-  console.log(authData, "auth data")
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -106,13 +105,11 @@ const contentType = response.headers.get('content-type') || '';
 let responseData;
 if (contentType.includes('application/json')) {
   responseData = await response?.json();
-  console.log("successful JSON data:", responseData);
   toast.success(responseData.message || 'User registered successfully!');
   localStorage.setItem('restaurantUser', responseData.token);
 
 } else {
   const text = await response.text();
-  console.log("successful TEXT data:", text);
   responseData = { message: text };
 }
     

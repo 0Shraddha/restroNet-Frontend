@@ -5,6 +5,7 @@ import ErrorPage from './error'
 import restaurantRoutes from "../pages/Restaurant/restaurantRoutes";
 import SignUpPage from "../pages/Registration";
 import { action as authAction } from "../Authentication/Authentication";
+import { logout } from "../util/logout";
 import Dashboard from "../pages/Admin/Dashboard";
 import usersRestaurantRoutes from "../pages/User/Restaurants/usersRestaurantRoutes";
 import GetPreferences from "../pages/User/Preference/GetPreferenceForm";
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
                 path: '/auth',
                 element: <SignUpPage />,
                 action: authAction
+            },
+            {
+                path: '/logout',
+                loader: logout
             },
             // {
             //     path: '/manager',
