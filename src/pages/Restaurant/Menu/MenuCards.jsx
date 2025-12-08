@@ -7,11 +7,11 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
   const navigate = useNavigate();
 
   // Extract unique categories (if you have category field)
-  const categories = ["all", ...new Set(menu?.data?.map(item => item.category).filter(Boolean))];
+  const categories = ["all", ...new Set(menu?.data?.map(item => item?.category).filter(Boolean))];
 
   const filteredMenu = selectedCategory === "all" 
     ? menu?.data 
-    : menu?.data?.filter(item => item.category === selectedCategory);
+    : menu?.data?.filter(item => item?.category === selectedCategory);
 
   const handleEdit = (id) => {
 		navigate(`/menu-manager?id=${id}`);
@@ -28,11 +28,11 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
       {/* Menu Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredMenu?.map((item) => {
-          const unavailable = item.availability === false;
-
+          const unavailable = item?.availability === false;
+          console.log(item?.ingredients, "innnnnnnnnnnnniiiiiiiiiiiiii")
           return (
             <div
-              key={item._id}
+              key={item?._id}
               className={`group bg-white rounded-2xl overflow-hidden border transition-all duration-300 ${
                 unavailable
                   ? "border-gray-200 opacity-70"
@@ -42,8 +42,8 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
               {/* Image Container */}
               <div className="relative h-48 overflow-hidden bg-gray-100">
                 <img
-                  src={item.images || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"}
-                  alt={item.item_name}
+                  src={item?.images || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"}
+                  alt={item?.item_name}
                   className={`w-full h-full object-cover transition-transform duration-500 ${
                     unavailable ? "grayscale" : "group-hover:scale-110"
                   }`}
@@ -66,7 +66,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                 <div className="absolute bottom-3 right-3">
                   <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
                     <span className="text-red-600 font-bold text-lg">
-                      {currency} {item.price}
+                      {currency} {item?.price}
                     </span>
                   </div>
                 </div>
@@ -76,12 +76,12 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
               <div className="p-5">
                 {/* Title */}
                 <h3 className="font-bold text-xl text-gray-900 mb-2 line-clamp-1">
-                  {item.item_name}
+                  {item?.item_name}
                 </h3>
 
                 {/* Description */}
                 <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-                  {item.description || "Delicious dish prepared with care"}
+                  {item?.description || "Delicious dish prepared with care"}
                 </p>
 
                 {/* Tags Row */}
@@ -89,13 +89,13 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                   {/* Prep Time */}
                   <div className="flex items-center gap-1 text-blue-600">
                     <Clock size={14} />
-                    <span className="text-xs font-medium">{item.preparation_time}m</span>
+                    <span className="text-xs font-medium">{item?.preparation_time}m</span>
                   </div>
 
                   {/* Spice Level */}
-                  {item.spice_level > 0 && (
+                  {item?.spice_level > 0 && (
                     <div className="flex items-center gap-1">
-                      {Array.from({ length: Math.min(item.spice_level, 3) }).map((_, i) => (
+                      {Array.from({ length: Math.min(item?.spice_level, 3) }).map((_, i) => (
                         <Flame key={i} className="w-3.5 h-3.5 text-red-500" fill="currentColor" />
                       ))}
                     </div>
@@ -105,7 +105,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                   <div className="flex items-center gap-1 text-yellow-500 ml-auto">
                     <Star size={14} fill="currentColor" />
                     <span className="text-xs font-medium text-gray-700">
-                      {item.ratings || "4.5"}
+                      {item?.ratings || "4.5"}
                     </span>
                   </div>
                 </div>
@@ -120,7 +120,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
-                      {item.ingredients.slice(0, 3).map((ing, i) => (
+                      {item?.ingredients?.slice(0, 3)?.map((ing, i) => (
                         <span
                           key={i}
                           className="px-2 py-1 bg-gray-50 text-xs rounded-md text-gray-600"
@@ -128,9 +128,9 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                           {ing}
                         </span>
                       ))}
-                      {item.ingredients.length > 3 && (
+                      {item?.ingredients?.length > 3 && (
                         <span className="px-2 py-1 text-xs text-gray-400">
-                          +{item.ingredients.length - 3}
+                          +{item?.ingredients?.length - 3}
                         </span>
                       )}
                     </div>
