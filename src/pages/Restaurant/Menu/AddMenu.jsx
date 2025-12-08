@@ -18,6 +18,7 @@ import PreviewMenuItems from "./PreviewMenuItems";
 import {
 	useAddMenuMutation,
 	useGetMenuByIdQuery,
+  useUpdateMenuMutation
 } from "../../../state/restaurants/menuApiSlice";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -51,7 +52,7 @@ const AddMenu = () => {
 		setSelectedRestaurant(items);
 	};
 
-	const [updateMenu] = useUpdateCategoryMutation();
+	const [updateMenu] = useUpdateMenuMutation();
 	const [addMenu, { isLoading, isSuccess, isError, error }] =
 		useAddMenuMutation();
 	const { data: categoriesData } = useGetCategoriesQuery();
@@ -124,7 +125,6 @@ const AddMenu = () => {
 		Object.entries(data).forEach(([key, value]) => {
 			formData.append(key, value);
 		});
-    console.log(formData, "ffffffffffoooooooooooooo")
 		Object.entries(data).forEach(([key, value]) => {
 			console.log(key, value);
 		});
@@ -167,15 +167,15 @@ const AddMenu = () => {
 							</label>
 							{restaurantIsLoading ? (
 								<select
-									id="menu_for"
+									id="venue_id"
 									className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
-									{...register("menu_for")}
+									{...register("venue_id")}
 								></select>
 							) : (
 								<select
-									id="menu_for"
+									id="venue_id"
 									className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
-									{...register("menu_for")}
+									{...register("venue_id")}
 								>
 									{allRestaurants?.data?.map((restaurant) => {
 										return (

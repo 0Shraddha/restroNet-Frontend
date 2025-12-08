@@ -28,10 +28,10 @@ export const menuApiSlice = createApi({
             }),
 
             updateMenu: builder.mutation({
-                query: ({FormData, id}) => ({
+                query: ({data, id}) => ({
                     url : `/menu/${id}`,
                     method: 'PUT',
-                    body: FormData,
+                    body: data,
                 }),
                 invalidatesTags: (result, error, { id }) => [
                     "Menu",
