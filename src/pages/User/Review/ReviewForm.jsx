@@ -20,6 +20,7 @@ const [addReview, { isLoading, isSuccess }] = useAddReviewMutation();
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -35,7 +36,9 @@ const onSubmit = async (data) => {
 
   try {
     const res = await addReview(reviewData).unwrap();
-    toast.success('Review added successfully')
+    toast.success('Review added successfully');
+    setSelectedRating(0);
+    reset();
 
   } catch (err) {
     console.error("Error submitting review:", err);

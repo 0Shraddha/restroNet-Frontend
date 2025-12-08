@@ -154,7 +154,7 @@ const handleSearch = async () => {
   if (result) {
     setLatLng({
       lat: result.lat,
-      lng: result.lng,
+      lng: result.long,
     });
   } else {
     alert("Address not found");
@@ -214,7 +214,7 @@ function RecenterMap({ lat, lng }) {
   }
 
   formData.append('lat', latLng?.lat);
-  formData.append('lng', latLng?.lng);
+  formData.append('long', latLng?.long);
   console.log(selectedTags, selectedCuisines, "sele")
 
   formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
@@ -260,7 +260,7 @@ const onUpdate = async (data) => {
   // Add location
   if (latLng) {
     formData.append("lat", latLng?.lat);
-    formData.append("lng", latLng?.lng);
+    formData.append("lng", latLng?.long);
   }
 
   // Add logo (new or existing)
@@ -345,16 +345,16 @@ const onUpdate = async (data) => {
               {errors.restaurant_location && <p className="error">{errors.restaurant_location.message}</p>}
 
               <MapContainer
-                center={latLng ? [latLng?.lat, latLng?.lng] : [27.7172, 85.3240]} // default Kathmandu
+                center={latLng ? [latLng?.lat, latLng?.long] : [27.7172, 85.3240]} // default Kathmandu
                 zoom={13}
                 style={{ height: "300px", width: "100%" }}
               >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
                 {latLng && (
-                  <Marker position={[latLng?.lat, latLng?.lng]}>
+                  <Marker position={[latLng?.lat, latLng?.long]}>
                     <Popup>{address}</Popup>
-                  <RecenterMap lat={latLng?.lat} lng={latLng?.lng} />
+                  <RecenterMap lat={latLng?.lat} lng={latLng?.long} />
                   </Marker>
                 )}
               </MapContainer>

@@ -7,6 +7,10 @@ export const reviewApi = createApi({
     }),
     endpoints: (builder) => {
         return {
+            getReviews : builder.query({
+                query: () => '/review'
+            }),
+
             getVenueReviews : builder.query({
                 query: (id) => `/venue/${id}/reviews`
             }),
@@ -41,6 +45,7 @@ export const reviewApi = createApi({
 })
 
 export const {
+    useGetReviewsQuery,
     useGetVenueReviewsQuery,
     useAddReviewMutation,
     useUpdateReviewMutation,

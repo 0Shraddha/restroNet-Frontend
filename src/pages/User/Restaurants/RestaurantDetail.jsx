@@ -8,24 +8,25 @@ import PreviewMenuItems from "../../Restaurant/Menu/PreviewMenuItems";
 import OffersCard from "../../Restaurant/Offers/OffersCard";
 import GoogleMapComponent from "../../../components/Map";
 import ReviewCard from "../Review/Review";
+import { useGetReviewsQuery, useGetVenueReviewsQuery } from "../../../state/restaurants/reviewApi";
 
-const reviews = [
-  {
-    name: "Aarati Sharma",
-    description: "Loved the coffee and cozy atmosphere!",
-    rating: 5,
-  },
-  {
-    name: "Sushan Thapa",
-    description: "Food was okay but service was slow.",
-    rating: 3,
-  },
-  {
-    name: "Riya Basnet",
-    description: "Perfect place to hang out with friends!",
-    rating: 4,
-  }
-];
+// const reviews = [
+//   {
+//     name: "Aarati Sharma",
+//     description: "Loved the coffee and cozy atmosphere!",
+//     rating: 5,
+//   },
+//   {
+//     name: "Sushan Thapa",
+//     description: "Food was okay but service was slow.",
+//     rating: 3,
+//   },
+//   {
+//     name: "Riya Basnet",
+//     description: "Perfect place to hang out with friends!",
+//     rating: 4,
+//   }
+// ];
 
 const RestaurantDetail = () => {
   const [searchParams] = useSearchParams();
@@ -36,6 +37,9 @@ const RestaurantDetail = () => {
   const [activeTab, setActiveTab] = useState("overview");
 
   const { data: restaurantData, isLoading } = useGetRestaurantByIdQuery(id);
+  const { data: reviews} = useGetReviewsQuery();
+  console.log({reviews});
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-50 flex items-center justify-center">
@@ -215,14 +219,17 @@ const RestaurantDetail = () => {
       <div className="mb-4">
         <p className="text-sm font-medium text-gray-700 mb-2">Cuisines</p>
         <div className="flex flex-wrap gap-2">
-          {data?.cuisine.map((c, i) => (
-            <span
-              key={i}
-              className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm border border-red-200"
-            >
-              {c}
-            </span>
-          ))}
+          {data.cuisine}
+         {Array.isArray(data?.cuisine) &&
+  data.cuisine.map((c, i) => (
+    <span
+      key={i}
+      className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm border border-red-200"
+    >
+      {c}
+    </span>
+  ))}
+
         </div>
       </div>
 
@@ -264,8 +271,9 @@ const RestaurantDetail = () => {
 
                 {activeTab === "reviews" && (
                   <div className="text-gray-600">
-                    {reviews.map((item, i) => (
-                      <ReviewCard key={i} review={item} />
+                    <p className="text-gray-800 text-end"><strong>Total</strong> : {reviews.count}</p>
+                    {reviews?.data.map((item, i) => (
+                      <ReviewCard key={i} reviewData={item} />
                     ))}
                     <AddReview />
                     
