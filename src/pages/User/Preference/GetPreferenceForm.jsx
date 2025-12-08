@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { ChefHat, MapPin, Utensils, Heart, Clock, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-export default function GetPreferences() {
+export default function GetPreferences({ onClose, onSavePreferences }) {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
+  const [showPreferencesModal, setShowPreferencesModal] = useState(false);
+
 
   const [preferences, setPreferences] = useState({
     cuisines: [],
@@ -45,7 +47,16 @@ export default function GetPreferences() {
   const handleSubmit = () => {
     console.log('User preferences:', preferences);
     alert('Preferences saved! Ready to find amazing restaurants for you.');
-    navigate('/users')
+    navigate('/users');
+
+    
+  if (onSavePreferences) {
+    onSavePreferences(preferences); // send preferences back to parent
+  }
+
+  if (onClose) {
+    onClose(); // close the modal
+  }
     
   };
 
@@ -60,7 +71,7 @@ export default function GetPreferences() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 flex items-center justify-center p-4">
+    <div className={onSavePreferences ? `w-full` : `min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 flex items-center justify-center p-4`}>
       <div className="max-w-4xl w-full">
         {/* Header */}
         <div className="text-center mb-8">

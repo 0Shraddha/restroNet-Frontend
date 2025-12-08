@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetRestaurantByIdQuery } from "../../../state/restaurants/restuarantApiSlice";
 import { useSearchParams } from "react-router-dom";
 import { Card, CardContent } from "../../../components/ui/card";
@@ -8,25 +8,16 @@ import PreviewMenuItems from "../../Restaurant/Menu/PreviewMenuItems";
 import OffersCard from "../../Restaurant/Offers/OffersCard";
 import GoogleMapComponent from "../../../components/Map";
 import ReviewCard from "../Review/Review";
-import { useGetReviewsQuery, useGetVenueReviewsQuery } from "../../../state/restaurants/reviewApi";
+import ReviewForm from "../Review/ReviewForm"; // <-- correct name
 
-// const reviews = [
-//   {
-//     name: "Aarati Sharma",
-//     description: "Loved the coffee and cozy atmosphere!",
-//     rating: 5,
-//   },
-//   {
-//     name: "Sushan Thapa",
-//     description: "Food was okay but service was slow.",
-//     rating: 3,
-//   },
-//   {
-//     name: "Riya Basnet",
-//     description: "Perfect place to hang out with friends!",
-//     rating: 4,
-//   }
-// ];
+import {
+  useGetReviewsQuery,
+  useGetVenueReviewsQuery,
+  useUpdateReviewMutation,
+  useDeleteReviewMutation,
+  useAddReviewMutation
+} from "../../../state/restaurants/reviewApi";
+import { toast } from "react-toastify";
 
 const RestaurantDetail = () => {
   const [searchParams] = useSearchParams();
@@ -37,8 +28,41 @@ const RestaurantDetail = () => {
   const [activeTab, setActiveTab] = useState("overview");
 
   const { data: restaurantData, isLoading } = useGetRestaurantByIdQuery(id);
-  const { data: reviews} = useGetReviewsQuery();
-  console.log({reviews});
+  const { data: reviews, refetch: refetchReviews } = useGetReviewsQuery();
+
+  const [updateReview] = useUpdateReviewMutation();
+  const [deleteReview] = useDeleteReviewMutation();
+  const [addReview] = useAddReviewMutation(); 
+  const [editingReview, setEditingReview] = useState(null);
+
+
+useEffect(() => {
+}, [reviews]);
+
+
+const handleDelete = async (id) => {
+  if (!window.confirm("Delete this review?")) return;
+
+  try {
+    await deleteReview(id).unwrap();
+    refetchReviews();
+    toast.success("Review successfully deleted!")
+  } catch (error) {
+    console.error("Delete error:", error);
+  }
+};
+
+
+const handleUpdate = async (id, updatedData) => {
+  try {
+    await updateReview({ id, data: updatedData }).unwrap();
+    refetchReviews();
+  } catch (err) {
+    console.error("Update error:", err);
+  }
+};
+
+
 
   if (isLoading) {
     return (
@@ -63,16 +87,17 @@ const RestaurantDetail = () => {
   }
 
   const data = restaurantData?.data;
+  console.log({data});
 
   const nextImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === data.gallery.length - 1 ? 0 : prev + 1
+      prev === data.images.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === 0 ? data.gallery.length - 1 : prev - 1
+      prev === 0 ? data.images.length - 1 : prev - 1
     );
   };
 
@@ -85,16 +110,16 @@ const RestaurantDetail = () => {
             <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
               <div className="relative h-85 bg-gray-900">
                 {/* Image */}
-                {data.gallery?.length > 0 ? (
+                {data.images?.length > 0 ? (
                   <>
                     <img
-                      src={data.gallery[currentImageIndex]}
+                      src={data.images[currentImageIndex]}
                       alt={`${data.restaurant_name}`}
                       className="w-full h-full object-cover"
                     />
 
                     {/* Arrows */}
-                    {data.gallery.length > 1 && (
+                    {data.images.length > 1 && (
                       <>
                         <button
                           onClick={prevImage}
@@ -114,7 +139,7 @@ const RestaurantDetail = () => {
 
                     {/* Image indicators */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                      {data.gallery.map((_, index) => (
+                      {data.images.map((_, index) => (
                         <button
                           key={index}
                           onClick={() => setCurrentImageIndex(index)}
@@ -272,11 +297,33 @@ const RestaurantDetail = () => {
                 {activeTab === "reviews" && (
                   <div className="text-gray-600">
                     <p className="text-gray-800 text-end"><strong>Total</strong> : {reviews.count}</p>
-                    {reviews?.data.map((item, i) => (
-                      <ReviewCard key={i} reviewData={item} />
-                    ))}
-                    <AddReview />
-                    
+                   {reviews?.data.map((item, i) => (
+  <ReviewCard
+    key={i}
+    reviewData={item}
+    onDelete={() => handleDelete(item._id)}
+    onEdit={() => setEditingReview(item)}
+  />
+))}
+
+{editingReview && (
+  <ReviewForm
+    mode="edit"
+    review={editingReview}
+    onSubmitForm={(updatedData) =>
+      handleUpdate(editingReview._id, updatedData)
+    }
+  />
+)}
+
+{!editingReview && (
+  <ReviewForm
+    mode="add"
+    onSubmitForm={(data) => addReview(data)}
+  />
+)}
+
+
                   </div>
                 )}
               </CardContent>

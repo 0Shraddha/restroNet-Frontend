@@ -69,6 +69,8 @@ const AddMenu = () => {
 			setValue("spice_level", singleMenu.data.spice_level);
 			setValue("availability", singleMenu.data.availability);
 			setValue("description", singleMenu.data.description);
+			setValue("ingredients", singleMenu.data.ingredients);
+
 		} else if (!id) {
 			reset();
 		}
@@ -157,8 +159,12 @@ const AddMenu = () => {
 			<Card className="border-gray-100 bg-white text-card-foreground p-6 mb-4 ">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					{/* Basic Information */}
-					<div>
-						<div>
+					<div className="bg-gray-50 p-4 rounded-lg">
+						<h3 className="text-lg font-semibold mb-4 text-gray-700">
+							Basic Information
+						</h3>
+						<div className="space-y-4">
+							<div>
 							<label
 								htmlFor="tags"
 								className="block text-sm font-medium text-gray-700 mb-1"
@@ -177,6 +183,7 @@ const AddMenu = () => {
 									className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-transparent"
 									{...register("menu_for")}
 								>
+									<option value="">Select restaurant</option>
 									{allRestaurants?.data?.map((restaurant) => {
 										return (
 											<option value={restaurant?._id}>
@@ -187,12 +194,7 @@ const AddMenu = () => {
 								</select>
 							)}
 						</div>
-					</div>
-					<div className="bg-gray-50 p-4 rounded-lg">
-						<h3 className="text-lg font-semibold mb-4 text-gray-700">
-							Basic Information
-						</h3>
-						<div className="space-y-4">
+
 							<div>
 								<label
 									htmlFor="item_name"

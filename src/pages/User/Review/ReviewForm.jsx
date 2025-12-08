@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Textarea } from "../../../components/ui/textarea";
 import { Button } from "../../../components/ui/button";
 import { Star } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
-import { useAddReviewMutation } from "../../../state/restaurants/reviewApi";
 import { toast } from "react-toastify";
 
-const AddReview = () => {
+const ReviewForm = ({ mode = "add", review = null, onSubmitForm }) => {
   const [hover, setHover] = useState(null);
   const [selectedRating, setSelectedRating] = useState(0);
 
   const [searchParams] = useSearchParams();
-  const id = searchParams.get("id");
-
-const [addReview, { isLoading, isSuccess }] = useAddReviewMutation();
+  const venueId = searchParams.get("id");
 
   const {
     register,
@@ -24,42 +21,48 @@ const [addReview, { isLoading, isSuccess }] = useAddReviewMutation();
     formState: { errors },
   } = useForm();
 
-const onSubmit = async (data) => {
-  const user_id = '6878638d8f0567e00c8bb26a';
-  const reviewData = {
-    user_id: user_id,
-    rating: data.rating,
-    review: data.review,
-    venue_id: id,
-};
+  // 👉 Pre-fill data when editing
+  useEffect(() => {
+    if (mode === "edit" && review) {
+      setSelectedRating(review.rating);
+      setValue("rating", review.rating);
+      setValue("review", review.review);
+    }
+  }, [mode, review, setValue]);
 
+  const onSubmit = async (data) => {
+    const payload = {
+      user_id: review?.user_id || "6878638d8f0567e00c8bb26a",
+      rating: data.rating,
+      review: data.review,
+      venue_id: venueId,
+    };
 
-  try {
-    const res = await addReview(reviewData).unwrap();
-    toast.success('Review added successfully');
-    setSelectedRating(0);
-    reset();
-
-  } catch (err) {
-    console.error("Error submitting review:", err);
-    toast.error("Error submitting review:", err)
-  }
-};
-
+    try {
+      await onSubmitForm(payload); // parent handles add/update API call
+      toast.success(
+        mode === "edit" ? "Review updated successfully" : "Review added successfully"
+      );
+      reset();
+      setSelectedRating(0);
+    } catch (err) {
+      console.error("Error submitting review:", err);
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
     <form
       className="p-8 my-12 bg-white border border-gray-200 shadow-md rounded-2xl space-y-6"
-      encType="multipart/form-data"
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold text-gray-800">
-          Share Your Experience
+          {mode === "edit" ? "Update Your Review" : "Share Your Experience"}
         </h3>
 
-        {/* Rating Section */}
+        {/* Rating */}
         <div className="bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((star) => (
@@ -86,9 +89,7 @@ const onSubmit = async (data) => {
           />
 
           {errors.rating && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.rating.message}
-            </p>
+            <p className="text-red-500 text-xs mt-1">{errors.rating.message}</p>
           )}
         </div>
       </div>
@@ -96,7 +97,7 @@ const onSubmit = async (data) => {
       {/* Review Text */}
       <div>
         <label className="text-sm font-medium text-gray-700 mb-1 block">
-          Write a Review
+          {mode === "edit" ? "Edit Review" : "Write a Review"}
         </label>
 
         <Textarea
@@ -116,28 +117,15 @@ const onSubmit = async (data) => {
         )}
       </div>
 
-      {/* Hidden Fields */}
-      <input
-        type="hidden"
-        value={id}
-        {...register("user_id", { required: "User ID is required" })}
-      />
-
-      <input
-        type="hidden"
-        value={id}
-        {...register("venue_id", { required: "Venue ID is required" })}
-      />
-
       {/* Submit */}
       <Button
         type="submit"
-        className="w-full bg-red-500 text-white py-3 position-cursor rounded-lg text-base font-semibold hover:bg-red-600 transition-all"
+        className="w-full bg-red-500 text-white py-3 rounded-lg text-base font-semibold hover:bg-red-600 transition-all"
       >
-        Submit Review
+        {mode === "edit" ? "Update Review" : "Submit Review"}
       </Button>
     </form>
   );
 };
 
-export default AddReview;
+export default ReviewForm;

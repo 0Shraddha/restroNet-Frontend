@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
@@ -42,7 +42,26 @@ const AddRestaurant = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [hasInitialized, setHasInitialized] = useState(false);
 
-  
+const handleFileSelect = useCallback(({ files = [], existing = [] }) => {
+  const formattedExisting = existing
+    ?.filter(url => url)
+    .map(url => ({
+      preview: url,
+      file: null
+    })) ?? [];
+
+  const formattedNew = files
+    ?.filter(f => f)
+    .map(f => ({
+      preview: URL.createObjectURL(f),
+      file: f
+    })) ?? [];
+
+  setImageFiles([...formattedExisting, ...formattedNew]);
+}, []);
+
+
+
 const defaultLat = 27.7172; // Kathmandu Latitude
 const defaultLon = 85.3240; // Kathmandu Lonitude
 
@@ -82,8 +101,13 @@ const [latLon, setLatLon] = useState({
           setValue("restaurant_contact", singleRestaurant.data.restaurant_contact);
           setValue("description", singleRestaurant.data.description);
 
-        setLogoFile(imageUrl || null);
-        setImageFiles(imagesUrl || [])
+        setLogoFile({ preview: imageUrl, file: null });
+setImageFiles(
+  (imagesUrl || []).map(url => ({
+    preview: url,
+    file: null
+  }))
+);
         
 
           // Pre-fill cuisines
@@ -174,9 +198,11 @@ function RecenterMap({ lat, lon }) {
     });
 
    // Append logo (single file)
-  if (logoFile) {
-    formData.append("logo", logoFile);
-  }
+if (logoFile?.file instanceof File) {
+  formData.append("logo", logoFile.file);
+}
+
+
 
   // formData.append('lat', latLon?.lat);
   // formData.append('lon', latLon?.lon);
@@ -223,45 +249,48 @@ const onUpdate = async (data) => {
     formData.append(key, value);
   });
 
-  // Add cuisine + tags
+  // ✓ Append cuisines/tags
   formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
   formData.append("tags", JSON.stringify(selectedTags.map(t => t.name)));
 
-  // Add location
-  // if (latLon) {
-  //   formData.append("lat", latLon?.lat);
-  //   formData.append("lon", latLon?.lon);
-  // }
-
-  // Add logo (new or existing)
-  if (logoFile instanceof File) {
-    formData.append("logo", logoFile);
+  // ✓ Attach new logo
+  if (logoFile?.file) {
+    formData.append("logo", logoFile.file);
   }
 
-  // Separate new Files from existing URLs for images
-  const newFiles = imageFiles.filter(img => img instanceof File);
-  const oldImages = imageFiles.filter(img => typeof img === "string");
+  // ----- FIXED IMAGE UPDATE LOGIC -----
 
-  // Send new files
-  newFiles.forEach((file) => {
+  // Extract new image files (File objects)
+const newImages = imageFiles
+  ?.filter(img => img?.file)
+  ?.map(img => img.file) ?? [];
+
+  // Extract existing image URLs
+const existingImages = imageFiles
+  ?.filter(img => !img?.file)
+  ?.map(img => img.preview) ?? [];
+
+  // Append new images
+  newImages.forEach(file => {
     formData.append("images", file);
   });
 
-  // Send old images back as JSON array
-  formData.append("existingImages", JSON.stringify(oldImages));
+  // Append existing image URLs as JSON
+  formData.append("existingImages", JSON.stringify(existingImages));
+
+  // ------------------------------------
 
   try {
     const response = await updateRestaurant({ id, data: formData }).unwrap();
-
     if (response?.success) {
       toast.success("Restaurant updated successfully!");
       navigate("/restaurant-list");
     }
-
   } catch (err) {
     console.error("Failed to update restaurant:", err);
   }
 };
+
 
 
   return (
@@ -385,8 +414,20 @@ const onUpdate = async (data) => {
           <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 mb-4 shadow-sm">
             <CardContent className="space-y-4">
               <CardTitle className="text-lg">Restaurant Logo</CardTitle>
-              <DropImageUpload multiple={false} onFileSelect={(file) => {console.log(file, "files new"); setLogoFile(file)}} defaultImages={imageUrl ? [imageUrl] : []} /> 
-              {logoFile && <p className="text-sm text-gray-600">Selected logo: {logoFile.name}</p>}
+                <DropImageUpload
+                  multiple={false}
+                  defaultImages={imageUrl ? [imageUrl] : []}
+                  onFileSelect={(file) => {
+                    console.log("Logo file:", file);
+                    setLogoFile(file);   // file OR null
+                  }}
+                />
+
+            {logoFile && (
+              <p className="text-sm text-gray-600">
+                Selected logo: {logoFile.file ? logoFile.file.name : "Existing logo"}
+              </p>
+            )}
             </CardContent>
           </Card>
 
@@ -433,9 +474,21 @@ const onUpdate = async (data) => {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Pass setImageFiles to update the state in parent */}
-          <DropImageUpload multiple={true} onFileSelect={setImageFiles} defaultImages={imagesUrl ?? []} /> 
+          <DropImageUpload
+            multiple={true}
+            defaultImages={imagesUrl ?? []}
+           onFileSelect={handleFileSelect}
+
+          />
+
           {imageFiles.length > 0 && (
-            <p className="text-sm text-gray-600">Selected images: {imageFiles.map(file => file.name).join(', ')}</p>
+            <p className="text-sm text-gray-600">
+              Selected images:
+                {imageFiles.map((img, i) =>
+                    <span key={i}>{img.file ? img.file.name : "Existing image"}</span>
+                )}
+
+            </p>
           )}
         </CardContent>
       </Card>
