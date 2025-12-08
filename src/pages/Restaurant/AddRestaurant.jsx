@@ -44,11 +44,11 @@ const AddRestaurant = () => {
 
   
 const defaultLat = 27.7172; // Kathmandu Latitude
-const defaultLng = 85.3240; // Kathmandu Lnggitude
+const defaultLon = 85.3240; // Kathmandu Lonitude
 
-const [latLng, setLatLng] = useState({
+const [latLon, setLatLon] = useState({
   lat: defaultLat,
-  lng: defaultLng,
+  lon: defaultLon,
 });
   const [submitted, setSubmitted] = useState(false);
   const [logoFile, setLogoFile] = useState(null); // State to hold the single logo file
@@ -73,74 +73,40 @@ const [latLng, setLatLng] = useState({
 //get image url
   const imageUrl = id && singleRestaurant?.data ? singleRestaurant.data.logo : null;
   const imagesUrl = id && singleRestaurant?.data ? singleRestaurant.data.images : null;
+
   useEffect(() => {
-    console.log("rerun useeffect")
-  if (id && singleRestaurant?.data && !hasInitialized) {
-    setValue("restaurant_name", singleRestaurant.data.restaurant_name);
-    setValue("restaurant_email", singleRestaurant.data.restaurant_email);
-    setValue("restaurant_location", singleRestaurant.data.restaurant_location);
-    setValue("restaurant_contact", singleRestaurant.data.restaurant_contact);
-    setValue("description", singleRestaurant.data.description);
+      if (id && singleRestaurant?.data){
+          setValue("restaurant_name", singleRestaurant.data.restaurant_name);
+          setValue("restaurant_email", singleRestaurant.data.restaurant_email);
+          setValue("restaurant_location", singleRestaurant.data.restaurant_location);
+          setValue("restaurant_contact", singleRestaurant.data.restaurant_contact);
+          setValue("description", singleRestaurant.data.description);
 
-    setLogoFile(imageUrl || null);
-    setImageFiles(imagesUrl || []);
-
-    if (singleRestaurant.data.cuisine && allCuisines?.data) {
-      const matchedCuisines = allCuisines.data.filter(c =>
-        singleRestaurant.data.cuisine.includes(c.name)
-      );
-      setSelectedCuisines(matchedCuisines);
-    }
-
-    if (singleRestaurant.data.tags && allTags?.data) {
-      const matchedTags = allTags.data.filter(t =>
-        singleRestaurant.data.tags.includes(t.name)
-      );
-      setSelectedTags(matchedTags);
-    }
-
-    setHasInitialized(true);
-  }
-
-  if (!id) {
-    reset();
-  }
-
-}, [singleRestaurant, id, allCuisines, allTags]);
-
-  // useEffect(() => {
-  //     if (id && singleRestaurant?.data){
-  //         setValue("restaurant_name", singleRestaurant.data.restaurant_name);
-  //         setValue("restaurant_email", singleRestaurant.data.restaurant_email);
-  //         setValue("restaurant_location", singleRestaurant.data.restaurant_location);
-  //         setValue("restaurant_contact", singleRestaurant.data.restaurant_contact);
-  //         setValue("description", singleRestaurant.data.description);
-
-  //       setLogoFile(imageUrl || null);
-  //       setImageFiles(imagesUrl || [])
+        setLogoFile(imageUrl || null);
+        setImageFiles(imagesUrl || [])
         
 
-  //         // Pre-fill cuisines
-  //         if (singleRestaurant.data.cuisine) {
-  //           const matchedCuisines = allCuisines?.data.filter(c => 
-  //             singleRestaurant.data.cuisine.includes(c.name)
-  //           );
+          // Pre-fill cuisines
+          if (singleRestaurant.data.cuisine) {
+            const matchedCuisines = allCuisines?.data.filter(c => 
+              singleRestaurant.data.cuisine.includes(c.name)
+            );
 
-  //           setSelectedCuisines(matchedCuisines || []);
-  //         }
+            setSelectedCuisines(matchedCuisines || []);
+          }
 
-  //         // Pre-fill tags
-  //         if (singleRestaurant.data.tags) {
-  //           const matchedTags = allTags?.data.filter(t => 
-  //             singleRestaurant.data.tags.includes(t.name)
-  //           );
-  //           setSelectedTags(matchedTags || []);
-  //         }
+          // Pre-fill tags
+          if (singleRestaurant.data.tags) {
+            const matchedTags = allTags?.data.filter(t => 
+              singleRestaurant.data.tags.includes(t.name)
+            );
+            setSelectedTags(matchedTags || []);
+          }
 
-  //     } else if (!id) {
-  //         reset();
-  //     }
-  // }, [singleRestaurant, imageUrl, imagesUrl, allCuisines, allTags, id, setValue, reset]);
+      } else if (!id) {
+          reset();
+      }
+  }, [singleRestaurant, imageUrl, imagesUrl, allCuisines, allTags, id, setValue, reset]);
   
    const address = useWatch({
     control,
@@ -150,25 +116,24 @@ const [latLng, setLatLng] = useState({
 
 const handleSearch = async () => {
   const result = await geocodeAddress({address});
-  console.log("resssssssssss>>>>>>>>>>>>>>", result)
   if (result) {
-    setLatLng({
+    setLatLon({
       lat: result.lat,
-      lng: result.lon,
+      lon: result.lon,
     });
   } else {
     alert("Address not found");
   }
 };
 
-function RecenterMap({ lat, lng }) {
+function RecenterMap({ lat, lon }) {
   const map = useMap();
 
   useEffect(() => {
-    if (lat && lng) {
-      map.flyTo([lat, lng], 16, { duration: 1.5 });
+    if (lat && lon) {
+      map.flyTo([lat, lon], 16, { duration: 1.5 });
     }
-  }, [lat, lng]);
+  }, [lat, lon]);
 
   return null;
 }
@@ -184,7 +149,7 @@ function RecenterMap({ lat, lng }) {
       setImageFiles([]);
       setSelectedCuisines([]);
       setSelectedTags([]);
-      setLatLng(null); // remove marker
+      setLatLon(null); // remove marker
 
       setSubmitted(true);
     }
@@ -213,11 +178,11 @@ function RecenterMap({ lat, lng }) {
     formData.append("logo", logoFile);
   }
 
-  // formData.append('lat', latLng?.lat);
-  // formData.append('lng', latLng?.lng);
+  // formData.append('lat', latLon?.lat);
+  // formData.append('lon', latLon?.lon);
   const locationObject = {
     "type": "Point",
-   "coordinates": [parseFloat(latLng?.lng), parseFloat(latLng?.lat)],
+   "coordinates": [parseFloat(latLon?.lon), parseFloat(latLon?.lat)],
   }
   formData.append("location", JSON.stringify(locationObject))
   console.log(selectedTags, selectedCuisines, "sele")
@@ -241,7 +206,7 @@ function RecenterMap({ lat, lng }) {
       setImageFiles([]);
       setSelectedCuisines([]);
       setSelectedTags([]);
-      setLatLng(null);    
+      setLatLon(null);    
       navigate('/restaurant-list');
     } catch (err) {
       console.error('Failed to submit restaurant:', err.data?.errors?.restaurant_contact);
@@ -263,9 +228,9 @@ const onUpdate = async (data) => {
   formData.append("tags", JSON.stringify(selectedTags.map(t => t.name)));
 
   // Add location
-  // if (latLng) {
-  //   formData.append("lat", latLng?.lat);
-  //   formData.append("lng", latLng?.lng);
+  // if (latLon) {
+  //   formData.append("lat", latLon?.lat);
+  //   formData.append("lon", latLon?.lon);
   // }
 
   // Add logo (new or existing)
@@ -350,16 +315,16 @@ const onUpdate = async (data) => {
               {errors.restaurant_location && <p className="error">{errors.restaurant_location.message}</p>}
 
               <MapContainer
-                center={latLng ? [latLng?.lat, latLng?.lng] : [27.7172, 85.3240]} // default Kathmandu
+                center={latLon ? [latLon?.lat, latLon?.lon] : [27.7172, 85.3240]} // default Kathmandu
                 zoom={13}
                 style={{ height: "300px", width: "100%" }}
               >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-                {latLng && (
-                  <Marker position={[latLng?.lat, latLng?.lng]}>
+                {latLon && (
+                  <Marker position={[latLon?.lat, latLon?.lon]}>
                     <Popup>{address}</Popup>
-                  <RecenterMap lat={latLng?.lat} lng={latLng?.lng} />
+                  <RecenterMap lat={latLon?.lat} lon={latLon?.lon} />
                   </Marker>
                 )}
               </MapContainer>
