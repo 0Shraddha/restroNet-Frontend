@@ -87,10 +87,10 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg rounded-3xl m-4">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <h1 className="text-3xl font-bold">Restaurant Platform Dashboard</h1>
-          <p className="text-red-100 mt-1">Super Admin Panel</p>
+      <header className="bg-gradient-to-r from-red-500 to-red-600 text-white font-['poppins'] rounded-xl m-4">
+        <div className="max-w-7xl mx-auto px-6 py-6 ">
+          <h1 className="text-3xl font-semibold">Restaurant Platform Dashboard</h1>
+          <p className="text-white font-semibold font-['sora'] mt-1">Admin Panel</p>
         </div>
       </header>
 

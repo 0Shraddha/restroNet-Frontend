@@ -24,8 +24,8 @@ const userIcon = new Icon({
 function Recenter({ lat, long }) {
   const map = useMap();
   useEffect(() => {
-    map.setView([lat, long], 16);
-  }, [lat, long, map]);
+    map.setView([lat, lng], 16);
+  }, [lat, lng, map]);
   return null;
 }
 
@@ -53,7 +53,7 @@ const {location : userLocation, error} = useUserLocation();
     {
       name: 'Sample Restaurant',
       lat: 27.6932347,
-      long: 85.3247236,
+      lng: 85.3247236,
       restaurant_location: 'Sample Road 1, Kathmandu',
       hours: '10:00 AM - 9:00 PM',
       logo: markerIcon,
@@ -122,7 +122,7 @@ const {location : userLocation, error} = useUserLocation();
   }}>
         {/* LOOP THROUGH ALL RESTAURANTS */}
         {data.map((r, index) => (
-          <Marker key={index} position={[r.lat, r.long]} icon={customIcon}>
+          <Marker key={index} position={[r.lat, r.lng]} icon={customIcon}>
             <Popup>
               <div style={{ maxWidth: 200 }}>
                 {r.logo && (

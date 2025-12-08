@@ -1,7 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
 @custom-variant dark (&:is(.dark *));
+
 
 :root {
   --sidebar: hsl(0 0% 98%);
@@ -38,6 +40,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+
 
 .active{
   color: orangered;

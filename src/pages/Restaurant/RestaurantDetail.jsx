@@ -89,6 +89,7 @@ const RestaurantDetail = () => {
   const viewDocument = (docType) => {
     alert(`Opening ${docType} document...`);
   };
+    console.log(restaurant, "restaurnat.......")
 
   return (
     <div className="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
@@ -127,7 +128,6 @@ const RestaurantDetail = () => {
             🕒 Pending Verification
           </span>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">

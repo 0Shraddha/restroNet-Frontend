@@ -36,7 +36,6 @@ const RestaurantDetail = () => {
   const [activeTab, setActiveTab] = useState("overview");
 
   const { data: restaurantData, isLoading } = useGetRestaurantByIdQuery(id);
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-50 flex items-center justify-center">
@@ -63,13 +62,13 @@ const RestaurantDetail = () => {
 
   const nextImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === data.images.length - 1 ? 0 : prev + 1
+      prev === data.gallery.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === 0 ? data.images.length - 1 : prev - 1
+      prev === 0 ? data.gallery.length - 1 : prev - 1
     );
   };
 
@@ -82,16 +81,16 @@ const RestaurantDetail = () => {
             <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
               <div className="relative h-85 bg-gray-900">
                 {/* Image */}
-                {data.images?.length > 0 ? (
+                {data.gallery?.length > 0 ? (
                   <>
                     <img
-                      src={data.images[currentImageIndex]}
+                      src={data.gallery[currentImageIndex]}
                       alt={`${data.restaurant_name}`}
                       className="w-full h-full object-cover"
                     />
 
                     {/* Arrows */}
-                    {data.images.length > 1 && (
+                    {data.gallery.length > 1 && (
                       <>
                         <button
                           onClick={prevImage}
@@ -111,7 +110,7 @@ const RestaurantDetail = () => {
 
                     {/* Image indicators */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                      {data.images.map((_, index) => (
+                      {data.gallery.map((_, index) => (
                         <button
                           key={index}
                           onClick={() => setCurrentImageIndex(index)}
@@ -216,7 +215,7 @@ const RestaurantDetail = () => {
       <div className="mb-4">
         <p className="text-sm font-medium text-gray-700 mb-2">Cuisines</p>
         <div className="flex flex-wrap gap-2">
-          {JSON.parse(data.cuisine).map((c, i) => (
+          {data?.cuisine.map((c, i) => (
             <span
               key={i}
               className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm border border-red-200"
@@ -231,11 +230,11 @@ const RestaurantDetail = () => {
       <div className="flex items-center gap-6 mt-3">
         <div className="flex items-center gap-2">
           <span className="text-yellow-500 text-xl">★</span>
-          <span className="font-semibold">{data.rating || "4.5"}</span>
+          <span className="font-semibold">{data?.avgRating || "4.5"}</span>
         </div>
 
         <div className="text-gray-500 text-sm">
-          {data.total_reviews || "120+"} Reviews
+          {data?.totalReviews || "120+"} Reviews
         </div>
       </div>
     </div>
@@ -246,7 +245,7 @@ const RestaurantDetail = () => {
         About This Restaurant
       </h3>
       <p className="text-gray-700 leading-relaxed text-sm">
-        {data.long_description ||
+        {data?.description ||
           "Experience a delightful fusion of flavors with exceptional ambience and top-notch service."}
       </p>
     </div>
@@ -291,7 +290,8 @@ const RestaurantDetail = () => {
                       <MapPin className="w-4 h-4 text-red-600" />
                     </div>
                     <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
-                      {data.restaurant_location}
+                      {/* {data?.restaurant_location} */}
+                      {data?.restaurant_name}
                     </p>
                   </div>
 
@@ -300,7 +300,7 @@ const RestaurantDetail = () => {
                         <Phone className="w-4 h-4 text-blue-600" />
                       </div>
                       <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
-                        {data.restaurant_contact}
+                        {data?.restaurant_contact}
                       </p>
                     </div>
 
