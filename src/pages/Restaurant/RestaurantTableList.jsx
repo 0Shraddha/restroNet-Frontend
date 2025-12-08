@@ -126,7 +126,7 @@ const getColumns = (navigate, handleDelete) => [
 // ---------- Main Component ----------
 const RestaurantTableList = () => {
   const navigate = useNavigate();
-  const { data: restaurants, isLoading } = useGetRestaurantsQuery(); 
+  const { data: restaurants, isLoading,refetch  } = useGetRestaurantsQuery(); 
   const rows = restaurants?.data || [];
 
   // -------- Search --------
@@ -140,12 +140,13 @@ const RestaurantTableList = () => {
     useEffect(()=>{
         if(isSuccess){
             toast.success("Deleted successfully");
+            refetch();
         }
   
         if(isError){
             toast.error(error?.data?.message || "Failed to delete the restaurant!");
         }
-      },[isSuccess, isError, error]);
+      },[isSuccess, isError, error,refetch]);
   
 
     const handleDelete = async (id) => {

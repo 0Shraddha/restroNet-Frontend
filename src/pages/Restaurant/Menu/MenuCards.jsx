@@ -42,7 +42,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
               {/* Image Container */}
               <div className="relative h-48 overflow-hidden bg-gray-100">
                 <img
-                  src={item.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"}
+                  src={item.images || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"}
                   alt={item.item_name}
                   className={`w-full h-full object-cover transition-transform duration-500 ${
                     unavailable ? "grayscale" : "group-hover:scale-110"

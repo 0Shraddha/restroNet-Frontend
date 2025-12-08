@@ -5,60 +5,51 @@ import { X } from "lucide-react";
 
 const DropImageUpload = ({ multiple = true, onFileSelect, defaultImages = [] }) => {
   const [images, setImages] = useState([]);
+  const hasInit = useRef(false);
 
-  /** ------------------------------------------------
-   *  Load existing server images on mount
-   * ------------------------------------------------*/
-const hasInit = useRef(false);
+  /** LOAD DEFAULT SERVER IMAGES ON MOUNT */
+  useEffect(() => {
+    if (hasInit.current) return;
 
-useEffect(() => {
-  if (hasInit.current) return;
-  if (defaultImages?.length > 0) {
-    hasInit.current = true;
+    if (defaultImages?.length > 0) {
+      hasInit.current = true;
 
-    const formatted = defaultImages.map(url => ({
-      preview: url,
-      file: null,
-    }));
+      const formatted = defaultImages.map((url) => ({
+        preview: url,
+        file: null,
+      }));
 
-    setImages(formatted);
+      setImages(formatted);
 
-    onFileSelect?.({
-      files: [],
-      existing: defaultImages,
-    });
-  }
-}, [defaultImages]);
+      onFileSelect?.({
+        files: [],
+        existing: defaultImages,
+      });
+    }
+  }, [defaultImages]);
 
 
-
-  /** ------------------------------------------------
-   *  Send updated images to parent
-   * ------------------------------------------------*/
+  /** SEND UPDATED IMAGES TO PARENT */
   const sendToParent = (updatedImages) => {
-  const newFiles = updatedImages.filter(img => img.file).map(img => img.file);
-  const existingURLs = updatedImages.filter(img => !img.file).map(img => img.preview);
-const lastSingleRef = useRef(null);
+    const newFiles = updatedImages.filter(img => img.file).map(img => img.file);
+    const existingURLs = updatedImages.filter(img => !img.file).map(img => img.preview);
 
-if (!multiple) {
-  const single = updatedImages.find(img => img.file) || null;
-  onFileSelect(single ? single.file : null); 
+    // MULTIPLE UPLOAD MODE
+    if (multiple) {
+      onFileSelect({
+        files: newFiles,
+        existing: existingURLs,
+      });
+      return;
+    }
 
-  if (lastSingleRef.current !== single?.file) {
-    lastSingleRef.current = single?.file;
-    onFileSelect(single?.file || null);
-  }
-
-  return;
-}
-
-};
-
+    // SINGLE UPLOAD MODE
+    const single = updatedImages[0] || null;
+    onFileSelect(single ? single : null);
+  };
 
 
-  /** ------------------------------------------------
-   *  Dropzone handler — Add new images
-   * ------------------------------------------------*/
+  /** HANDLE DROP */
   const onDrop = useCallback(
     (acceptedFiles) => {
       const formattedNew = acceptedFiles.map((file) => ({
@@ -67,7 +58,6 @@ if (!multiple) {
       }));
 
       const updated = multiple ? [...images, ...formattedNew] : [formattedNew[0]];
-
       setImages(updated);
       sendToParent(updated);
     },
@@ -75,26 +65,15 @@ if (!multiple) {
   );
 
 
-  /** ------------------------------------------------
-   *  Remove an image
-   * ------------------------------------------------*/
+  /** REMOVE IMAGE */
   const removeImage = (index) => {
-    const img = images[index];
-
-    // cleanup blob memory
-    if (img.file && img.preview.startsWith("blob:")) {
-      URL.revokeObjectURL(img.preview);
-    }
-
     const updated = images.filter((_, i) => i !== index);
     setImages(updated);
     sendToParent(updated);
   };
 
 
-  /** ------------------------------------------------
-   *  Dropzone bindings
-   * ------------------------------------------------*/
+  /** DROPZONE */
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     multiple,

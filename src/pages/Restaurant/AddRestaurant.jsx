@@ -43,22 +43,19 @@ const AddRestaurant = () => {
   const [hasInitialized, setHasInitialized] = useState(false);
 
 const handleFileSelect = useCallback(({ files = [], existing = [] }) => {
-  const formattedExisting = existing
-    ?.filter(url => url)
-    .map(url => ({
-      preview: url,
-      file: null
-    })) ?? [];
+  const formattedExisting = existing.map(url => ({
+    preview: url,
+    file: null
+  }));
 
-  const formattedNew = files
-    ?.filter(f => f)
-    .map(f => ({
-      preview: URL.createObjectURL(f),
-      file: f
-    })) ?? [];
+  const formattedNew = files.map(f => ({
+    preview: URL.createObjectURL(f),
+    file: f
+  }));
 
   setImageFiles([...formattedExisting, ...formattedNew]);
 }, []);
+
 
 
 

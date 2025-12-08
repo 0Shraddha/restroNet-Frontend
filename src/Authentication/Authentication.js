@@ -124,7 +124,7 @@ if(mode === 'signup'){
   if(user === 'admin' ||  user === 'superadmin'){
           return redirect('/')
   }else{
-          return redirect('/users')
+          return redirect('/get-preferences')
 
   }
 
