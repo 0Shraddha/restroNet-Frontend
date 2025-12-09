@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "../../../components/ui/input";
 import { Checkbox } from "../../../components/ui/checkbox";
@@ -39,6 +39,7 @@ const AddMenu = () => {
 		setValue,
 	} = useForm();
 	const [searchParams, setSearchParams] = useSearchParams();
+	const formRef = useRef(null);
 	const id = searchParams.get("id");
 
 	const [selectedTags, setSelectedTags] = useState([]);
@@ -63,6 +64,9 @@ const AddMenu = () => {
 
 	useEffect(() => {
 		if (id && singleMenu?.data) {
+			if(formRef.current){
+				formRef.current.scrollIntoView({ behaviour : "smooth"})
+			}
 			setValue("item_name", singleMenu.data.item_name);
 			setValue("preparation_time", singleMenu.data.preparation_time);
 			setValue("price", singleMenu.data.price);
@@ -147,7 +151,9 @@ const AddMenu = () => {
 		<form
 			className="mx-auto p-6 space-y-10"
 			method="POST"
+			id="editForm"
 			onSubmit={handleSubmit(id ? onUpdate : onSubmit)}
+			ref={formRef}
 		>
 			<div className="bg-white rounded-xl shadow-sm p-6 mb-4">
 				<h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -426,25 +432,6 @@ const AddMenu = () => {
 				</Button>
 			</Card>
 
-			{/* {menuList.length > 0 && (
-        <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 mb-4 shadow-sm">
-          <CardContent>
-            <CardTitle className="text-lg mb-4">Preview Menu Items</CardTitle>
-            <ul className="space-y-2">
-              {menuList.map((item, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between border-b pb-2 text-gray-700"
-                >
-                  <span>{item.name}</span>
-                  <span>Rs. {item.price}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      )} */}
-
 			<Button
 				type="submit"
 				className="bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200"
@@ -453,14 +440,6 @@ const AddMenu = () => {
 			</Button>
 
 			<PreviewMenuItems />
-
-			{/* {menuItems.map((item, index) => (
-    <li key={index} className="flex justify-between items-center p-2">
-        <span>{item.name}</span>
-        <span className="mx-2 flex-1 border-b border-dotted border-gray-400"></span>
-        <span>Rs. {item.price}</span>
-    </li>
-))} */}
 		</form>
 	);
 };

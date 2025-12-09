@@ -100,7 +100,7 @@ const Dashboard = () => {
           <StatCard
             icon={Users}
             title="Total Restaurants"
-            value={"0"}
+            value={"10"}
             subtitle={`No. of active restaurants`}
             color="border-red-500"
             onClick={() => navigate('restaurant-list')}

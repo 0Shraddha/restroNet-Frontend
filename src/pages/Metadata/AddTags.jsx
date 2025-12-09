@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { set, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Input } from "../../components/ui/input";
@@ -14,6 +14,7 @@ const AddTags = () => {
 
   const [ searchParams, setSearchParams ] = useSearchParams();
   const id = searchParams.get('id');
+  const formRef = useRef(null);
 
     const {register, handleSubmit,setValue, formState: {errors}, reset} = useForm();
     const [addTag, {isLoading, isSuccess, isError, error}] = useAddTagMutation();
@@ -22,6 +23,9 @@ const AddTags = () => {
 
     useEffect(() => {
         if (id && singleTag?.data) {
+          if(formRef.current){
+            formRef.current.scrollIntoView({behaviour : "smooth"})
+          }
           setValue('name', singleTag.data.name);
         } else if (!id) {
             reset();
@@ -68,6 +72,7 @@ const AddTags = () => {
         <form 
         className="my-5"
         onSubmit={handleSubmit(id ? onUpdate : onSubmit)}
+        ref={formRef}
         >
      <h2 className="text-xl font-semibold text-gray-800 mb-3">{id ? `Update` : `Add New`} Tags</h2>
       <div className="grid gap-6 ">

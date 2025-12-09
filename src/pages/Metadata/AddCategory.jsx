@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useSearchParams } from "react-router-dom";
@@ -27,6 +27,7 @@ const AddCategory = () => {
 	} = useForm();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const id = searchParams.get("id");
+	const formRef = useRef(null);
 
 	const [updateCategory] = useUpdateCategoryMutation();
 	const [addCategory, { isLoading, isSuccess, isError, error }] =useAddCategoryMutation();
@@ -41,6 +42,9 @@ const AddCategory = () => {
 
 useEffect(() => {
     if (id && singleCategory?.data) {
+		if(formRef.current){
+			formRef.current.scrollIntoView({ behaviour : "smooth"});
+		}
         setValue("label", singleCategory.data.label);
     } else if (!id) {
         reset();
@@ -113,6 +117,8 @@ const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 				className="my-5"
 				onSubmit={handleSubmit(id ? onUpdate : onSubmit)}
 				encType="multipart/form-data"
+				id="categoryForm"
+				ref={formRef}
 			>
 				<h2 className="text-xl font-semibold text-gray-800 mb-3">
 					{id ? `Update` : `Add New`} Category
