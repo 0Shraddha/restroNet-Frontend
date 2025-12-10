@@ -4,6 +4,8 @@ import App from "../App";
 import ErrorPage from './error'
 import restaurantRoutes from "../pages/Restaurant/restaurantRoutes";
 import SignUpPage from "../pages/Registration";
+import SignUpPageUser from "../pages/UserRegistration";
+
 import { action as authAction } from "../Authentication/Authentication";
 import { logout } from "../util/logout";
 import Dashboard from "../pages/Admin/Dashboard";
@@ -24,6 +26,11 @@ const router = createBrowserRouter([
             {
                 path: '/auth',
                 element: <SignUpPage />,
+                action: authAction
+            },
+             {
+                path: '/consumer',
+                element: <SignUpPageUser />,
                 action: authAction
             },
             {
