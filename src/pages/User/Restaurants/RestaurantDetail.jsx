@@ -244,6 +244,7 @@ const handleUpdate = async (id, updatedData) => {
       <div className="mb-4">
         <p className="text-sm font-medium text-gray-700 mb-2">Cuisines</p>
         <div className="flex flex-wrap gap-2">
+          {data.cuisine}
          {Array.isArray(data?.cuisine) &&
   data.cuisine.map((c, i) => (
     <span
