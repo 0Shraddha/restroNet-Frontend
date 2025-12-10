@@ -109,7 +109,7 @@ const {location : userLocation, error} = useUserLocation();
 
       <MapContainer
         center={[27.6932347, 85.3247236]}
-         zoom={0}
+         zoom={12}
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer

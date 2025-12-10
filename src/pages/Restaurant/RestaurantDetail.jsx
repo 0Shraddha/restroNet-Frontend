@@ -1,340 +1,389 @@
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useGetRestaurantByIdQuery } from "../../state/restaurants/restuarantApiSlice";
-import { Globe, Mail, Phone } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { Card, CardContent } from "../../components/ui/card";
+import { MapPin, Phone, ChevronLeft, ChevronRight, Clock } from "lucide-react";
+import PreviewMenuItems from "../Restaurant/Menu/PreviewMenuItems";
+import GoogleMapComponent from "../../components/Map";
+import ReviewCard from "../User/Review/Review";
+import ReviewForm from "../User/Review/ReviewForm"; // <-- correct name
+
+import {
+  useGetReviewsQuery,
+  useGetVenueReviewsQuery,
+  useUpdateReviewMutation,
+  useDeleteReviewMutation,
+  useAddReviewMutation
+} from "../../state/restaurants/reviewApi";
+import { toast } from "react-toastify";
 
 const RestaurantDetail = () => {
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [confirmAction, setConfirmAction] = useState(null);
+  // ➤ New state for Tabs
+  const [activeTab, setActiveTab] = useState("overview");
 
-  const { data: apiRestaurant, isLoading, isError } = useGetRestaurantByIdQuery(id);
+  const { data: restaurantData, isLoading } = useGetRestaurantByIdQuery(id);
+  const { data: reviews, refetch: refetchReviews } = useGetReviewsQuery();
+  
 
-  if (isLoading) return <p className="text-center">Loading...</p>;
-  if (isError) return <p className="text-center text-red-500">Failed to load restaurant.</p>;
+  const [updateReview] = useUpdateReviewMutation();
+  const [deleteReview] = useDeleteReviewMutation();
+  const [addReview] = useAddReviewMutation(); 
+  const [editingReview, setEditingReview] = useState(null);
 
-  // Use API data if available, otherwise use dummy data
-  const restaurant = apiRestaurant || {
-    id: 1,
-    name: "La Pinoz Pizza",
-    email: "lapinoz@example.com",
-    phone: "9800000000",
-    cuisine: "Italian",
-    type: "Veg & Non-Veg",
-    location: "Kathmandu",
-    logo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=120&h=120&fit=crop&crop=center",
-    description: "La Pinoz is known for its authentic Italian pizzas, fresh ingredients, and cozy ambiance. A perfect spot for pizza lovers!",
-    website: "www.lapinozpizza.com",
-    rating: 4.5,
-    reviews: 234,
-    businessHours: {
-      weekdays: "10:00 AM - 10:00 PM",
-      weekends: "11:00 AM - 11:00 PM"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop"
-    ],
-    owner: {
-      name: "Rajesh Sharma",
-      email: "rajesh.sharma@gmail.com",
-      phone: "+977-9841234567",
-      address: "Thamel, Kathmandu, Nepal",
-      experience: "15+ years in restaurant business",
-      photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face"
-    },
-    documents: [
-      { name: "Business License", type: "license", status: "verified" },
-      { name: "Food Safety Certificate", type: "safety", status: "verified" },
-      { name: "Tax Registration", type: "tax", status: "pending" }
-    ],
-    timeline: [
-      { event: "Application Submitted", date: "Dec 15, 2024 - 2:30 PM", status: "completed" },
-      { event: "Documents Uploaded", date: "Dec 15, 2024 - 3:15 PM", status: "completed" },
-      { event: "Under Review", date: "Dec 16, 2024 - 9:00 AM", status: "current" }
-    ],
-    status: "pending"
+
+useEffect(() => {
+}, [reviews]);
+
+
+const handleDelete = async (id) => {
+  if (!window.confirm("Delete this review?")) return;
+
+  try {
+    await deleteReview(id).unwrap();
+    refetchReviews();
+    toast.success("Review successfully deleted!")
+  } catch (error) {
+    console.error("Delete error:", error);
+  }
+};
+
+
+const handleUpdate = async (id, updatedData) => {
+  try {
+    await updateReview({ id, data: updatedData }).unwrap();
+    refetchReviews();
+  } catch (err) {
+    console.error("Update error:", err);
+  }
+};
+
+
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading restaurant details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!restaurantData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-gray-800 font-semibold">No restaurant found.</p>
+          <p className="text-gray-600 mt-2">Please check the restaurant ID and try again.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const data = restaurantData?.data;
+  console.log({data});
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === data.images.length - 1 ? 0 : prev + 1
+    );
   };
 
-  const handleApprove = () => {
-    setConfirmAction({
-      title: "Approve Restaurant",
-      message: "Are you sure you want to approve this restaurant application? This action will activate their account.",
-      action: () => {
-        alert("Restaurant approved successfully! The owner will be notified via email.");
-        setShowConfirmModal(false);
-      }
-    });
-    setShowConfirmModal(true);
+  const prevImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? data.images.length - 1 : prev - 1
+    );
   };
 
-  const handleReject = () => {
-    setConfirmAction({
-      title: "Reject Restaurant",
-      message: "Are you sure you want to reject this restaurant application? Please provide feedback to the owner.",
-      action: () => {
-        alert("Restaurant application rejected. Please send feedback to the owner.");
-        setShowConfirmModal(false);
-      }
-    });
-    setShowConfirmModal(true);
-  };
 
-  const viewDocument = (docType) => {
-    alert(`Opening ${docType} document...`);
-  };
-    console.log(restaurant, "restaurnat.......")
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-      <div className=" px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => navigate(-1)} 
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
-            >
-              ← Back to Applications
-            </button>
-            <div className="h-6 w-px bg-gray-300"></div>
-            <h1 className="text-3xl font-bold text-gray-800">Restaurant Verification</h1>
-          </div>
-          <div className="flex gap-3">
-            <button 
-              onClick={handleApprove}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
-            >
-              ✓ Approve
-            </button>
-            <button 
-              onClick={handleReject}
-              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
-            >
-              ✕ Reject
-            </button>
-          </div>
-        </div>
+    <div className="min-h-screen">
+      <div className="p-4 md:p-8">
+         {/* IMAGE CAROUSEL */}
+            <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+              <div className="relative h-85 bg-gray-900">
+                {/* Image */}
+                {data.images?.length > 0 ? (
+                  <>
+                    <img
+                      src={data.images[currentImageIndex]}
+                      alt={`${data.restaurant_name}`}
+                      className="w-full h-full object-cover"
+                    />
 
-        {/* Status Badge */}
-        <div className="mb-6">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-            🕒 Pending Verification
-          </span>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
+                    {/* Arrows */}
+                    {data.images.length > 1 && (
+                      <>
+                        <button
+                          onClick={prevImage}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
+                        >
+                          <ChevronLeft className="w-6 h-6 text-gray-800" />
+                        </button>
+
+                        <button
+                          onClick={nextImage}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
+                        >
+                          <ChevronRight className="w-6 h-6 text-gray-800" />
+                        </button>
+                      </>
+                    )}
+
+                    {/* Image indicators */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                      {data.images.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            index === currentImageIndex
+                              ? "bg-white w-8"
+                              : "bg-white/50 hover:bg-white/75"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                    <p className="text-gray-500">No images available</p>
+                  </div>
+                )}
+
+                {/* Logo */}
+                {data.logo && (
+                  <div className="absolute top-6 left-6 bg-white rounded-2xl p-2 shadow-xl">
+                    <img
+                      src={data.logo}
+                      className="w-20 h-20 object-cover rounded-xl"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+     
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 my-5">
+          {/* LEFT COLUMN */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Restaurant Basic Info */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="flex items-start gap-6 mb-6">
-                <img 
-                  src={restaurant.logo} 
-                  alt={`${restaurant.name} logo`} 
-                  className="w-24 h-24 rounded-xl object-cover border-2 border-gray-200"
-                />
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-2">{restaurant.name}</h2>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                      {restaurant.cuisine}
-                    </span>
-                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                      {restaurant.type}
-                    </span>
-                    <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
-                      Fast Food
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-4 text-gray-600">
-                    <div className="flex items-center gap-1">
-                      📍 <span>{restaurant.location}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      ⭐ <span>{restaurant.rating} ({restaurant.reviews} reviews)</span>
-                    </div>
-                  </div>
+
+           
+
+            {/* ⭐⭐⭐ TAB SECTION START ⭐⭐⭐ */}
+            <div className="bg-white rounded-3xl shadow-lg border-0">
+              <div className="px-6">
+                <div className="flex gap-6 overflow-x-auto py-4">
+
+                  <button
+                    onClick={() => setActiveTab("overview")}
+                    className={`pb-2 font-bold text-lg ${
+                      activeTab === "overview"
+                        ? "text-red-600 border-b-2 border-red-600"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    Overview
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab("menu")}
+                    className={`pb-2 font-bold text-lg ${
+                      activeTab === "menu"
+                        ? "text-red-600 border-b-2 border-red-600"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    Menu
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab("reviews")}
+                    className={`pb-2 font-bold text-lg ${
+                      activeTab === "reviews"
+                        ? "text-red-600 border-b-2 border-red-600"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    Reviews
+                  </button>
+
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-3">Contact Information</h3>
-                  <div className="space-y-2 text-gray-600">
-                    <div className="flex items-center gap-2">
-                       <div className="flex items-center justify-between gap-2"> <Mail size={14}/> {restaurant.email}</div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                       <div className="flex items-center justify-between gap-2"> <Phone size={14}/> {restaurant.phone}</div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="flex items-center justify-between gap-2"> <Globe size={14}/> {restaurant.website}</div>
+              {/* TAB CONTENT */}
+              <CardContent className="p-6">
 
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-3">Business Hours</h3>
-                  <div className="space-y-1 text-gray-600 text-sm">
-                    <div className="flex justify-between">
-                      <span>Monday - Friday</span>
-                      <span>{restaurant.businessHours?.weekdays}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Saturday - Sunday</span>
-                      <span>{restaurant.businessHours?.weekends}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+               {activeTab === "overview" && (
+  <div className="space-y-6">
 
-              {/* Description */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Restaurant Description</h3>
-              <p className="text-gray-600 leading-relaxed">{restaurant.description}</p>
-            </div>
+    {/* Restaurant Name */}
+    <div>
+      <h2 className="text-3xl font-bold text-gray-800">
+        {data.restaurant_name}
+      </h2>
+      <p className="text-gray-600 mt-2 leading-relaxed">
+        {data.description}
+      </p>
+    </div>
 
-            {/* Restaurant Images */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Restaurant Images</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {restaurant.images?.map((image, index) => (
-                  <img 
-                    key={index}
-                    src={image} 
-                    alt={`Restaurant view ${index + 1}`} 
-                    className="w-full h-32 object-cover rounded-lg border border-gray-200 hover:scale-105 transition-transform cursor-pointer"
-                    onClick={() => setSelectedImage(image)}
-                  />
-                ))}
-              </div>
-            </div>
-          
-          </div>
+    {/* Key Highlights */}
+    <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+      <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+        <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+        Highlights
+      </h3>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Owner Details */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Owner Information</h3>
-              <div className="flex items-center gap-4 mb-4">
-                <img 
-                  src={restaurant.owner?.photo} 
-                  alt="Owner Photo" 
-                  className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
-                />
-                <div>
-                  <h4 className="font-semibold text-gray-800">{restaurant.owner?.name}</h4>
-                  <p className="text-gray-600 text-sm">Restaurant Owner</p>
-                </div>
-              </div>
-              <div className="space-y-3 text-sm">
-                <div>
-                  <span className="font-medium text-gray-700">Email:</span>
-                  <p className="text-gray-600">{restaurant.owner?.email}</p>
-                </div>
-                <div>
-                  <span className="font-medium text-gray-700">Phone:</span>
-                  <p className="text-gray-600">{restaurant.owner?.phone}</p>
-                </div>
-                <div>
-                  <span className="font-medium text-gray-700">Address:</span>
-                  <p className="text-gray-600">{restaurant.owner?.address}</p>
-                </div>
-                <div>
-                  <span className="font-medium text-gray-700">Experience:</span>
-                  <p className="text-gray-600">{restaurant.owner?.experience}</p>
-                </div>
-              </div>
-            </div>
+      {/* Cuisine */}
+      <div className="mb-4">
+        <p className="text-sm font-medium text-gray-700 mb-2">Cuisines</p>
+        <div className="flex flex-wrap gap-2">
+          {data.cuisine}
+         {Array.isArray(data?.cuisine) &&
+  data.cuisine.map((c, i) => (
+    <span
+      key={i}
+      className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm border border-red-200"
+    >
+      {c}
+    </span>
+  ))}
 
-            {/* Documents */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Verification Documents</h3>
-              <div className="space-y-3">
-                {restaurant.documents?.map((doc, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      📄 <span className="text-sm font-medium">{doc.name}</span>
-                    </div>
-                    <button 
-                      onClick={() => viewDocument(doc.name)}
-                      className="text-blue-600 hover:text-blue-800 text-sm"
-                    >
-                      View
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+        </div>
+      </div>
 
-            {/* Application Timeline */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Application Timeline</h3>
-              <div className="space-y-4">
-                {restaurant.timeline?.map((item, index) => (
-                  <div key={index} className="flex gap-3">
-                    <div className={`w-2 h-2 rounded-full mt-2 ${
-                      item.status === 'completed' ? 'bg-green-500' : 
-                      item.status === 'current' ? 'bg-yellow-500' : 'bg-gray-300'
-                    }`}></div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-800">{item.event}</p>
-                      <p className="text-xs text-gray-500">{item.date}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      {/* Rating & Popularity Example (optional) */}
+      <div className="flex items-center gap-6 mt-3">
+        <div className="flex items-center gap-2">
+          <span className="text-yellow-500 text-xl">★</span>
+          <span className="font-semibold">{data?.avgRating || "4.5"}</span>
         </div>
 
-        {/* Image Modal */}
-        {selectedImage && (
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" 
-            onClick={() => setSelectedImage(null)}
-          >
-            <div className="max-w-4xl max-h-full p-4">
-              <img 
-                src={selectedImage} 
-                alt="Full size view" 
-                className="max-w-full max-h-full object-contain rounded-lg"
-              />
-            </div>
-          </div>
-        )}
+        <div className="text-gray-500 text-sm">
+          {data?.totalReviews || "120+"} Reviews
+        </div>
+      </div>
+    </div>
 
-        {/* Confirmation Modal */}
-        {showConfirmModal && confirmAction && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 max-w-md mx-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">{confirmAction.title}</h3>
-              <p className="text-gray-600 mb-6">{confirmAction.message}</p>
-              <div className="flex gap-3 justify-end">
-                <button 
-                  onClick={() => setShowConfirmModal(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button 
-                  onClick={confirmAction.action}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                >
-                  Confirm
-                </button>
+    {/* About Card */}
+    <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+        About This Restaurant
+      </h3>
+      <p className="text-gray-700 leading-relaxed text-sm">
+        {data?.description ||
+          "Experience a delightful fusion of flavors with exceptional ambience and top-notch service."}
+      </p>
+    </div>
+  </div>
+)}
+
+                {activeTab === "menu" && (
+                 <>
+                  <PreviewMenuItems />
+                  </>
+                )}
+
+                {/* {activeTab === "offers" && (
+                <OffersCard />
+                )} */}
+
+                {activeTab === "reviews" && (
+                  <div className="text-gray-600">
+                    <p className="text-gray-800 text-end"><strong>Total</strong> : {reviews.count}</p>
+                   {reviews?.data.map((item, i) => (
+  <ReviewCard
+    key={i}
+    reviewData={item}
+    onDelete={() => handleDelete(item._id)}
+    onEdit={() => setEditingReview(item)}
+  />
+))}
+
+{editingReview && (
+  <ReviewForm
+    mode="edit"
+    review={editingReview}
+    onSubmitForm={(updatedData) =>
+      handleUpdate(editingReview._id, updatedData)
+    }
+  />
+)}
+
+{!editingReview && (
+  <ReviewForm
+    mode="add"
+    onSubmitForm={(data) => addReview(data)}
+  />
+)}
+
+
+                  </div>
+                )}
+              </CardContent>
+            </div>
+            {/* ⭐⭐⭐ TAB SECTION END ⭐⭐⭐ */}
+
+          </div>
+
+           {/* RIGHT SIDEBAR */}
+          <aside className="lg:sticky lg:top-8 h-fit">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Info</h3>
+
+              {/* LOCATION */}
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="bg-red-100 p-2 rounded-lg">
+                      <MapPin className="w-4 h-4 text-red-600" />
+                    </div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
+                      {/* {data?.restaurant_location} */}
+                      {data?.restaurant_name}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 mb-3">
+                      <div className="bg-blue-100 p-2 rounded-lg">
+                        <Phone className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
+                        {data?.restaurant_contact}
+                      </p>
+                    </div>
+
+                  <div className="flex items-center gap-2 mb-3">
+                      <div className="bg-green-100 p-2 rounded-lg">
+                        <Clock className="w-4 h-4 text-green-600" />
+                      </div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
+                        11:00 AM – 8:00 PM
+                      </p>
+                    </div>
+
+                  <p className="text-sm text-slate-800 font-medium capitalize">
+                  </p>
+
+                  <div className="h-48 w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 flex flex-col justify-center items-center">
+                    <GoogleMapComponent restaurants={data} />
+                    {/* <MapPin className="w-10 h-10 text-slate-400 mb-2" />  
+                    <p className="text-xs text-slate-500">
+                      Lat: {data.lat}, Lon: {data.long}
+                    </p> */}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          </aside>
+
+         
+        </div>
       </div>
     </div>
   );

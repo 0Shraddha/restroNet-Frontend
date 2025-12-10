@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Star, Clock, Flame, ChefHat, Edit2, Trash2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const MenuCards = ({ menu, currency = "Rs" }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [hideButtons, setHideButtons] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+
+useEffect(() => {
+  if (location.pathname === "/restaurant-detail") {
+    setHideButtons(false);
+  } else {
+    setHideButtons(true);
+  }
+}, [location.pathname]);
+console.log(location.pathname);
 
   // Extract unique categories (if you have category field)
   const categories = ["all", ...new Set(menu?.data?.map(item => item?.category).filter(Boolean))];
@@ -21,6 +32,8 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
 	const handleDelete = (id) => {
 		console.log("deleting : ", id);
 	};
+
+  
 
   return (
     <div className="px-4 pb-8 pt-3">
@@ -138,6 +151,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                 )}
 
                  {/* ACTION BUTTONS */}
+            {!hideButtons &&
             <div className="flex gap-2 pt-2 border-t border-gray-100">
               <button
                type="button"
@@ -157,6 +171,7 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
                 Delete
               </button>
             </div>
+        }
               </div>
             </div>
           );
