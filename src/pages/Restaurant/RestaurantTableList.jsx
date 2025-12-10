@@ -51,11 +51,11 @@ const getColumns = (navigate, handleDelete) => [
     sortable: true,
     grow: 2,
   },
-  {
-    name: "Location",
-    selector: row => row.restaurant_location,
-    sortable: true,
-  },
+  // {
+  //   name: "Location",
+  //   selector: row => row.restaurant_location,
+  //   sortable: true,
+  // },
   {
     name: "Contact",
     selector: row => row.restaurant_contact || "N/A",
@@ -163,7 +163,7 @@ const RestaurantTableList = () => {
     <div>
 
       {/* Floating Section Card */}
-      <div className="backdrop-blur-sm bg-white/70  shadow-xl rounded-2xl p-8">
+      <div className="backdrop-blur-sm bg-white/70  shadow-xl rounded-2xl px-4 py-8">
 
         {/* Search */}
         <div className="relative w-full">
@@ -178,7 +178,7 @@ const RestaurantTableList = () => {
         </div>
 
       {/* Data Table Card */}
-      <div className="p-6">
+      <div className="py-6">
         <DataTable
         columns={getColumns(navigate, handleDelete)}
           data={filteredRows}

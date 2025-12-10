@@ -1,38 +1,50 @@
-import { ToastContainer } from 'react-toastify';
-import './App.css';
-import SidebarLayout from './layout/sidebar/Sidebar';
-import { Outlet, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-
+import { ToastContainer } from "react-toastify";
+import "./App.css";
+import SidebarLayout from "./layout/sidebar/Sidebar";
+import { Outlet, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 function App() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
 
-  const shouldHideSidebar = ['/auth', '/users', '/get-preferences', '/restaurant/'].some(path =>
-    location.pathname.includes(path)
-  );
+  const shouldHideSidebar = [
+    "/auth",
+    "/users",
+    "/get-preferences",
+    "/restaurant/",
+  ].some((path) => location.pathname.includes(path));
+
+  let role = "";
+  if (localStorage.getItem("user")) {
+    role = JSON.parse(localStorage.getItem("user"))?.role;
+  }
 
   return (
-      <div className="flex h-full w-full">
-        <ToastContainer position="bottom-right" autoClose={3000} />
+    <div className="flex h-screen w-full overflow-hidden">
 
-        {/* Sidebar */}
-        {!shouldHideSidebar && (
-        <aside className='sticky   top-0 left-0 h-screen'>
-          <SidebarLayout
-            collapsed={collapsed}
-            setCollapsed={setCollapsed}
-          />
+      {/* SIDEBAR */}
+      {!shouldHideSidebar && role !== "consumer" && (
+        <aside
+          className={`
+            h-full flex-shrink-0 overflow-hidden border-r bg-white
+            transition-all duration-300
+          `}
+          style={{
+            width: collapsed ? "80px" : "240px", // <-- HARD OVERRIDE (cannot be ignored)
+          }}
+        >
+          <SidebarLayout collapsed={collapsed} setCollapsed={setCollapsed} />
         </aside>
+      )}
 
-        )}
+      {/* MAIN CONTENT */}
+      <main className="flex-1 h-full overflow-y-auto bg-gray-100">
+        <ToastContainer position="bottom-right" autoClose={3000} />
+        <Outlet />
+      </main>
 
-        {/* Main Content */}
-        <main className="flex-1 bg-gray-100 transition-all duration-300">
-          <Outlet />
-        </main>
-      </div>
+    </div>
   );
 }
 

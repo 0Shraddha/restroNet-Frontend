@@ -56,7 +56,7 @@ const RestaurantList = () => {
           <Link to="/add-restaurant">
             <button className="bg-gradient-to-r from-red-500 to-red-400 text-white px-6 py-3 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2">
               <Plus size={20} />
-              Add New Restaurant
+              Add
             </button>
           </Link>
         </div>

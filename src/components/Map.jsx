@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { Icon } from "leaflet";
@@ -53,6 +54,7 @@ function distanceInKm(lat1, lon1, lat2, lon2) {
 }
 
 export default function GoogleMapComponent({ restaurants = [] }) {
+  const navigate = useNavigate()
 const {location : userLocation, error} = useUserLocation();
 
   const [showNearby, setShowNearby] = React.useState(false);
@@ -151,7 +153,7 @@ const {location : userLocation, error} = useUserLocation();
 								icon={customIcon}
 							>
 								<Popup>
-									<div style={{ maxWidth: 200 }}>
+									<div className="space-y-3" style={{ maxWidth: 200 }}>
 										{r.logo && (
 											<img
 												src={r.logo}
@@ -173,7 +175,12 @@ const {location : userLocation, error} = useUserLocation();
 											<Star className="w-3 h-3 me-2 text-yellow-500 fill-yellow-500" />{" "}
 											<span>4.5</span>
 										</div>
-										{/* {r.restaurant_location && <p>{r.restaurant_location}</p>} */}
+                    	<button
+											onClick={() => navigate(`/restaurant/?id=${r._id}`)}
+											className="bg-red-700  text-white mt-auto px-4 py-2 rounded-lg hover:bg-red-500 transition font-medium shadow cursor-pointer"
+										>
+											View Details
+										</button>
 									</div>
 								</Popup>
 							</Marker>

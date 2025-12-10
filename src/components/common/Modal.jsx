@@ -1,8 +1,8 @@
 // components/Modal.js
 export default function Modal({ children, onClose }) {
   return (
-    <div className="fixed inset-0 z-[9999]  bg-black/40 backdrop-blur-sm flex justify-center items-center">
-      <div className="bg-white w-full max-w-2xl rounded-xl shadow-lg p-6 relative my-4">
+    <div className="fixed inset-0 z-[9999]  bg-black/40 backdrop-blur-sm flex justify-center items-center  h-[100%] ">
+      <div className="bg-white w-full max-w-2xl rounded-xl shadow-lg p-6 relative my-4 h-[100%] overflow-scroll">
         
         {/* CLOSE BUTTON */}
         <button

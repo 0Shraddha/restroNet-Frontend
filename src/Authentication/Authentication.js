@@ -105,6 +105,10 @@ const contentType = response.headers.get('content-type') || '';
 let responseData;
 if (contentType.includes('application/json')) {
   responseData = await response?.json();
+  console.log(responseData)
+  if(mode === 'login'){
+    localStorage.setItem("user", JSON.stringify(responseData.user))
+  }
   toast.success(responseData.message || 'User registered successfully!');
   localStorage.setItem('restaurantUser', responseData.token);
 
@@ -117,8 +121,13 @@ if(mode === 'signup'){
           return redirect('/auth?mode=login')
 
 }else{
-  const user = 'user';
-  if(user === 'admin' ||  user === 'superadmin'){
+  let role = ""
+	if(localStorage.getItem("user")){
+	role =JSON.parse(localStorage.getItem("user"))?.role
+
+	}
+   
+  if(role === 'user' ||  user === 'superadmin'){
           return redirect('/')
   }else{
           return redirect('/get-preferences')
