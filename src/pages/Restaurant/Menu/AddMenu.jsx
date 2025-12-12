@@ -17,6 +17,7 @@ import { Button } from "../../../components/ui/button";
 import PreviewMenuItems from "./PreviewMenuItems";
 import {
 	useAddMenuMutation,
+	useAddRestaurantMenuMutation,
 	useGetMenuByIdQuery,
   useUpdateMenuMutation
 } from "../../../state/restaurants/menuApiSlice";
@@ -54,8 +55,8 @@ const AddMenu = () => {
 	};
 
 	const [updateMenu] = useUpdateMenuMutation();
-	const [addMenu, { isLoading, isSuccess, isError, error }] =
-		useAddMenuMutation();
+	// const [addMenu, { isLoading, isSuccess, isError, error }] =useAddMenuMutation();
+	const [addRestaurantMenu, {isLoading, isSuccess, isError, error}] = useAddRestaurantMenuMutation();
 	const { data: categoriesData } = useGetCategoriesQuery();
 	const { data: allTags } = useGetTagsQuery();
 	const { data: singleMenu } = useGetMenuByIdQuery(id);
@@ -118,7 +119,7 @@ const AddMenu = () => {
 		formData.append("tag", JSON.stringify(selectedTags.map((c) => c.name)));
 		console.log({ data });
 		try {
-			await addMenu(formData).unwrap();
+			await addRestaurantMenu({id: data?.venue_id, formData}).unwrap();
 			setSubmitted(true);
 			reset();
 		} catch (err) {

@@ -27,6 +27,15 @@ export const menuApiSlice = createApi({
                 invalidatesTags: ["Menu"], //InvalidatesTags - Used in mutations (POST, PUT, DELETE).
             }),
 
+            addRestaurantMenu: builder.mutation({
+                query: ({id, formData}) => ({
+                    url: `/menu/restaurant/${id}`,
+                    method: 'POST',
+                    body: formData,
+                }),
+                invalidatesTags: ["Menu"], //InvalidatesTags - Used in mutations (POST, PUT, DELETE).
+            }),
+
             updateMenu: builder.mutation({
                 query: ({data, id}) => ({
                     url : `/menu/${id}`,
@@ -53,4 +62,4 @@ export const menuApiSlice = createApi({
     }
 })
 
-export const { useGetMenuQuery, useGetMenuByIdQuery, useAddMenuMutation, useUpdateMenuMutation } = menuApiSlice
+export const { useGetMenuQuery, useGetMenuByIdQuery, useAddMenuMutation, useAddRestaurantMenuMutation, useUpdateMenuMutation } = menuApiSlice
