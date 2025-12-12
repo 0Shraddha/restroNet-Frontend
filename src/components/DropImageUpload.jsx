@@ -43,8 +43,11 @@ const DropImageUpload = ({ multiple = true, onFileSelect, defaultImages = [] }) 
       return;
     }
 
+    console.log("before single")
     // SINGLE UPLOAD MODE
     const single = updatedImages[0] || null;
+    console.log("after single", single)
+
     onFileSelect(single ? single : null);
   };
 
@@ -83,7 +86,7 @@ const DropImageUpload = ({ multiple = true, onFileSelect, defaultImages = [] }) 
 
   return (
     <div className="space-y-4">
-      <Label>Upload {multiple ? "Images" : "Image"}</Label>
+      {/* <Label>Upload {multiple ? "Images" : "Image"}</Label> */}
 
       <div
         {...getRootProps()}

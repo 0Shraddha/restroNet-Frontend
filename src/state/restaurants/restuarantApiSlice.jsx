@@ -8,7 +8,17 @@ export const restaurantApiSlice = createApi({
     endpoints: (builder) => {
         return {
             getRestaurants : builder.query({
-                query: () => '/venue'
+                query: ({ _perPage, _page, _search = "", _category, _genre } = {}) => ({
+        url: "/venue",
+        method: "GET",
+        params: {
+          _perPage,
+          _page,
+          _search,
+          _category,
+          _genre,
+        },
+      })
             }),
 
             getRestaurantById : builder.query({

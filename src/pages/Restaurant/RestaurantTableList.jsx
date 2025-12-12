@@ -15,18 +15,19 @@ const customStyles = {
   },
   headCells: {
     style: {
-      backgroundColor: "#F9FAFB",
-      fontWeight: "700",
+      fontWeight: "600",
       fontSize: "16px",
-      color: "#374151",
+      color: "#001F3D",
       letterSpacing: "0.3px",
-      textTransform: "uppercase",
+      textTransform: "Capitalize",
     },
   },
   cells: {
     style: {
       fontSize: "16px",
       color: "#374151",
+      marginTop: '24px',
+      marginBottom: '24px'
     },
   },
 };
@@ -74,7 +75,7 @@ const getColumns = (navigate, handleDelete) => [
           cuisines.map((name, index) => (
             <span
               key={index}
-              className="px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs"
+              className="px-2 py-1 rounded-xs bg-[#E6E6E6] shadow-sm text-[#001F3D] bg-red-100 font-['sora'] text-xs"
             >
               {name}
             </span>
@@ -87,32 +88,32 @@ const getColumns = (navigate, handleDelete) => [
   },
 },
   {
-    name: "Menu Manager",
+    name: "Manage Menu",
     cell: row => (
       <button
         onClick={() => navigate(`/menu-manager/?id=${row._id}`)}
-        className="px-4 py-2 rounded-lg bg-indigo-500 text-white shadow hover:bg-indigo-600 transition-all"
+        className="px-4 py-2 rounded-sm cursor-pointer text-sm font-['poppins'] font-normal bg-[#001F3D] text-white shadow hover:bg-[#001F3D]/80 cursor-pointer transition-all"
       >
         Manage
       </button>
     ),
-    width: "200px",
+    width: "160px",
   },
   {
     name: "Actions",
     cell: row => (
      <div className="flex gap-2">
       <button 
-        className="px-4 py-2 rounded-lg bg-gray-500 text-white shadow hover:bg-gray-600 transition-all"
+        className="px-4 py-2 rounded-sm cursor-pointer text-sm font-['poppins'] font-normal bg-[#F7B980] text-white shadow hover:bg-[#F7B980]/80 transition-all"
         onClick={() => navigate(`/restaurant-detail/?id=${row._id}`)}>View</button>
       <button
-        className="px-4 py-2 rounded-lg bg-yellow-500 text-white shadow hover:bg-yellow-600 transition-all"
+        className="px-4 py-2 rounded-sm cursor-pointer text-sm font-['poppins'] font-normal bg-yellow-500 text-white shadow hover:bg-yellow-400 transition-all"
         onClick={() => navigate(`/add-restaurant/?id=${row._id}`)}
       >
         Edit
       </button>
       <button
-        className="px-4 py-2 rounded-lg bg-red-500 text-white shadow hover:bg-red-600 transition-all"
+        className="px-4 py-2 rounded-sm cursor-pointer text-sm font-['poppins'] font-normal bg-red-500 text-white shadow hover:bg-red-600 transition-all"
         onClick={() => handleDelete(row._id)}
       >
         Delete

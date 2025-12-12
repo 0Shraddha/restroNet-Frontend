@@ -51,14 +51,11 @@ const DataTable = ({
 				 
 			</div>
 			<div className="flex gap-2 mb-4">
-				{/* {searchArray.includes(searchFor) && <Search tableFor={searchFor} />}
-				{searchArray.includes(categoryType) && <Categories />}
-				{searchArray.includes(filterData) && <Filter />}
-				{searchArray.includes(sortData) && <Sort />} */}
+			
 			</div>
 			<div className=" border-1 border-gray-200 rounded-t-md">
-				<table className="min-w-full divide-y rounded-md divide-gray-200 font-satoshi font-satoshi overflow-hidden ">
-					<thead className="font-satoshi-bold">
+				<table className="min-w-full divide-y rounded-md divide-gray-200 overflow-hidden ">
+					<thead className="font-['nunito'] ">
 						{table.getHeaderGroups().map((headerGroup) => (
 							<tr key={headerGroup.id}>
 								{headerGroup.headers.map((header, index) => (

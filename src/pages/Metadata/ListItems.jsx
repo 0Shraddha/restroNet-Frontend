@@ -115,7 +115,7 @@ const ListItem = ({ type }) => {
 				<div className="flex-1">
 					{type === "categories" && (
 						<>
-						<h2 className="text-end mb-3 font-semibold">Total Categories : <span className="text-lg font-semibold text-red-800 bg-red-100 py-1 px-3">{category?.count > 0 ? category?.count : 0}</span></h2>
+						<h2 className="text-end mb-3 font-semibold">Total Categories : <span className="text-base font-['nunito'] font-semibold rounded-sm text-white bg-red-400 py-1 px-3">{category?.count > 0 ? category?.count : 0}</span></h2>
 							{isLoading && <p>Loading...</p>}
 
 							{!isLoading &&
@@ -130,7 +130,7 @@ const ListItem = ({ type }) => {
 												alt={cat.label}
 												className="w-10 h-10 rounded-md object-cover"
 											/>
-											<span className="font-medium">{cat.label}</span>
+											<span className="font-medium capitalize font-['sora']">{cat.label}</span>
 										</div>
 										<div className="flex space-x-2">
 											<button

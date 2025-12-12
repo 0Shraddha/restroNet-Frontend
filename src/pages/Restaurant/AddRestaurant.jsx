@@ -119,7 +119,7 @@ setImageFiles(
           // Pre-fill tags
           if (singleRestaurant.data.tags) {
             const matchedTags = allTags?.data.filter(t => 
-              singleRestaurant.data.tags.includes(t.name)
+              singleRestaurant.data?.tags?.includes(t.name)
             );
             setSelectedTags(matchedTags || []);
           }
@@ -210,8 +210,13 @@ if (logoFile?.file instanceof File) {
   formData.append("location", JSON.stringify(locationObject))
   console.log(selectedTags, selectedCuisines, "sele")
 
-  formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
-  formData.append("tags", JSON.stringify(selectedTags.map(c => c.name)));
+  // formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
+  selectedCuisines.map(c => c.name).forEach(cuisineName => {
+    formData.append("cuisine", cuisineName);
+});
+ selectedTags.map(c => c.name).forEach(tagName => {
+    formData.append("tags", tagName);
+});
 
   if (imageFiles.length > 0) {
     imageFiles.forEach(file => {

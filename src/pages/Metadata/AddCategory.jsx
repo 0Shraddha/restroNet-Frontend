@@ -5,10 +5,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import { Input } from "../../components/ui/input";
-import {
-	Card,
-	CardContent
-} from "../../components/ui/card";
+import { Card, CardContent } from "../../components/ui/card";
 import DropImageUpload from "../../components/DropImageUpload";
 import { Button } from "../../components/ui/button";
 import {
@@ -30,29 +27,31 @@ const AddCategory = () => {
 	const formRef = useRef(null);
 
 	const [updateCategory] = useUpdateCategoryMutation();
-	const [addCategory, { isLoading, isSuccess, isError, error }] =useAddCategoryMutation();
-	const { data: singleCategory, isLoading: singleCategoryLoading } =useGetCategoryByIdQuery({ id });
+	const [addCategory, { isLoading, isSuccess, isError, error }] =
+		useAddCategoryMutation();
+	const { data: singleCategory, isLoading: singleCategoryLoading } =
+		useGetCategoryByIdQuery({ id });
 
 	const [iconFile, setIconFile] = useState(null);
 
 	const handleFileChange = (e) => {
 		const file = e.target.files[0];
+		console.log(file, "file");
 		setIconFile(file);
 	};
 
-useEffect(() => {
-    if (id && singleCategory?.data) {
-		if(formRef.current){
-			formRef.current.scrollIntoView({ behaviour : "smooth"});
+	useEffect(() => {
+		if (id && singleCategory?.data) {
+			if (formRef.current) {
+				formRef.current.scrollIntoView({ behaviour: "smooth" });
+			}
+			setValue("label", singleCategory.data.label);
+		} else if (!id) {
+			reset();
 		}
-        setValue("label", singleCategory.data.label);
-    } else if (!id) {
-        reset();
-    }
-}, [singleCategory, id, setValue, reset]);
+	}, [singleCategory, id, setValue, reset]);
 
-const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
-
+	const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 
 	const onSubmit = async (data) => {
 		console.log(data, "data..........");
@@ -62,7 +61,7 @@ const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 		});
 
 		if (iconFile) {
-			formData.append("icon", iconFile);
+			formData.append("icon", iconFile.file);
 		}
 
 		Object.entries(data).forEach(([key, value]) => {
@@ -71,15 +70,14 @@ const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 
 		try {
 			const response = await addCategory(formData).unwrap();
-      if(response?.success){
-        toast.success("Category added successfully!")
-        reset();
-        setSearchParams({});
-			setIconFile(null);
-      }else{
-        toast.error("Failed to add category!")
-      }
-			
+			if (response?.success) {
+				setIconFile(null)
+				toast.success("Category added successfully!");
+				reset();
+				setSearchParams({});
+			} else {
+				toast.error("Failed to add category!");
+			}
 		} catch (err) {
 			console.error("Failed to add category:", err);
 		}
@@ -100,9 +98,9 @@ const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 
 		try {
 			const response = await updateCategory({ data: formData, id }).unwrap();
-			if(response?.success){
+			if (response?.success) {
 				toast.success("Category updated successfully");
-      		}
+			}
 			reset();
 			setIconFile(null);
 			setSearchParams({});
@@ -155,9 +153,13 @@ const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 								</label>
 								{/* <input type="file" name="icon" id="icon" onChange={handleFileChange} /> */}
 								{/* Pass setIconFile to update the state in parent */}
-								<DropImageUpload multiple={false} onFileSelect={setIconFile}  defaultImage={imageUrl}/>
-								{iconFile && (
-									<p className="text-sm text-gray-600">
+								<DropImageUpload
+									multiple={false}
+									onFileSelect={setIconFile}
+									defaultImage={imageUrl}
+								/>
+								{iconFile?.name && (
+									<p className="text-sm text-gray-600 mt-4">
 										Selected logo: {iconFile.name}
 									</p>
 								)}

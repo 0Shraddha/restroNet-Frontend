@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { MapPin, Search, Filter, UserRound } from "lucide-react";
+import { MapPin, Filter, UserRound } from "lucide-react";
 import GoogleMapComponent from "../../../components/Map";
 import { useGetRestaurantsQuery } from "../../../state/restaurants/restuarantApiSlice";
+import { useTableFilter } from "../../../hooks/useTableFilter";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../components/common/Modal";
 import GetPreferences from "../Preference/GetPreferenceForm";
+import Search from "../../../components/ui/searchcontent"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -21,8 +23,17 @@ const userPreferences = {
 };
 
 export default function DetailPageTest() {
+		const { query, perPage, page, category, genre } =
+		useTableFilter();
+	
 	const navigate = useNavigate();
-	const { data: restaurants, isLoading } = useGetRestaurantsQuery();
+	const { data: restaurants, isLoading } = useGetRestaurantsQuery({
+		_search: query,
+		_perPage: perPage,
+		_page: page,
+		_category: category,
+		_genre: genre,
+	});
 	const [filteredByPreferences] = useState(true);
 	const [showPreferencesModal, setShowPreferencesModal] = useState(false);
 
@@ -64,12 +75,13 @@ export default function DetailPageTest() {
 
 					{/* Search Input */}
 					<div className="flex items-center bg-gray-100 px-4 py-2 rounded-xl border border-gray-200 flex-1 min-w-[260px]">
-						<Search size={18} className="text-gray-500" />
+						{/* <Search size={18} className="text-gray-500" />
 						<input
 							type="text"
 							placeholder="Search for restaurants or cuisines"
 							className="bg-transparent ml-2 w-full text-sm outline-none"
-						/>
+						/> */}
+						<Search tableFor={"Search for restaurants or cuisines"} />
 					</div>
 
 					{/* Filters Button */}
@@ -77,60 +89,64 @@ export default function DetailPageTest() {
 						<Filter size={16} />
 						Filters
 					</button>
-				
-        <DropdownMenu className="font-['sora'] ">
-					<DropdownMenuTrigger className="rounded-full border-2 p-2 bg-red-700 border-red-700 cursor-pointer hover:bg-red-500 hover:border-red-500">
-						<UserRound className=" text-white " />
-					</DropdownMenuTrigger>
-					<DropdownMenuContent className="bg-red-500 text-white absolute -right-6  ">
-						<DropdownMenuItem className="cursor-pointer hover:bg-red-400">Profile</DropdownMenuItem>
-						<DropdownMenuItem onClick={()=>{
-              navigate("/consumer")
-              localStorage.removeItem("user")
-            }} className="cursor-pointer hover:bg-red-400">Log out</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-        </div>
-				
+
+					<DropdownMenu className="font-['sora'] ">
+						<DropdownMenuTrigger className="rounded-full border-2 p-2 bg-red-700 border-red-700 cursor-pointer hover:bg-red-500 hover:border-red-500">
+							<UserRound className=" text-white " />
+						</DropdownMenuTrigger>
+						<DropdownMenuContent className="bg-red-500 text-white absolute -right-6  ">
+							<DropdownMenuItem className="cursor-pointer hover:bg-red-400">
+								Profile
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => {
+									navigate("/consumer");
+									localStorage.removeItem("user");
+								}}
+								className="cursor-pointer hover:bg-red-400"
+							>
+								Log out
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
 
 				{/* ⭐ Preferences Display */}
 				<div className="px-8 pb-4">
 					{/* <p className="font-semibold text-gray-700 mb-2">Your Preferences:</p> */}
 
 					<div className="flex flex-wrap gap-4">
-              <div className="">
-						<button
-							onClick={() => setShowPreferencesModal(true)}
-							className="px-5 py-2 bg-red-600 text-white text-sm rounded-lg font-medium shadow hover:bg-red-500 transition cursor-pointer"
-						>
-							Update Preferences
-						</button>
-					</div>
-					<div className="flex gap-3">
-            	{[
-							...userPreferences.cuisines,
-							...userPreferences.category,
-							...userPreferences.tags,
-						].map((pref, i) => (
-							<span
-								key={i}
-								className="px-4 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded-full text-sm font-medium shadow-sm"
+						<div className="">
+							<button
+								onClick={() => setShowPreferencesModal(true)}
+								className="px-5 py-2 bg-red-600 text-white text-sm rounded-lg font-medium shadow hover:bg-red-500 transition cursor-pointer"
 							>
-								{pref}
-							</span>
-						))}
+								Update Preferences
+							</button>
+						</div>
+						<div className="flex gap-3">
+							{[
+								...userPreferences.cuisines,
+								...userPreferences.category,
+								...userPreferences.tags,
+							].map((pref, i) => (
+								<span
+									key={i}
+									className="px-4 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded-full text-sm font-medium shadow-sm"
+								>
+									{pref}
+								</span>
+							))}
 
-						{userPreferences.distance && (
-							<span className="px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-sm font-medium shadow-sm">
-								Within {userPreferences.distance}
-							</span>
-						)}
-          </div>
-          
+							{userPreferences.distance && (
+								<span className="px-4 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-sm font-medium shadow-sm">
+									Within {userPreferences.distance}
+								</span>
+							)}
+						</div>
 					</div>
 
 					{/* ⭐ UPDATE PREFERENCES BUTTON */}
-					
 				</div>
 			</div>
 
@@ -170,7 +186,7 @@ export default function DetailPageTest() {
 										<h2 className="text-xl font-extrabold text-gray-900 ">
 											{item.restaurant_name}
 										</h2>
-                    	{/* Rating */}
+										{/* Rating */}
 										<div className="flex items-center gap-2">
 											{[...Array(5)].map((_, i) => (
 												<span
@@ -192,8 +208,6 @@ export default function DetailPageTest() {
 										<p className="text-sm mt-1 line-clamp-2">
 											{item.description}
 										</p>
-
-									
 
 										{/* Location */}
 										<div className="text-sm text-gray-700 mt-2 flex items-center gap-1">

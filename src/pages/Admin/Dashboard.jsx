@@ -88,9 +88,9 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-gradient-to-r from-red-500 to-red-600 text-white font-['poppins'] rounded-xl m-4">
-        <div className="max-w-7xl mx-auto px-6 py-6 ">
-          <h1 className="text-3xl font-semibold">Restaurant Platform Dashboard</h1>
-          <p className="text-white font-semibold font-['sora'] mt-1">Admin Panel</p>
+        <div className="max-w-7xl mx-auto px-6 pt-4 pb-12 relative">
+          <h1 className="text-3xl font-semibold">Restaurant Management Dashboard</h1>
+          <p className="text-[#001F3D] bg-gray-100 font-medium font-['lilex'] text-sm mt-1 absolute bottom-0 left-0 rounded-b-lg w-full px-6 py-2">Admin Panel</p>
         </div>
       </header>
 
