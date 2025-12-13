@@ -17,9 +17,9 @@ import { Button } from "../../../components/ui/button";
 import PreviewMenuItems from "./PreviewMenuItems";
 import {
 	useAddMenuMutation,
-	useAddRestaurantMenuMutation,
 	useGetMenuByIdQuery,
-  useUpdateMenuMutation
+  useUpdateMenuMutation,
+  useGetMenuByRestaurantQuery
 } from "../../../state/restaurants/menuApiSlice";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -55,8 +55,11 @@ const AddMenu = () => {
 	};
 
 	const [updateMenu] = useUpdateMenuMutation();
-	// const [addMenu, { isLoading, isSuccess, isError, error }] =useAddMenuMutation();
-	const [addRestaurantMenu, {isLoading, isSuccess, isError, error}] = useAddRestaurantMenuMutation();
+	const [addMenu, { isLoading, isSuccess, isError, error }] =
+		useAddMenuMutation();
+	const {data: menus, isLoading: isMenuByRestaurantLoading} = useGetMenuByRestaurantQuery({id: "693aa4ad6a2b94ae6b0745a0"});
+	console.log(menus, "menu by restaurant")
+
 	const { data: categoriesData } = useGetCategoriesQuery();
 	const { data: allTags } = useGetTagsQuery();
 	const { data: singleMenu } = useGetMenuByIdQuery(id);
@@ -106,7 +109,7 @@ const AddMenu = () => {
 		console.log({ data });
 		Object.entries(data).forEach(([key, value]) => {
 			if (Array.isArray(value)) {
-				value.forEach((v) => formData.append(`${key}`, `[${v}]`));
+				value.forEach((v) => formData.append(`${key}`, `${v}`));
 			} else {
 				formData.append(key, value?.toString()); // ensure string
 			}
@@ -119,7 +122,7 @@ const AddMenu = () => {
 		formData.append("tag", JSON.stringify(selectedTags.map((c) => c.name)));
 		console.log({ data });
 		try {
-			await addRestaurantMenu({id: data?.venue_id, formData}).unwrap();
+			await addMenu(formData).unwrap();
 			setSubmitted(true);
 			reset();
 		} catch (err) {

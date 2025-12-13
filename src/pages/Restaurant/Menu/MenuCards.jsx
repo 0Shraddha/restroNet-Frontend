@@ -42,7 +42,6 @@ console.log(location.pathname);
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredMenu?.map((item) => {
           const unavailable = item?.availability === false;
-          console.log(item?.ingredients, "innnnnnnnnnnnniiiiiiiiiiiiii")
           return (
             <div
               key={item?._id}
