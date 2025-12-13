@@ -303,7 +303,8 @@ const AddRestaurant = () => {
     >
       <h2 className="text-2xl font-bold text-gray-800 text-center">{id ? "Update" : "Register New"} Restaurant</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Restaurant Details */}
+      <div className='space-y-4'>
+          {/* Restaurant Details */}
         <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Restaurant Details</CardTitle>
@@ -371,7 +372,13 @@ const AddRestaurant = () => {
               />
             </div>
 
-            <div>
+           
+          </CardContent>
+        </Card>
+         <Card className="border-gray-100 bg-white text-card-foreground rounded-xl border py-6 mb-4 shadow-sm">
+            <CardContent className="space-y-4">
+              <CardTitle className="text-lg">Tags and Cuisine</CardTitle>
+              <div>
                 <label htmlFor="cuisine" className="block text-sm mb-2 font-medium text-gray-700">Cuisine *</label>
                 <MultiSelect
                   options={allCuisines?.data}
@@ -400,8 +407,10 @@ const AddRestaurant = () => {
 
                 {errors.tags && <p className="error">{errors.tags.message}</p>}
               </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+                
+      </div>
 
         <div>
           {/* Restaurant Logo */}
