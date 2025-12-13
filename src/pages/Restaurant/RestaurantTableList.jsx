@@ -104,7 +104,7 @@ const getColumns = (navigate, handleDelete) => [
     cell: row => (
      <div className="flex gap-2">
       <button 
-        className="px-4 py-2 rounded-sm cursor-pointer text-sm font-['poppins'] font-normal bg-[#F7B980] text-white shadow hover:bg-[#F7B980]/80 transition-all"
+        className="px-4 py-2 rounded-sm cursor-pointer text-sm font-['poppins'] font-normal bg-gray-400 text-white shadow hover:bg-gray-600 transition-all"
         onClick={() => navigate(`/restaurant-detail/?id=${row._id}`)}>View</button>
       <button
         className="px-4 py-2 rounded-sm cursor-pointer text-sm font-['poppins'] font-normal bg-yellow-500 text-white shadow hover:bg-yellow-400 transition-all"

@@ -137,7 +137,7 @@ export default function SignUpPage() {
                           size={14}
                           className=" text-red-400 cursor-pointer text-gray-500"
                           onClick={() => {
-                            setIsView(!isView), console.log(isView)
+                            setIsView(!isView)
                           }}
                         />
                       ) : (

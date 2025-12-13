@@ -1,7 +1,7 @@
 import React from "react";
 import StatsCard from "../../../components/StatsCard";
 import MenuCards from "./MenuCards";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import {
   useGetMenuByRestaurantQuery,
   useGetMenuQuery,
@@ -10,6 +10,8 @@ import { useGetCategoriesQuery } from "../../../state/restaurants/categoryApiSli
 
 const PreviewMenuItems = ({ id }) => {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const venueId = searchParams.get("venueid");
   const isMenuManager = location.pathname === "/menu-manager";
 
   // ✅ Call hooks unconditionally
@@ -28,8 +30,8 @@ const PreviewMenuItems = ({ id }) => {
     isError: isRestaurantMenuError,
     error: restaurantMenuError,
   } = useGetMenuByRestaurantQuery(
-    { id },
-    { skip: isMenuManager }
+    { id: venueId || id },
+    { skip: isMenuManager || !venueId && !id }
   );
 
   const { data: categories } = useGetCategoriesQuery();

@@ -143,15 +143,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
                             alt={r?.restaurant_name}
                             className="w-full h-full object-cover"
                           />
-                          {/* Status Badge */}
-                          <div className="absolute top-2 left-2">
-                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${r?.isOpen
-                              ? 'bg-green-500 text-white'
-                              : 'bg-gray-500 text-white'
-                              }`}>
-                              {r?.isOpen ? 'Open' : 'Closed'}
-                            </span>
-                          </div>
+                      
                         </div>
                       )}
 

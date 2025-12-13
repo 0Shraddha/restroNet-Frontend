@@ -39,7 +39,6 @@ export const recommendationApiSlice = createApi({
 
             updateRecommendation: builder.mutation({
                 query: ({data, id}) => {
-                    console.log(data, id, "mutation .........dta...................")
                     return({
                     url : `/recommendations/${id}`,
                     method: 'PUT',

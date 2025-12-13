@@ -39,7 +39,6 @@ export const restaurantApiSlice = createApi({
 
             updateRestaurant: builder.mutation({
                 query: ({data, id}) => {
-                    console.log(data, id, "mutation .........dta...................")
                     return({
                     url : `/venue/${id}`,
                     method: 'PUT',

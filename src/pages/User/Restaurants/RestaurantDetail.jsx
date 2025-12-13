@@ -119,7 +119,6 @@ const RestaurantDetail = () => {
 	}
 
 	const data = restaurantData?.data;
-	console.log({ data });
 
 	const nextImage = () => {
 		setCurrentImageIndex((prev) =>
