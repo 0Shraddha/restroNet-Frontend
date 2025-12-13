@@ -9,16 +9,20 @@ export const restaurantApiSlice = createApi({
         return {
             getRestaurants : builder.query({
                 query: ({ _perPage, _page, _search = "", _category, _genre } = {}) => ({
-        url: "/venue",
-        method: "GET",
-        params: {
-          _perPage,
-          _page,
-          _search,
-          _category,
-          _genre,
-        },
-      })
+                    url: "/venue",
+                    method: "GET",
+                    params: {
+                    _perPage,
+                    _page,
+                    _search,
+                    _category,
+                    _genre,
+                    },
+                })
+            }),
+
+            getNearestRestaurants : builder.query({
+                method: 'GET',
             }),
 
             getRestaurantById : builder.query({
@@ -56,6 +60,7 @@ export const restaurantApiSlice = createApi({
 
 export const {
     useGetRestaurantsQuery,
+    useGetNearestRestaurantsQuery,
     useGetRestaurantByIdQuery,
     useAddRestaurantMutation, 
     useUpdateRestaurantMutation,

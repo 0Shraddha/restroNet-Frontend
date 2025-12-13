@@ -11,6 +11,7 @@ import { logout } from "../util/logout";
 import Dashboard from "../pages/Admin/Dashboard";
 import usersRestaurantRoutes from "../pages/User/Restaurants/usersRestaurantRoutes";
 import GetPreferences from "../pages/User/Preference/GetPreferenceForm";
+import MenuDisplay from "../pages/Restaurant/Menu/MenuDisplay";
 const AllCategories = lazy(()=>import("../pages/Metadata/Metadata"));
 
 
@@ -53,7 +54,8 @@ const router = createBrowserRouter([
            },
            {
             path: "/get-preferences", element: <GetPreferences />
-           }
+           },
+           {path: "/pos", element: <MenuDisplay />}
 
         ]
     }

@@ -91,7 +91,7 @@ const getColumns = (navigate, handleDelete) => [
     name: "Manage Menu",
     cell: row => (
       <button
-        onClick={() => navigate(`/menu-manager/?id=${row._id}`)}
+        onClick={() => navigate(`/menu-manager/?venueid=${row._id}`)}
         className="px-4 py-2 rounded-sm cursor-pointer text-sm font-['poppins'] font-normal bg-[#001F3D] text-white shadow hover:bg-[#001F3D]/80 cursor-pointer transition-all"
       >
         Manage

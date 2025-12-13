@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import StatCard from '../../components/common/StatCard';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import GoogleMapComponent from '../../components/Map';
-import { useGetRestaurantsQuery } from '../../state/restaurants/restuarantApiSlice';
+import { useGetNearestRestaurantsQuery, useGetRestaurantsQuery } from '../../state/restaurants/restuarantApiSlice';
 
 
 
@@ -78,6 +78,8 @@ const Dashboard = () => {
 
  const { data: restaurants, isLoading } = useGetRestaurantsQuery();
   console.log(restaurants, ".restsa.................");
+  const { data:getNearestRestaurants } = useGetNearestRestaurantsQuery();
+  console.log({getNearestRestaurants});
 
   const activeRestaurants = dummyRestaurants.filter(r => r.status === 'active');
   const pendingRestaurants = dummyRestaurants.filter(r => r.status === 'pending');
