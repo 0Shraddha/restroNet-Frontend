@@ -217,10 +217,10 @@ if (logoFile?.file instanceof File) {
  selectedTags.map(c => c.name).forEach(tagName => {
     formData.append("tags", tagName);
 });
-
+  console.log(imageFiles, "files.............ffffff..........fffffff...........")
   if (imageFiles.length > 0) {
     imageFiles.forEach(file => {
-      formData.append('images', file); // Backend should expect `req.files` with field name "images"
+      formData.append('images', file?.file); // Backend should expect `req.files` with field name "images"
     });
   }
 
