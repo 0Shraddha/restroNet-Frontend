@@ -1,15 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-export const restaurantApiSlice = createApi({
-    reducerPath: "restaurants",
+export const recommendationApiSlice = createApi({
+    reducerPath: "recomendations",
     baseQuery: fetchBaseQuery({
         baseUrl : "http://localhost:2700",
     }),
     endpoints: (builder) => {
         return {
-            getRestaurants : builder.query({
+            getRecommendations : builder.query({
                 query: ({ _perPage, _page, _search = "", _category, _genre } = {}) => ({
-                    url: "/venue",
+                    url: "/recommendations",
                     method: "GET",
                     params: {
                     _perPage,
@@ -21,35 +21,35 @@ export const restaurantApiSlice = createApi({
                 })
             }),
 
-            getNearestRestaurants : builder.query({
+            getNearestRecommendations : builder.query({
                 method: 'GET',
             }),
 
-            getRestaurantById : builder.query({
-                query: (id) => `/venue/${id}`
+            getRecommendationById : builder.query({
+                query: (id) => `/recommendations/${id}`
             }),
 
-            addRestaurant: builder.mutation({
+            addRecommendation: builder.mutation({
                 query: (formData) => ({
-                    url: "/venue",
+                    url: "/recommendations",
                     method: 'POST',
                     body: formData,
                 })
             }),
 
-            updateRestaurant: builder.mutation({
+            updateRecommendation: builder.mutation({
                 query: ({data, id}) => {
                     console.log(data, id, "mutation .........dta...................")
                     return({
-                    url : `/venue/${id}`,
+                    url : `/recommendations/${id}`,
                     method: 'PUT',
                     body: data,
                 })}
             }),
 
-            deleteRestaurant: builder.mutation({
+            deleteRecommendation: builder.mutation({
                 query: (id) => ({
-                    url: `/venue/${id}`,
+                    url: `/recommendations/${id}`,
                     method: "DELETE",
                 })
             })
@@ -59,10 +59,10 @@ export const restaurantApiSlice = createApi({
 })
 
 export const {
-    useGetRestaurantsQuery,
-    useGetNearestRestaurantsQuery,
-    useGetRestaurantByIdQuery,
-    useAddRestaurantMutation, 
-    useUpdateRestaurantMutation,
-    useDeleteRestaurantMutation
-} = restaurantApiSlice;
+    useGetRecommendationsQuery,
+    useGetNearestRecommendationsQuery,
+    useGetRecommendationByIdQuery,
+    useAddRecommendationMutation, 
+    useUpdateRecommendationMutation,
+    useDeleteRecommendationMutation
+} = recommendationApiSlice;

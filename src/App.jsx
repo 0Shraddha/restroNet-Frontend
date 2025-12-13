@@ -13,6 +13,7 @@ function App() {
     "/users",
     "/get-preferences",
     "/restaurant/",
+    "/consumer"
   ].some((path) => location.pathname.includes(path));
 
   let role = "";

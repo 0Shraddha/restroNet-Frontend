@@ -36,7 +36,6 @@ export default function SignUpPage() {
   
   const formData = new FormData();
   for (const key in data) {
-    // console.log(key, "kkkkkkk")
         formData.append(key, data[key]);
     }
 

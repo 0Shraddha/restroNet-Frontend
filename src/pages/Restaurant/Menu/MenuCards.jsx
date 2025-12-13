@@ -8,32 +8,30 @@ const MenuCards = ({ menu, currency = "Rs" }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-useEffect(() => {
-  if (location.pathname === "/restaurant-detail") {
-    setHideButtons(false);
-  } else {
-    setHideButtons(true);
-  }
-}, [location.pathname]);
-console.log(location.pathname);
+  useEffect(() => {
+    if (location.pathname === "/restaurant-detail") {
+      setHideButtons(false);
+    } else {
+      setHideButtons(true);
+    }
+  }, [location.pathname]);
 
   // Extract unique categories (if you have category field)
   const categories = ["all", ...new Set(menu?.data?.map(item => item?.category).filter(Boolean))];
 
-  const filteredMenu = selectedCategory === "all" 
-    ? menu?.data 
+  const filteredMenu = selectedCategory === "all"
+    ? menu?.data
     : menu?.data?.filter(item => item?.category === selectedCategory);
 
   const handleEdit = (id) => {
-		navigate(`/menu-manager?id=${id}`);
-	};
+    navigate(`/menu-manager?id=${id}`);
+  };
 
 
-	const handleDelete = (id) => {
-		console.log("deleting : ", id);
-	};
+  const handleDelete = (id) => {
+    console.log("deleting : ", id);
+  };
 
-  
 
   return (
     <div className="px-4 pb-8 pt-3">
@@ -45,30 +43,27 @@ console.log(location.pathname);
           return (
             <div
               key={item?._id}
-              className={`group bg-white rounded-2xl overflow-hidden border transition-all duration-300 ${
-                unavailable
-                  ? "border-gray-200 opacity-70"
-                  : "border-gray-100 hover:border-red-200 hover:shadow-xl hover:-translate-y-1"
-              }`}
+              className={`group bg-white rounded-2xl overflow-hidden border transition-all duration-300 ${unavailable
+                ? "border-gray-200 opacity-70"
+                : "border-gray-100 hover:border-red-200 hover:shadow-xl hover:-translate-y-1"
+                }`}
             >
               {/* Image Container */}
               <div className="relative h-48 overflow-hidden bg-gray-100">
                 <img
                   src={item?.images || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"}
                   alt={item?.item_name}
-                  className={`w-full h-full object-cover transition-transform duration-500 ${
-                    unavailable ? "grayscale" : "group-hover:scale-110"
-                  }`}
+                  className={`w-full h-full object-cover transition-transform duration-500 ${unavailable ? "grayscale" : "group-hover:scale-110"
+                    }`}
                 />
 
                 {/* Availability Badge */}
                 <div className="absolute top-3 left-3">
                   <span
-                    className={`px-3 py-1 text-xs rounded-full font-semibold shadow-lg ${
-                      unavailable
-                        ? "bg-red-500 text-white"
-                        : "bg-emerald-500 text-white"
-                    }`}
+                    className={`px-3 py-1 text-xs rounded-full font-semibold shadow-lg ${unavailable
+                      ? "bg-red-500 text-white"
+                      : "bg-emerald-500 text-white"
+                      }`}
                   >
                     {unavailable ? "Unavailable" : "Available"}
                   </span>
@@ -149,28 +144,30 @@ console.log(location.pathname);
                   </div>
                 )}
 
-                 {/* ACTION BUTTONS */}
-            {!hideButtons &&
-            <div className="flex gap-2 pt-2 border-t border-gray-100">
-              <button
-               type="button"
-               onClick={() => handleEdit(item?._id)}
-                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-medium"
-              >
-              <Edit2 size={16} />
-                Edit
-              </button>
+                {/* ACTION BUTTONS */}
+                {JSON.parse(localStorage.getItem("user"))?.role == "user" ? (
 
-              <button
-               type="button"
-               onClick={() => handleDelete(item?._id)}
-                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium"
-              >
-                <Trash2 size={16} />
-                Delete
-              </button>
-            </div>
-        }
+                  <div className="flex gap-2 pt-2 border-t border-gray-100">
+                    <button
+                      type="button"
+                      onClick={() => handleEdit(item?._id)}
+                      className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-medium"
+                    >
+                      <Edit2 size={16} />
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(item?._id)}
+                      className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium"
+                    >
+                      <Trash2 size={16} />
+                      Delete
+                    </button>
+                  </div>
+                ) : ("")
+                }
               </div>
             </div>
           );

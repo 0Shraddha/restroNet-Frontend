@@ -36,7 +36,6 @@ const AddCategory = () => {
 
 	const handleFileChange = (e) => {
 		const file = e.target.files[0];
-		console.log(file, "file");
 		setIconFile(file);
 	};
 
@@ -54,7 +53,6 @@ const AddCategory = () => {
 	const imageUrl = id && singleCategory?.data ? singleCategory.data.icon : null;
 
 	const onSubmit = async (data) => {
-		console.log(data, "data..........");
 		const formData = new FormData();
 		Object.entries(data).forEach(([key, value]) => {
 			formData.append(key, value);
@@ -64,9 +62,7 @@ const AddCategory = () => {
 			formData.append("icon", iconFile.file);
 		}
 
-		Object.entries(data).forEach(([key, value]) => {
-			console.log(key, value);
-		});
+		
 
 		try {
 			const response = await addCategory(formData).unwrap();
@@ -92,9 +88,7 @@ const AddCategory = () => {
 			formData.append("icon", iconFile);
 		}
 
-		Object.entries(data).forEach(([key, value]) => {
-			console.log(key, value);
-		});
+	
 
 		try {
 			const response = await updateCategory({ data: formData, id }).unwrap();

@@ -29,8 +29,9 @@ export default function ReviewCard({ reviewData, onDelete, onEdit }) {
           </div>
         </div>
 
-        {/* Edit + Delete Icons */}
-        <div className="flex items-center gap-3">
+			{JSON.parse(localStorage.getItem("user"))?.role == "consumer" ? (
+
+        <div className="flex items-center">
           <button
             onClick={onEdit}
             className="p-2 rounded-full hover:bg-gray-100 transition"
@@ -47,6 +48,8 @@ export default function ReviewCard({ reviewData, onDelete, onEdit }) {
             <Trash2 size={18} className="text-red-600" />
           </button>
         </div>
+      ) : ( "" )}
+      
       </div>
 
       {/* Review Text */}

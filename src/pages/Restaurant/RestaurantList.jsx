@@ -30,17 +30,14 @@ const RestaurantList = () => {
 
   const handleViewDetails = (id) => {
     // Navigate to restaurant details
-    console.log(`Viewing details for restaurant ${id}`);
   };
 
   const handleEdit = (id) => {
     // Navigate to edit restaurant
-    console.log(`Editing restaurant ${id}`);
   };
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this restaurant?')) {
-      console.log(`Deleting restaurant ${id}`);
     }
   };
 

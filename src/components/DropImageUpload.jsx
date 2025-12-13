@@ -50,10 +50,8 @@ const DropImageUpload = ({
 			return;
 		}
 
-		console.log("before single");
 		// SINGLE UPLOAD MODE
 		const single = updatedImages[0] || null;
-		console.log("after single", single);
 
 		onFileSelect(single ? single : null);
 	};

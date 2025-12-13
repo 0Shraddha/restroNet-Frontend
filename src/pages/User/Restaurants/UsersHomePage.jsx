@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MapPin, Filter, UserRound } from "lucide-react";
 import GoogleMapComponent from "../../../components/Map";
-import { useGetRestaurantsQuery } from "../../../state/restaurants/restuarantApiSlice";
+import { useGetRecommendationsQuery } from "../../../state/restaurants/recommendationApiSlice";
 import { useTableFilter } from "../../../hooks/useTableFilter";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../../components/common/Modal";
@@ -27,7 +27,7 @@ export default function DetailPageTest() {
 		useTableFilter();
 	
 	const navigate = useNavigate();
-	const { data: restaurants, isLoading } = useGetRestaurantsQuery({
+	const { data: restaurants, isLoading } = useGetRecommendationsQuery({
 		_search: query,
 		_perPage: perPage,
 		_page: page,

@@ -24,7 +24,7 @@ const RestaurantDetail = () => {
 	const [searchParams] = useSearchParams();
 	const id = searchParams.get("id");
 	const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const navigate = useNavigate()
+	const navigate = useNavigate()
 	// ➤ New state for Tabs
 	const [activeTab, setActiveTab] = useState("overview");
 
@@ -36,39 +36,38 @@ const RestaurantDetail = () => {
 	const [addReview] = useAddReviewMutation();
 	const [editingReview, setEditingReview] = useState(null);
 
-	useEffect(() => {}, [reviews]);
-  const [isScrolled, setIsScrolled] = useState(false);
-  
-  const contentRef = useRef(null);
-  
-  const headerRef = useRef(null); 
+	useEffect(() => { }, [reviews]);
+	const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!contentRef.current || !headerRef.current) return;
+	const contentRef = useRef(null);
 
-      const contentTop = contentRef.current.getBoundingClientRect().top;
-      
-      // Get the height of the sticky header
-      const headerHeight = headerRef.current.offsetHeight;
+	const headerRef = useRef(null);
 
-      if (contentTop <= headerHeight + 12) { // 12px for top-3 (3 * 4 = 12px in Tailwind)
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+	useEffect(() => {
+		const handleScroll = () => {
+			if (!contentRef.current || !headerRef.current) return;
 
-    window.addEventListener('scroll', handleScroll);
+			const contentTop = contentRef.current.getBoundingClientRect().top;
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []); 
+			// Get the height of the sticky header
+			const headerHeight = headerRef.current.offsetHeight;
 
-  const headerClasses = `sticky top-0 px-4 md:p-6 space-y-4 z-10 transition-colors duration-300 ${
-    isScrolled ? "shadow-md backdrop-blur-md" : 'bg-white' 
-  }`;
+			if (contentTop <= headerHeight + 12) { // 12px for top-3 (3 * 4 = 12px in Tailwind)
+				setIsScrolled(true);
+			} else {
+				setIsScrolled(false);
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll);
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
+
+	const headerClasses = `sticky top-0 px-4 md:p-6 space-y-4 z-10 transition-colors duration-300 ${isScrolled ? "shadow-md backdrop-blur-md" : 'bg-white'
+		}`;
 
 	const handleDelete = async (id) => {
 		if (!window.confirm("Delete this review?")) return;
@@ -137,11 +136,11 @@ const RestaurantDetail = () => {
 	return (
 		<div className="min-h-screen">
 			<div className={headerClasses} ref={headerRef}>
-        <Button className="bg-red-600 py-6 font-medium text-white font-['sora'] cursor-pointer hover:bg-red-500 text-base" onClick={()=>navigate("/users")}>
-          <ChevronLeft />
-          Back
-        </Button>
-      </div>
+				<Button className="bg-red-600 py-6 font-medium text-white font-['sora'] cursor-pointer hover:bg-red-500 text-base" onClick={() => navigate("/users")}>
+					<ChevronLeft />
+					Back
+				</Button>
+			</div>
 			<div className="p-4 md:p-8" ref={contentRef}>
 				{/* IMAGE CAROUSEL */}
 				<div className="bg-white rounded-md shadow-xl overflow-hidden">
@@ -180,11 +179,10 @@ const RestaurantDetail = () => {
 										<button
 											key={index}
 											onClick={() => setCurrentImageIndex(index)}
-											className={`w-2 h-2 rounded-full transition-all ${
-												index === currentImageIndex
-													? "bg-white w-8"
-													: "bg-white/50 hover:bg-white/75"
-											}`}
+											className={`w-2 h-2 rounded-full transition-all ${index === currentImageIndex
+												? "bg-white w-8"
+												: "bg-white/50 hover:bg-white/75"
+												}`}
 										/>
 									))}
 								</div>
@@ -216,33 +214,30 @@ const RestaurantDetail = () => {
 								<div className="flex gap-6 overflow-x-auto py-4">
 									<button
 										onClick={() => setActiveTab("overview")}
-										className={`pb-2 font-bold text-lg ${
-											activeTab === "overview"
-												? "text-red-600 border-b-2 border-red-600"
-												: "text-gray-500"
-										}`}
+										className={`pb-2 font-bold text-lg ${activeTab === "overview"
+											? "text-red-600 border-b-2 border-red-600"
+											: "text-gray-500"
+											}`}
 									>
 										Overview
 									</button>
 
 									<button
 										onClick={() => setActiveTab("menu")}
-										className={`pb-2 font-bold text-lg ${
-											activeTab === "menu"
-												? "text-red-600 border-b-2 border-red-600"
-												: "text-gray-500"
-										}`}
+										className={`pb-2 font-bold text-lg ${activeTab === "menu"
+											? "text-red-600 border-b-2 border-red-600"
+											: "text-gray-500"
+											}`}
 									>
 										Menu
 									</button>
 
 									<button
 										onClick={() => setActiveTab("reviews")}
-										className={`pb-2 font-bold text-lg ${
-											activeTab === "reviews"
-												? "text-red-600 border-b-2 border-red-600"
-												: "text-gray-500"
-										}`}
+										className={`pb-2 font-bold text-lg ${activeTab === "reviews"
+											? "text-red-600 border-b-2 border-red-600"
+											: "text-gray-500"
+											}`}
 									>
 										Reviews
 									</button>
@@ -276,7 +271,6 @@ const RestaurantDetail = () => {
 													Cuisines
 												</p>
 												<div className="flex flex-wrap gap-2">
-													{data.cuisine}
 													{Array.isArray(data?.cuisine) &&
 														data.cuisine.map((c, i) => (
 															<span
@@ -319,7 +313,7 @@ const RestaurantDetail = () => {
 
 								{activeTab === "menu" && (
 									<>
-										<PreviewMenuItems />
+										<PreviewMenuItems id={id} />
 									</>
 								)}
 
@@ -330,7 +324,7 @@ const RestaurantDetail = () => {
 								{activeTab === "reviews" && (
 									<div className="text-gray-600">
 										<p className="text-gray-800 text-end">
-											<strong>Total</strong> : {reviews.count}
+											<strong>Total</strong> : {reviews?.count}
 										</p>
 										{reviews?.data.map((item, i) => (
 											<ReviewCard

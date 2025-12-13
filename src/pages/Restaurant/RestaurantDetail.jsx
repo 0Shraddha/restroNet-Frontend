@@ -27,39 +27,39 @@ const RestaurantDetail = () => {
 
   const { data: restaurantData, isLoading } = useGetRestaurantByIdQuery(id);
   const { data: reviews, refetch: refetchReviews } = useGetReviewsQuery();
-  
+
 
   const [updateReview] = useUpdateReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
-  const [addReview] = useAddReviewMutation(); 
+  const [addReview] = useAddReviewMutation();
   const [editingReview, setEditingReview] = useState(null);
 
 
-useEffect(() => {
-}, [reviews]);
+  useEffect(() => {
+  }, [reviews]);
 
 
-const handleDelete = async (id) => {
-  if (!window.confirm("Delete this review?")) return;
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this review?")) return;
 
-  try {
-    await deleteReview(id).unwrap();
-    refetchReviews();
-    toast.success("Review successfully deleted!")
-  } catch (error) {
-    console.error("Delete error:", error);
-  }
-};
+    try {
+      await deleteReview(id).unwrap();
+      refetchReviews();
+      toast.success("Review successfully deleted!")
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
+  };
 
 
-const handleUpdate = async (id, updatedData) => {
-  try {
-    await updateReview({ id, data: updatedData }).unwrap();
-    refetchReviews();
-  } catch (err) {
-    console.error("Update error:", err);
-  }
-};
+  const handleUpdate = async (id, updatedData) => {
+    try {
+      await updateReview({ id, data: updatedData }).unwrap();
+      refetchReviews();
+    } catch (err) {
+      console.error("Update error:", err);
+    }
+  };
 
 
 
@@ -86,7 +86,6 @@ const handleUpdate = async (id, updatedData) => {
   }
 
   const data = restaurantData?.data;
-  console.log({data});
 
   const nextImage = () => {
     setCurrentImageIndex((prev) =>
@@ -105,75 +104,74 @@ const handleUpdate = async (id, updatedData) => {
   return (
     <div className="min-h-screen">
       <div className="p-4 md:p-8">
-         {/* IMAGE CAROUSEL */}
-            <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-              <div className="relative h-85 bg-gray-900">
-                {/* Image */}
-                {data.images?.length > 0 ? (
+        {/* IMAGE CAROUSEL */}
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+          <div className="relative h-85 bg-gray-900">
+            {/* Image */}
+            {data.images?.length > 0 ? (
+              <>
+                <img
+                  src={data.images[currentImageIndex]}
+                  alt={`${data.restaurant_name}`}
+                  className="w-full h-full object-cover"
+                />
+
+                {/* Arrows */}
+                {data.images.length > 1 && (
                   <>
-                    <img
-                      src={data.images[currentImageIndex]}
-                      alt={`${data.restaurant_name}`}
-                      className="w-full h-full object-cover"
-                    />
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
+                    >
+                      <ChevronLeft className="w-6 h-6 text-gray-800" />
+                    </button>
 
-                    {/* Arrows */}
-                    {data.images.length > 1 && (
-                      <>
-                        <button
-                          onClick={prevImage}
-                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
-                        >
-                          <ChevronLeft className="w-6 h-6 text-gray-800" />
-                        </button>
-
-                        <button
-                          onClick={nextImage}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
-                        >
-                          <ChevronRight className="w-6 h-6 text-gray-800" />
-                        </button>
-                      </>
-                    )}
-
-                    {/* Image indicators */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                      {data.images.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`w-2 h-2 rounded-full transition-all ${
-                            index === currentImageIndex
-                              ? "bg-white w-8"
-                              : "bg-white/50 hover:bg-white/75"
-                          }`}
-                        />
-                      ))}
-                    </div>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all"
+                    >
+                      <ChevronRight className="w-6 h-6 text-gray-800" />
+                    </button>
                   </>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                    <p className="text-gray-500">No images available</p>
-                  </div>
                 )}
 
-                {/* Logo */}
-                {data.logo && (
-                  <div className="absolute top-6 left-6 bg-white rounded-2xl p-2 shadow-xl">
-                    <img
-                      src={data.logo}
-                      className="w-20 h-20 object-cover rounded-xl"
+                {/* Image indicators */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                  {data.images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${index === currentImageIndex
+                        ? "bg-white w-8"
+                        : "bg-white/50 hover:bg-white/75"
+                        }`}
                     />
-                  </div>
-                )}
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                <p className="text-gray-500">No images available</p>
               </div>
-            </div>
-     
+            )}
+
+            {/* Logo */}
+            {data.logo && (
+              <div className="absolute top-6 left-6 bg-white rounded-2xl p-2 shadow-xl">
+                <img
+                  src={data.logo}
+                  className="w-20 h-20 object-cover rounded-xl"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 my-5">
           {/* LEFT COLUMN */}
           <div className="lg:col-span-2 space-y-6">
 
-           
+
 
             {/* ⭐⭐⭐ TAB SECTION START ⭐⭐⭐ */}
             <div className="bg-white rounded-3xl shadow-lg border-0">
@@ -182,33 +180,30 @@ const handleUpdate = async (id, updatedData) => {
 
                   <button
                     onClick={() => setActiveTab("overview")}
-                    className={`pb-2 font-bold text-lg ${
-                      activeTab === "overview"
-                        ? "text-red-600 border-b-2 border-red-600"
-                        : "text-gray-500"
-                    }`}
+                    className={`pb-2 font-bold text-lg ${activeTab === "overview"
+                      ? "text-red-600 border-b-2 border-red-600"
+                      : "text-gray-500"
+                      }`}
                   >
                     Overview
                   </button>
 
                   <button
                     onClick={() => setActiveTab("menu")}
-                    className={`pb-2 font-bold text-lg ${
-                      activeTab === "menu"
-                        ? "text-red-600 border-b-2 border-red-600"
-                        : "text-gray-500"
-                    }`}
+                    className={`pb-2 font-bold text-lg ${activeTab === "menu"
+                      ? "text-red-600 border-b-2 border-red-600"
+                      : "text-gray-500"
+                      }`}
                   >
                     Menu
                   </button>
 
                   <button
                     onClick={() => setActiveTab("reviews")}
-                    className={`pb-2 font-bold text-lg ${
-                      activeTab === "reviews"
-                        ? "text-red-600 border-b-2 border-red-600"
-                        : "text-gray-500"
-                    }`}
+                    className={`pb-2 font-bold text-lg ${activeTab === "reviews"
+                      ? "text-red-600 border-b-2 border-red-600"
+                      : "text-gray-500"
+                      }`}
                   >
                     Reviews
                   </button>
@@ -219,108 +214,107 @@ const handleUpdate = async (id, updatedData) => {
               {/* TAB CONTENT */}
               <CardContent className="p-6">
 
-               {activeTab === "overview" && (
-  <div className="space-y-6">
+                {activeTab === "overview" && (
+                  <div className="space-y-6">
 
-    {/* Restaurant Name */}
-    <div>
-      <h2 className="text-3xl font-bold text-gray-800">
-        {data.restaurant_name}
-      </h2>
-      <p className="text-gray-600 mt-2 leading-relaxed">
-        {data.description}
-      </p>
-    </div>
+                    {/* Restaurant Name */}
+                    <div>
+                      <h2 className="text-3xl font-bold text-gray-800">
+                        {data.restaurant_name}
+                      </h2>
+                      <p className="text-gray-600 mt-2 leading-relaxed">
+                        {data.description}
+                      </p>
+                    </div>
 
-    {/* Key Highlights */}
-    <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-      <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-        <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
-        Highlights
-      </h3>
+                    {/* Key Highlights */}
+                    <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                        <span className="inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+                        Highlights
+                      </h3>
 
-      {/* Cuisine */}
-      <div className="mb-4">
-        <p className="text-sm font-medium text-gray-700 mb-2">Cuisines</p>
-        <div className="flex flex-wrap gap-2">
-          {data.cuisine}
-         {Array.isArray(data?.cuisine) &&
-  data.cuisine.map((c, i) => (
-    <span
-      key={i}
-      className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm border border-red-200"
-    >
-      {c}
-    </span>
-  ))}
+                      {/* Cuisine */}
+                      <div className="mb-4">
+                        <p className="text-sm font-medium text-gray-700 mb-2">Cuisines</p>
+                        <div className="flex flex-wrap gap-2">
+                          {Array.isArray(data?.cuisine) &&
+                            data.cuisine.map((c, i) => (
+                              <span
+                                key={i}
+                                className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm border border-red-200"
+                              >
+                                {c}
+                              </span>
+                            ))}
 
-        </div>
-      </div>
+                        </div>
+                      </div>
 
-      {/* Rating & Popularity Example (optional) */}
-      <div className="flex items-center gap-6 mt-3">
-        <div className="flex items-center gap-2">
-          <span className="text-yellow-500 text-xl">★</span>
-          <span className="font-semibold">{data?.avgRating || "4.5"}</span>
-        </div>
+                      {/* Rating & Popularity Example (optional) */}
+                      <div className="flex items-center gap-6 mt-3">
+                        <div className="flex items-center gap-2">
+                          <span className="text-yellow-500 text-xl">★</span>
+                          <span className="font-semibold">{data?.avgRating || "4.5"}</span>
+                        </div>
 
-        <div className="text-gray-500 text-sm">
-          {data?.totalReviews || "120+"} Reviews
-        </div>
-      </div>
-    </div>
+                        <div className="text-gray-500 text-sm">
+                          {data?.totalReviews || "120+"} Reviews
+                        </div>
+                      </div>
+                    </div>
 
-    {/* About Card */}
-    <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">
-        About This Restaurant
-      </h3>
-      <p className="text-gray-700 leading-relaxed text-sm">
-        {data?.description ||
-          "Experience a delightful fusion of flavors with exceptional ambience and top-notch service."}
-      </p>
-    </div>
-  </div>
-)}
+                    {/* About Card */}
+                    <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                        About This Restaurant
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed text-sm">
+                        {data?.description ||
+                          "Experience a delightful fusion of flavors with exceptional ambience and top-notch service."}
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {activeTab === "menu" && (
-                 <>
-                  <PreviewMenuItems />
+                  <>
+                    <PreviewMenuItems id={id} />
                   </>
                 )}
 
                 {/* {activeTab === "offers" && (
                 <OffersCard />
                 )} */}
-
+  {console.log("review................", reviews)}
                 {activeTab === "reviews" && (
                   <div className="text-gray-600">
-                    <p className="text-gray-800 text-end"><strong>Total</strong> : {reviews.count}</p>
-                   {reviews?.data.map((item, i) => (
-  <ReviewCard
-    key={i}
-    reviewData={item}
-    onDelete={() => handleDelete(item._id)}
-    onEdit={() => setEditingReview(item)}
-  />
-))}
+                    <p className="text-gray-800 text-end"><strong>Total</strong> : {reviews?.count}</p>
+                    {reviews?.data.map((item, i) => (
+                      <ReviewCard
+                        key={i}
+                        reviewData={item}
+                        onDelete={() => handleDelete(item._id)}
+                        onEdit={() => setEditingReview(item)}
+                      />
+                    ))}
 
-{editingReview && (
-  <ReviewForm
-    mode="edit"
-    review={editingReview}
-    onSubmitForm={(updatedData) =>
-      handleUpdate(editingReview._id, updatedData)
-    }
-  />
-)}
+                    {editingReview && (
+                      <ReviewForm
+                        mode="edit"
+                        review={editingReview}
+                        onSubmitForm={(updatedData) =>
+                          handleUpdate(editingReview._id, updatedData)
+                        }
+                      />
+                    )}
 
-{!editingReview && (
-  <ReviewForm
-    mode="add"
-    onSubmitForm={(data) => addReview(data)}
-  />
-)}
+                    {!editingReview && (
+                      <ReviewForm
+                        mode="add"
+                        onSubmitForm={(data) => addReview(data)}
+                      />
+                    )}
 
 
                   </div>
@@ -331,7 +325,7 @@ const handleUpdate = async (id, updatedData) => {
 
           </div>
 
-           {/* RIGHT SIDEBAR */}
+          {/* RIGHT SIDEBAR */}
           <aside className="lg:sticky lg:top-8 h-fit">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
               <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Info</h3>
@@ -350,22 +344,22 @@ const handleUpdate = async (id, updatedData) => {
                   </div>
 
                   <div className="flex items-center gap-2 mb-3">
-                      <div className="bg-blue-100 p-2 rounded-lg">
-                        <Phone className="w-4 h-4 text-blue-600" />
-                      </div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
-                        {data?.restaurant_contact}
-                      </p>
+                    <div className="bg-blue-100 p-2 rounded-lg">
+                      <Phone className="w-4 h-4 text-blue-600" />
                     </div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
+                      {data?.restaurant_contact}
+                    </p>
+                  </div>
 
                   <div className="flex items-center gap-2 mb-3">
-                      <div className="bg-green-100 p-2 rounded-lg">
-                        <Clock className="w-4 h-4 text-green-600" />
-                      </div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
-                        11:00 AM – 8:00 PM
-                      </p>
+                    <div className="bg-green-100 p-2 rounded-lg">
+                      <Clock className="w-4 h-4 text-green-600" />
                     </div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
+                      11:00 AM – 8:00 PM
+                    </p>
+                  </div>
 
                   <p className="text-sm text-slate-800 font-medium capitalize">
                   </p>
@@ -382,7 +376,7 @@ const handleUpdate = async (id, updatedData) => {
             </div>
           </aside>
 
-         
+
         </div>
       </div>
     </div>

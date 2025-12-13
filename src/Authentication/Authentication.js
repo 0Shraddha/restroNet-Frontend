@@ -3,8 +3,6 @@ import { toast } from "react-toastify";
 
 // Action function for handling form submissions
 export async function action({ request }) {
-    console.log('--- Auth Action Called ---');
-  console.log('Request URL:', request.url);
 
 
   const searchParams = new URL(request.url).searchParams;
@@ -30,7 +28,6 @@ export async function action({ request }) {
   }
 
   if (mode === 'signup') {
-    console.log("mode: " , mode);
     if (!password || password.length < 8) {
       errors.password = 'Password must be at least 8 characters long.';
     }

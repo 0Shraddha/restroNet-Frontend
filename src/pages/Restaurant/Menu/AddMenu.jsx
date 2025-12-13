@@ -58,7 +58,6 @@ const AddMenu = () => {
 	const [addMenu, { isLoading, isSuccess, isError, error }] =
 		useAddMenuMutation();
 	const {data: menus, isLoading: isMenuByRestaurantLoading} = useGetMenuByRestaurantQuery({id: "693aa4ad6a2b94ae6b0745a0"});
-	console.log(menus, "menu by restaurant")
 
 	const { data: categoriesData } = useGetCategoriesQuery();
 	const { data: allTags } = useGetTagsQuery();
@@ -106,7 +105,6 @@ const AddMenu = () => {
 
 		data.ingredients = data.ingredients.split(",").map((i) => i.trim());
 
-		console.log({ data });
 		Object.entries(data).forEach(([key, value]) => {
 			if (Array.isArray(value)) {
 				value.forEach((v) => formData.append(`${key}`, `${v}`));

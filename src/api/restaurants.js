@@ -4,13 +4,10 @@ import getAuthToken from "../util/auth";
 const baseUrl = "http://localhost:2700"; 
 
 export async function addRestaurants(formData){
-    console.log({formData});
     let url = baseUrl + "/venue";
     const token = getAuthToken();
-    console.log({token});
 
     try{
-        console.log("inside try");
         const response = await fetch(url, {
             method :  'POST',
             headers : {
@@ -20,18 +17,15 @@ export async function addRestaurants(formData){
             body: formData
         });
 
-        console.log("inside post");
         if(!response.ok){
             const errorMsg = await response.json();
            
-            console.log({errorMsg});
             toast.error('Server error : ', errorMsg.error)
             throw errorMsg;
 
         }
 
         let { responseData } = await response.json();
-        console.log({responseData});
         toast.success(responseData.msg || 'Restaurant added successfully!')
         return responseData;
 
