@@ -42,6 +42,7 @@ const AddMenu = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const formRef = useRef(null);
 	const id = searchParams.get("id");
+	const venueId = searchParams.get("venueid");
 
 	const [selectedTags, setSelectedTags] = useState([]);
 	const [selectedRestaurant, setSelectedRestaurant] = useState([]);
@@ -84,6 +85,13 @@ const AddMenu = () => {
 			reset();
 		}
 	}, [singleMenu, id, setValue, reset]);
+
+	// Set restaurant if venueId is in query params
+	useEffect(() => {
+		if (venueId) {
+			setValue("venue_id", venueId);
+		}
+	}, [venueId, setValue]);
 	console.log({ singleMenu });
 
 	useEffect(() => {
