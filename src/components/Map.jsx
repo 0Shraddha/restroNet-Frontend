@@ -87,7 +87,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
 
 
   return (
-    <div ref={containerRef} className="w-full h-full rounded-lg overflow-hidden shadow-lg">
+    <div ref={containerRef} className="w-full h-full rounded-2xl overflow-hidden shadow-lg">
 
       <MapContainer
         center={[27.6932347, 85.3247236]}

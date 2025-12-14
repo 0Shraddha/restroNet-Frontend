@@ -173,13 +173,13 @@ export default function DetailPageTest() {
 							>
 								<div className="flex">
 									{/* Image */}
-									<div className="w-56 h-56">
+									<div className="w-40 h-40 mt-5 ms-3">
 										<img
 											src={item.logo}
 											alt={item.restaurant_name}
-											className="w-full h-full object-cover"
+											className="w-full h-full object-cover  rounded-2xl"
 										/>
-									</div>
+									</div> 
 
 									{/* Content */}
 									<div className="flex-1 p-5 flex flex-col font-['Nunito']">
@@ -211,7 +211,7 @@ export default function DetailPageTest() {
 
 										{/* Location */}
 										<div className="text-sm text-gray-700 mt-2 flex items-center gap-1">
-											<MapPin size={14} className="text-gray-500" />
+											<MapPin size={14} className="text-blue-500" />
 											{item.restaurant_location}
 										</div>
 
@@ -225,7 +225,7 @@ export default function DetailPageTest() {
 												.map((tag) => (
 													<span
 														key={tag}
-														className="px-3 py-1 bg-gray-100 border border-gray-300 rounded-full text-xs text-gray-800 font-medium"
+														className="px-3 py-1 bg-red-100 border border-red-300 rounded-full text-xs text-red-800 font-medium"
 													>
 														{tag}
 													</span>
@@ -247,7 +247,7 @@ export default function DetailPageTest() {
 				</div>
 
 				{/* RIGHT: Map */}
-				<div className="w-1/2 h-full bg-gray-100">
+				<div className="w-1/2 h-[98] bg-gray-100 mx-3 rounded-3xl">
 					<GoogleMapComponent restaurants={restaurants.data} />
 				</div>
 			</div>
