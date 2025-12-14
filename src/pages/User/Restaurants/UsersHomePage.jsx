@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MapPin, Filter, UserRound } from "lucide-react";
+import { MapPin, Filter, UserRound, Clock } from "lucide-react";
 import GoogleMapComponent from "../../../components/Map";
 import { useGetRecommendationsQuery } from "../../../state/restaurants/recommendationApiSlice";
 import { useTableFilter } from "../../../hooks/useTableFilter";
@@ -15,6 +15,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu";
+import useUserLocation from "../../../hooks/useUserLocation";
+import { useGetNearestRestaurantsQuery } from "../../../state/restaurants/restuarantApiSlice";
+import NearestVenuesList from "./NearestVenueList";
 const userPreferences = {
 	cuisines: ["Italian", "Japanese", "Nepalese"],
 	distance: "5 km",
@@ -22,11 +25,20 @@ const userPreferences = {
 	tags: ["Romantic", "Outdoor Seating"],
 };
 
+  // Calculate estimated walk time (assuming 5 km/h walking speed)
+  const getWalkTime = (distance) => {
+    if (!distance) return null;
+    const minutes = Math.round((distance / 5) * 60);
+    return minutes < 1 ? "< 1 min" : `${minutes} min walk`;
+  };
+
 export default function DetailPageTest() {
 		const { query, perPage, page, category, genre } =
 		useTableFilter();
+
 	
 	const navigate = useNavigate();
+ 
 	const { data: restaurants, isLoading } = useGetRecommendationsQuery({
 		_search: query,
 		_perPage: perPage,
@@ -34,6 +46,18 @@ export default function DetailPageTest() {
 		_category: category,
 		_genre: genre,
 	});
+	
+	 const { location: userLocation, error: locationError } = useUserLocation();
+	console.log({userLocation});
+  const { data: nearestRestaurants, isNearestLoading } = useGetNearestRestaurantsQuery(
+    userLocation
+      ? { lat: userLocation?.lat, lon: userLocation?.lon, limit: 10 }
+      : ''  // do not run query if no location yet
+  );
+  console.log({nearestRestaurants});
+
+  if (locationError) return <p>Could not get your location</p>;
+  if (isNearestLoading) return <p>Loading nearest restaurants...</p>;
 	const [filteredByPreferences] = useState(true);
 	const [showPreferencesModal, setShowPreferencesModal] = useState(false);
 
@@ -150,6 +174,7 @@ export default function DetailPageTest() {
 				</div>
 			</div>
 
+
 			{/* ⭐ Results Count */}
 			<div className="px-8 py-3 text-sm text-gray-700 font-medium">
 				Showing <b>{filteredRestaurants.length}</b> recommended restaurants for
@@ -159,98 +184,124 @@ export default function DetailPageTest() {
 			{/* ⭐ Main Content */}
 			<div className="flex flex-1 overflow-hidden">
 				{/* LEFT: Restaurant List */}
-				<div className="w-1/2 overflow-y-auto p-6 space-y-6 bg-[#FDFDFD] border-r border-gray-200">
-					{filteredRestaurants.length === 0 ? (
-						<div className="text-center py-20 text-gray-500">
-							<p className="text-xl font-bold">No restaurants found</p>
-							<p className="text-sm">Try adjusting your preferences</p>
-						</div>
-					) : (
-						filteredRestaurants.map((item) => (
-							<div
-								key={item._id}
-								className="bg-white rounded-lg shadow hover:shadow-lg transition border border-gray-200 overflow-hidden"
-							>
-								<div className="flex">
-									{/* Image */}
-									<div className="w-40 h-40 mt-5 ms-3">
-										<img
-											src={item.logo}
-											alt={item.restaurant_name}
-											className="w-full h-full object-cover  rounded-2xl"
-										/>
-									</div> 
+				
+<div className="w-1/2 overflow-y-auto p-6 space-y-6 bg-[#FDFDFD] border-r border-gray-200">
 
-									{/* Content */}
-									<div className="flex-1 p-5 flex flex-col font-['Nunito']">
-										<h2 className="text-xl font-extrabold text-gray-900 ">
-											{item.restaurant_name}
-										</h2>
-										{/* Rating */}
-										<div className="flex items-center gap-2">
-											{[...Array(5)].map((_, i) => (
-												<span
-													key={i}
-													className={`text-lg font-extrabold ${
-														i < Math.floor(item.rating)
-															? "text-red-600"
-															: "text-red-700"
-													}`}
-												>
-													★
-												</span>
-											))}
-											<span className="text-sm font-semibold text-gray-700">
-												{item.rating}
-											</span>
-										</div>
+  {/* All Listed Venues */}
+  <div>
+    {nearestRestaurants?.data?.length === 0 ? (
+      <div className="text-center py-20 text-gray-500">
+        <p className="text-xl font-bold">No restaurants found</p>
+        <p className="text-sm">Try adjusting your preferences</p>
+      </div>
+    ) : (
+      <div className="space-y-4">
+        {nearestRestaurants?.data?.map((item) => (
+          <div
+            key={item._id}
+            className="bg-white rounded-lg shadow hover:shadow-lg transition border border-gray-200 overflow-hidden"
+          >
+            <div className="flex">
+              {/* Image */}
+              <div className="w-40 h-40 mt-5 ms-3">
+                <img
+                  src={item.logo}
+                  alt={item.restaurant_name}
+                  className="w-full h-full object-cover rounded-2xl"
+                />
+              </div> 
 
-										<p className="text-sm mt-1 line-clamp-2">
-											{item.description}
-										</p>
+              {/* Content */}
+              <div className="flex-1 p-5 flex flex-col font-['Nunito']">
+                <h2 className="text-xl font-extrabold text-gray-900">
+                  {item.restaurant_name}
+                </h2>
+                {/* Rating */}
+                <div className="flex items-center gap-2">
+                  {[...Array(5)].map((_, i) => (
+                    <span
+                      key={i}
+                      className={`text-lg font-extrabold ${
+                        i < Math.floor(item.rating)
+                          ? "text-red-600"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      ★
+                    </span>
+                  ))}
+                  <span className="text-sm font-semibold text-gray-700">
+                    {item.rating}
+                  </span>
+                </div>
 
-										{/* Location */}
-										<div className="text-sm text-gray-700 mt-2 flex items-center gap-1">
-											<MapPin size={14} className="text-blue-500" />
-											{item.restaurant_location}
-										</div>
+                <p className="text-sm mt-1 line-clamp-2">
+                  {item.description}
+                </p>
 
-										{/* Cuisine Tags */}
-										<div className="flex flex-wrap gap-2 mt-3">
-											{(Array.isArray(item.cuisine)
-												? item.cuisine
-												: JSON.parse(item.cuisine || "[]")
-											)
-												.slice(0, 3)
-												.map((tag) => (
-													<span
-														key={tag}
-														className="px-3 py-1 bg-red-100 border border-red-300 rounded-full text-xs text-red-800 font-medium"
-													>
-														{tag}
-													</span>
-												))}
-										</div>
+ 				{/* Distance Highlight - Primary Info */}
+				<div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+				  <div className="flex items-center justify-between">
+					<div className="flex items-center gap-2">
+					  <MapPin className="w-5 h-5 text-blue-600" />
+					  <div>
 
-										{/* View Details Button */}
-										<button
-											onClick={() => navigate(`/restaurant/?id=${item._id}`)}
-											className="bg-red-600 text-white mt-4 px-4 py-2 rounded-lg hover:bg-red-700 transition font-medium shadow cursor-pointer"
-										>
-											View Details
-										</button>
-									</div>
-								</div>
-							</div>
-						))
+						<p className="text-2xl font-bold text-blue-600">
+						  {item?.distance ? `${item?.distance}` : "N/A"}
+						</p>
+						<p className="text-xs text-gray-600">kilometers away</p>
+					  </div>
+					</div>
+					{item?.distance && (
+					  <div className="items-center gap-1 text-gray-600">
+						
+                  		<p>{item?.restaurant_location || 'Address'}</p>
+						<span className="text-xs font-medium flex"><Clock className="w-4 h-4 me-1" />{getWalkTime(item?.distance)}</span>
+					  </div>
 					)}
+				  </div>
 				</div>
+
+                {/* Cuisine Tags */}
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {(Array.isArray(item.cuisine)
+                    ? item.cuisine
+                    : JSON.parse(item.cuisine || "[]")
+                  )
+                    .slice(0, 3)
+                    .map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 bg-red-100 border border-red-300 rounded-full text-xs text-red-800 font-medium"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                </div>
+
+                {/* View Details Button */}
+                <button
+                  onClick={() => navigate(`/restaurant/?id=${item._id}`)}
+                  className="bg-red-600 text-white mt-4 px-4 py-2 rounded-lg hover:bg-red-700 transition font-medium shadow cursor-pointer"
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
 
 				{/* RIGHT: Map */}
 				<div className="w-1/2 h-[98] bg-gray-100 mx-3 rounded-3xl">
 					<GoogleMapComponent restaurants={restaurants.data} />
 				</div>
 			</div>
+
+			
 
 			{showPreferencesModal && (
 				<Modal onClose={() => setShowPreferencesModal(false)}>

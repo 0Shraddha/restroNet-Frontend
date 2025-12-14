@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useGetRestaurantByIdQuery } from "../../../state/restaurants/restuarantApiSlice";
+import { useGetNearestRestaurantsQuery, useGetRestaurantByIdQuery } from "../../../state/restaurants/restuarantApiSlice";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent } from "../../../components/ui/card";
 import { MapPin, Phone, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import AddReview from "../Review/ReviewForm";
 import PreviewMenuItems from "../../Restaurant/Menu/PreviewMenuItems";
 import OffersCard from "../../Restaurant/Offers/OffersCard";
+import NearestVenueList from "./NearestVenueList";
 import GoogleMapComponent from "../../../components/Map";
 import ReviewCard from "../Review/Review";
 import ReviewForm from "../Review/ReviewForm"; // <-- correct name
@@ -19,6 +20,7 @@ import {
 } from "../../../state/restaurants/reviewApi";
 import { toast } from "react-toastify";
 import { Button } from "../../../components/ui/button";
+import useUserLocation from "../../../hooks/useUserLocation";
 
 const RestaurantDetail = () => {
 	const [searchParams] = useSearchParams();
@@ -30,6 +32,16 @@ const RestaurantDetail = () => {
 
 	const { data: restaurantData, isLoading } = useGetRestaurantByIdQuery(id);
 	const { data: reviews, refetch: refetchReviews } = useGetReviewsQuery();
+
+	const { location: userLocation, error: locationError } = useUserLocation();
+	const { data: nearestRestaurants, isNearestLoading } = useGetNearestRestaurantsQuery(
+	userLocation
+		  ? { lat: userLocation?.lat, lon: userLocation?.lon, limit: 10 }
+		  : ''  // do not run query if no location yet
+	  );
+	
+	  if (locationError) return <p>Could not get your location</p>;
+	  if (isNearestLoading) return <p>Loading nearest restaurants...</p>;
 
 	const [updateReview] = useUpdateReviewMutation();
 	const [deleteReview] = useDeleteReviewMutation();
@@ -66,7 +78,7 @@ const RestaurantDetail = () => {
 		};
 	}, []);
 
-	const headerClasses = `sticky top-0 px-4 md:p-6 space-y-4 z-10 transition-colors duration-300 ${isScrolled ? "shadow-md backdrop-blur-md" : 'bg-white'
+	const headerClasses = `sticky top-0 px-4 md:px-6 md:p-2 space-y-4 z-10 transition-colors duration-300 ${isScrolled ? "shadow-md backdrop-blur-md" : 'bg-white'
 		}`;
 
 	const handleDelete = async (id) => {
@@ -408,6 +420,15 @@ const RestaurantDetail = () => {
 							</div>
 						</div>
 					</aside>
+				</div>
+
+				<div>
+					  {/* Top 5 Nearest Venues */}
+					<NearestVenueList 
+						restaurants={nearestRestaurants} 
+						onNavigate={navigate}
+					/>
+
 				</div>
 			</div>
 		</div>

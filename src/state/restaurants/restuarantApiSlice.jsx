@@ -21,8 +21,12 @@ export const restaurantApiSlice = createApi({
                 })
             }),
 
-            getNearestRestaurants : builder.query({
-                method: 'GET',
+            getNearestRestaurants: builder.query({
+                query: ({ lat, lon, limit = 10 }) => ({
+                    url: "/venue/nearest",
+                    method: "GET",
+                    params: { lat, lon, limit },
+                }),
             }),
 
             getRestaurantById : builder.query({

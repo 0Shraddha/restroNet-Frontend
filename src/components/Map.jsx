@@ -81,7 +81,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
         userLocation.lon,
         r.lat,
         r.lon
-      ) <= 5
+      ) <= 2
     )
     : [];
 
@@ -198,7 +198,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
         {userLocation && (
           <Circle
             center={[userLocation.lat, userLocation.lon]}
-            radius={5000} // 5 km
+            radius={3000} // 3 km
             pathOptions={{
               color: "blue",
               fillColor: "rgba(0, 0, 255, 0.2)",
