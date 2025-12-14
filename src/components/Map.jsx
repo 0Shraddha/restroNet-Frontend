@@ -91,7 +91,7 @@ export default function GoogleMapComponent({ restaurants = [] }) {
 
       <MapContainer
         center={[27.6932347, 85.3247236]}
-        zoom={8}
+        zoom={10}
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
