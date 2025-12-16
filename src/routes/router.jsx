@@ -5,14 +5,13 @@ import ErrorPage from './error'
 import restaurantRoutes from "../pages/Restaurant/restaurantRoutes";
 import SignUpPage from "../pages/Registration";
 import SignUpPageUser from "../pages/UserRegistration";
-
 import { action as authAction } from "../Authentication/Authentication";
 import { logout } from "../util/logout";
 import Dashboard from "../pages/Admin/Dashboard";
 import usersRestaurantRoutes from "../pages/User/Restaurants/usersRestaurantRoutes";
 import GetPreferences from "../pages/User/Preference/GetPreferenceForm";
 import MenuDisplay from "../pages/Restaurant/Menu/MenuDisplay";
-import ForgetPassword from "../pages/ForgetPassword";
+import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 const AllCategories = lazy(()=>import("../pages/Metadata/Metadata"));
 
 
