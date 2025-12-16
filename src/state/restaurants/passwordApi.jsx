@@ -11,26 +11,16 @@ export const passwordApi = createApi({
 
             addEmail : builder.mutation({
                 query: (data) => ({
-                    url: '/add-email',
+                    url: '/request-reset',
                     method: 'POST',
                     body: data,
                 }),
                 invalidatesTags: ["Password"], //InvalidatesTags - Used in mutations (POST, PUT, DELETE).
             }),
 
-            addOtp: builder.mutation({
+            resetPassword: builder.mutation({
                 query: (data) => ({
-                    url : `/add-otp`,
-                    method: 'POST',
-                    body: data,
-                }),
-                invalidatesTags: ["Password"], //InvalidatesTags - Used in mutations (POST, PUT, DELETE).
-
-            }),
-
-            changePassword: builder.mutation({
-                query: (data) => ({
-                    url : `/change-password`,
+                    url : `/reset-password`,
                     method: 'POST',
                     body: data,
                 }),
@@ -41,4 +31,4 @@ export const passwordApi = createApi({
     }
 })
 
-export const { useAddEmailMutation, useAddOtpMutation, useChangePasswordMutation } = passwordApi
+export const { useAddEmailMutation, useResetPasswordMutation } = passwordApi

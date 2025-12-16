@@ -11,6 +11,7 @@ function App() {
   const shouldHideSidebar = [
     "/auth",
     "/forget-password",
+    "/reset-password",
     "/users",
     "/get-preferences",
     "/restaurant/",
