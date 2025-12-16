@@ -189,14 +189,14 @@ export default function DetailPageTest() {
 
   {/* All Listed Venues */}
   <div>
-    {nearestRestaurants?.data?.length === 0 ? (
+    {restaurants?.data?.length === 0 ? (
       <div className="text-center py-20 text-gray-500">
         <p className="text-xl font-bold">No restaurants found</p>
         <p className="text-sm">Try adjusting your preferences</p>
       </div>
     ) : (
       <div className="space-y-4">
-        {nearestRestaurants?.data?.map((item) => (
+        {restaurants?.data?.map((item,index) => (
           <div
             key={item._id}
             className="bg-white rounded-lg shadow hover:shadow-lg transition border border-gray-200 overflow-hidden"

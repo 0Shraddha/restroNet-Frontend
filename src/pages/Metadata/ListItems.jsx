@@ -108,7 +108,7 @@ const ListItem = ({ type }) => {
 			{type === "tags" && <AddTags />}
 
 			<h2 className="text-xl font-semibold text-gray-800 my-5">
-				List of items
+				List of Items
 			</h2>
 
 			<div className="flex items-center justify-between p-3 hover:bg-gray-50 transition-colors">
@@ -161,7 +161,7 @@ const ListItem = ({ type }) => {
 										key={tag._id}
 										className="flex items-center justify-between p-3 mb-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
 									>
-											<span className="font-medium">{tag.name}</span>
+											<span className="font-medium capitalize">{tag.name}</span>
 										<div className="flex space-x-2">
 											<button
 												onClick={() => onTagEdit(tag._id)}
@@ -191,7 +191,7 @@ const ListItem = ({ type }) => {
 										key={cuisine._id}
 										className="flex items-center justify-between p-3 mb-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
 									>
-											<span className="font-medium">{cuisine.name}</span>
+											<span className="font-medium capitalize">{cuisine.name}</span>
 										<div className="flex space-x-2">
 											<button
 												onClick={() => onCuisineEdit(cuisine._id)}
