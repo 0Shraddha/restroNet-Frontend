@@ -1,12 +1,8 @@
 import { useState } from 'react';
-import { ChefHat, MapPin, Utensils, Heart, Clock, Check } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ChefHat, MapPin, Utensils, Heart, Clock, Check, X } from 'lucide-react';
 
 export default function GetPreferences({ onClose, onSavePreferences }) {
   const [step, setStep] = useState(1);
-  const navigate = useNavigate();
-  const [showPreferencesModal, setShowPreferencesModal] = useState(false);
-
 
   const [preferences, setPreferences] = useState({
     cuisines: [],
@@ -46,18 +42,14 @@ export default function GetPreferences({ onClose, onSavePreferences }) {
 
   const handleSubmit = () => {
     console.log('User preferences:', preferences);
-    alert('Preferences saved! Ready to find amazing restaurants for you.');
-    navigate('/users');
-
     
-  if (onSavePreferences) {
-    onSavePreferences(preferences); // send preferences back to parent
-  }
+    if (onSavePreferences) {
+      onSavePreferences(preferences);
+    }
 
-  if (onClose) {
-    onClose(); // close the modal
-  }
-    
+    if (onClose) {
+      onClose();
+    }
   };
 
   const isStepComplete = () => {
@@ -71,40 +63,52 @@ export default function GetPreferences({ onClose, onSavePreferences }) {
   };
 
   return (
-    <div className={onSavePreferences ? `w-full` : `min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 flex items-center justify-center p-4`}>
-      <div className="max-w-4xl w-full">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-red-500 p-4 rounded-full">
-              <ChefHat className="w-8 h-8 text-white" />
+    <div className="fixed inset-0 bg-red-100 bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header with close button */}
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 rounded-t-2xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="bg-red-500 p-3 rounded-full mr-4">
+                <ChefHat className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800">
+                  Personalize your experience
+                </h1>
+                <p className="text-gray-600 text-sm">
+                  Tell us what you love
+                </p>
+              </div>
             </div>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-500" />
+              </button>
+            )}
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Welcome! Let's personalize your experience
-          </h1>
-          <p className="text-gray-600">
-            Tell us what you love, and we'll recommend the perfect restaurants for you
-          </p>
+
+          {/* Progress bar */}
+          <div className="mt-6">
+            <div className="flex justify-between mb-2">
+              {[1, 2, 3, 4].map(s => (
+                <div
+                  key={s}
+                  className={`w-full h-2 mx-1 rounded-full transition-all ${
+                    s <= step ? 'bg-red-500' : 'bg-gray-200'
+                  }`}
+                />
+              ))}
+            </div>
+            <p className="text-sm text-gray-500 text-center">Step {step} of 4</p>
+          </div>
         </div>
 
-        {/* Progress bar */}
-        <div className="mb-8">
-          <div className="flex justify-between mb-2">
-            {[1, 2, 3, 4].map(s => (
-              <div
-                key={s}
-                className={`w-full h-2 mx-1 rounded-full transition-all ${
-                  s <= step ? 'bg-red-500' : 'bg-gray-200'
-                }`}
-              />
-            ))}
-          </div>
-          <p className="text-sm text-gray-500 text-center">Step {step} of 4</p>
-        </div>
-
-        {/* Content Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
+        {/* Content */}
+        <div className="p-8">
           {/* Step 1: Cuisines */}
           {step === 1 && (
             <div>
@@ -234,7 +238,7 @@ export default function GetPreferences({ onClose, onSavePreferences }) {
         </div>
 
         {/* Navigation buttons */}
-        <div className="flex justify-between">
+        <div className="sticky bottom-0 bg-white border-t border-gray-200 px-8 py-6 rounded-b-2xl flex justify-between">
           <button
             onClick={() => setStep(Math.max(1, step - 1))}
             disabled={step === 1}

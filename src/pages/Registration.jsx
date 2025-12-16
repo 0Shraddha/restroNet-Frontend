@@ -102,7 +102,7 @@ export default function SignUpPage() {
 					>
 						<div className="flex flex-col gap-4">
 							<div className="flex flex-col items-center text-center">
-								<h1 className="text-3xl font-bold text-red-500">
+								<h1 className="text-3xl font-bold text-black-500">
 									{" "}
 									{isLoginMode ? "Welcome back" : "Welcome"}
 								</h1>
@@ -252,7 +252,7 @@ export default function SignUpPage() {
 
 							<Button
 								type="submit"
-								className="w-full bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200 cursor-pointer"
+								className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition duration-200 mt-6 cursor-pointer"
 								disabled={isSubmitting}
 							>
 								{isSubmitting
@@ -265,20 +265,28 @@ export default function SignUpPage() {
 							<div className="text-center text-sm text-gray-600 mt-4 cursor-pointer">
 								{isLoginMode ? (
 									<>
+									<Link to="/forget-password" className="font-bold text-red-600 hover:underline hover:underline-offset-4">
+										Forgot password?
+									</Link>
+
+									<br/>
+									
+									
 										Don&apos;t have an account?{" "}
 										<Link
 											to="/consumer?mode=signup"
-											className="underline underline-offset-4 text-blue-600 hover:text-blue-800"
+											className="font-bold text-blue-600 hover:underline hover:underline-offset-4"
 										>
 											Sign up
 										</Link>
+										
 									</>
 								) : (
 									<>
 										Already have an account?{" "}
 										<Link
 											to="/consumer?mode=login"
-											className="underline underline-offset-4 text-blue-600 hover:text-blue-800"
+											className="font-bold text-blue-600 hover:underline hover:underline-offset-4"
 										>
 											Login
 										</Link>

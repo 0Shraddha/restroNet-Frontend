@@ -7,6 +7,7 @@ import { tagApi } from "./restaurants/tagApi";
 import { reviewApi } from "./restaurants/reviewApi";
 import { consumerApi } from "./restaurants/consumerApi";
 import { recommendationApiSlice } from "./restaurants/recommendationApiSlice";
+import { passwordApi } from "./restaurants/passwordApi";
 
 
 export const store = configureStore({
@@ -19,6 +20,8 @@ export const store = configureStore({
         [tagApi.reducerPath] : tagApi.reducer,
         [reviewApi.reducerPath] : reviewApi.reducer,
         [consumerApi.reducerPath] : consumerApi.reducer,
+        [passwordApi.reducerPath] : passwordApi.reducer,
+
 
     },
     middleware: (getDefaultMiddleware) => { //middleware for handling asynchronous state updates
@@ -31,5 +34,6 @@ export const store = configureStore({
         .concat(tagApi.middleware)
         .concat(reviewApi.middleware)
         .concat(consumerApi.middleware)
+        .concat(passwordApi.middleware)
     }
 })

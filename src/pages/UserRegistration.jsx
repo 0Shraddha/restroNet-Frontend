@@ -178,15 +178,22 @@ export default function SignUpPage() {
               <div className="text-center text-sm text-gray-600 mt-4 cursor-pointer">
                 {isLoginMode ? (
                   <>
+                    <Link to="/forget-password" className="font-bold text-red-600 hover:underline hover:underline-offset-4">
+                    Forgot password?
+                    </Link>
+
+                   <br/>
+
                     Don&apos;t have an account?{" "}
-                    <Link to="/auth?mode=signup" className="underline underline-offset-4 text-blue-600 hover:text-blue-800">
+                    <Link to="/auth?mode=signup" className="font-bold text-blue-600 hover:underline hover:underline-offset-4">
                       Sign up
                     </Link>
+                   
                   </>
                 ) : (
                   <>
                     Already have an account?{" "}
-                    <Link to="/auth?mode=login" className="underline underline-offset-4 text-blue-600 hover:text-blue-800">
+                    <Link to="/auth?mode=login" className="font-bold text-blue-600 hover:underline hover:underline-offset-4">
                       Login
                     </Link>
                   </>
