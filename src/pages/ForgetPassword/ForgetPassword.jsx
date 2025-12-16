@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import ResetPasswordForm from "./ResetPasswordForm";
 import OtpForm from "./OtpForm";
 import EmailForm from "./EmailForm";
 
@@ -34,8 +33,7 @@ const ForgetPassword = () => {
       <div className="w-full max-w-md">
         {hasOtp ? (
           // Change Password Screen
-          <ResetPasswordForm />
-          
+            ''
         ) : isValid ? (
           // OTP Verification Screen
           <OtpForm />

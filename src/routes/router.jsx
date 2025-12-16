@@ -12,6 +12,7 @@ import usersRestaurantRoutes from "../pages/User/Restaurants/usersRestaurantRout
 import GetPreferences from "../pages/User/Preference/GetPreferenceForm";
 import MenuDisplay from "../pages/Restaurant/Menu/MenuDisplay";
 import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
+import RestaurantProfile from "../pages/Profile";
 const AllCategories = lazy(()=>import("../pages/Metadata/Metadata"));
 
 
@@ -33,6 +34,12 @@ const router = createBrowserRouter([
              {
                 path: '/consumer',
                 element: <SignUpPage />,
+
+                action: authAction
+            },
+            {
+                path: '/profile',
+                element: <RestaurantProfile />,
 
                 action: authAction
             },

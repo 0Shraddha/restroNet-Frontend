@@ -3,7 +3,7 @@ import { MapPin, Filter, UserRound, Clock } from "lucide-react";
 import GoogleMapComponent from "../../../components/Map";
 import { useGetRecommendationsQuery } from "../../../state/restaurants/recommendationApiSlice";
 import { useTableFilter } from "../../../hooks/useTableFilter";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "../../../components/common/Modal";
 import GetPreferences from "../Preference/GetPreferenceForm";
 import Search from "../../../components/ui/searchcontent"
@@ -65,6 +65,8 @@ export default function DetailPageTest() {
 
 	const filteredRestaurants = restaurantList;
 
+
+
 	//   filteredByPreferences
 	//     ? restaurantList.filter((restaurant) => {
 	//         const matchesCategory = userPreferences.category.some((cat) =>
@@ -120,7 +122,7 @@ export default function DetailPageTest() {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent className="bg-red-500 text-white absolute -right-6  ">
 							<DropdownMenuItem className="cursor-pointer hover:bg-red-400">
-								Profile
+								<Link to="/profile">Profile</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem
 								onClick={() => {
@@ -129,7 +131,7 @@ export default function DetailPageTest() {
 								}}
 								className="cursor-pointer hover:bg-red-400"
 							>
-								Log out
+								Logout
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
