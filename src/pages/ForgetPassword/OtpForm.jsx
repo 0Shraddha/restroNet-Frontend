@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useResetPasswordMutation } from "../../state/restaurants/passwordApi";
 import { toast } from "react-toastify";
 
 const OtpForm = () => {
       const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-      
+      const [searchParams] = useSearchParams();
+const token = searchParams.get("token");
+
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +19,8 @@ const passwordRegex =
 
   const [resetPassword, { isLoading, isError, error }] = useResetPasswordMutation();
 
-const token = localStorage.getItem("restaurantUser");
+// const token = localStorage.getItem("restaurantUser");
+
 
 const handleSubmit = async () => {
   const otpValue = otp.join("");
