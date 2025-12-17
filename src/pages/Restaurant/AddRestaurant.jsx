@@ -210,6 +210,7 @@ const AddRestaurant = () => {
     formData.append("location", JSON.stringify(locationObject))
 
     // formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
+    console.log(selectedCuisines, "cuisines........")
     selectedCuisines.map(c => c.name).forEach(cuisineName => {
       formData.append("cuisine", cuisineName);
     });
@@ -250,8 +251,12 @@ const AddRestaurant = () => {
     });
 
     // ✓ Append cuisines/tags
-    formData.append("cuisine", JSON.stringify(selectedCuisines.map(c => c.name)));
-    formData.append("tags", JSON.stringify(selectedTags.map(t => t.name)));
+        selectedCuisines.map(c => c.name).forEach(cuisineName => {
+      formData.append("cuisine", cuisineName);
+    });
+    selectedTags.map(c => c.name).forEach(tagName => {
+      formData.append("tags", tagName);
+    });
 
     // ✓ Attach new logo
     if (logoFile?.file) {
