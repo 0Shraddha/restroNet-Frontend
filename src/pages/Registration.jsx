@@ -44,6 +44,8 @@ export default function SignUpPage() {
 	} = useForm();
 
 	const [isView, setIsView] = useState(false);
+	const [isView2, setIsView2] = useState(false);
+
 
 	useEffect(() => {
 		if (actionData) {
@@ -113,7 +115,7 @@ export default function SignUpPage() {
 								</p>
 							</div>
 							<div className="grid gap-1">
-								<Label htmlFor="email" className="text-gray-700">
+								<Label htmlFor="email" className="text-gray-700 mb-2">
 									Email
 								</Label>
 								<Input
@@ -140,7 +142,7 @@ export default function SignUpPage() {
 
 							{!isLoginMode && (
 								<div className="grid gap-1">
-									<Label htmlFor="username" className="text-gray-700">
+									<Label htmlFor="username" className="text-gray-700 mb-2">
 										Fullname
 									</Label>
 									<Input
@@ -162,7 +164,7 @@ export default function SignUpPage() {
 
 							{!isLoginMode && (
 								<div className="grid gap-1">
-									<Label htmlFor="phone" className="text-gray-700">
+									<Label htmlFor="phone" className="text-gray-700 mb-2">
 										Phone Number
 									</Label>
 									<Input
@@ -181,59 +183,54 @@ export default function SignUpPage() {
 								</div>
 							)}
 
-							<div className="grid gap-1">
-								<Label htmlFor="password" className="text-gray-700">
+							<div className="relative">
+								<Label htmlFor="password" className="text-gray-700 mb-3">
 									Password
 								</Label>
 								<Input
 									id="password"
 									type={isView ? "text" : "password"}
 									name="password"
-									className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+									className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 pr-10"
 									{...register("password", {
-										required: "Password is required",
-										minLength: {
-											value: 8,
-											message: "Password should be at least 8 characters long",
-										},
-										pattern: {
-											value:
-												/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-											message:
-												"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-										},
+									required: "Password is required",
+									minLength: {
+										value: 8,
+										message: "Password should be at least 8 characters long",
+									},
+									pattern: {
+										value:
+										/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+										message:
+										"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+									},
 									})}
 								/>
-								{isView ? (
-									<Eye
-										size={14}
-										className=" text-red-400 cursor-pointer text-gray-500"
-										onClick={() => {
-											setIsView(!isView)
-										}}
-									/>
-								) : (
-									<EyeOff
-										size={14}
-										className=" cursor-pointer text-gray-500"
-										onClick={() => setIsView(!isView)}
-									/>
-								)}
-								{errors.password && (
-									<small className="text-red-600 text-sm">
-										{errors.password.message}
-									</small>
-								)}
+
+								{/* Eye / EyeOff icon inside input */}
+								<div className="absolute right-3 top-2/3 -translate-y-1/2 cursor-pointer text-gray-500">
+									{isView ? (
+									<Eye size={16} className="text-red-400" onClick={() => setIsView(!isView)} />
+									) : (
+									<EyeOff size={16} onClick={() => setIsView(!isView)} />
+									)}
+								</div>
 							</div>
+							  {errors.password && (
+									<small className="text-red-600 text-sm">{errors.password.message}</small>
+								)}
+
 
 							{!isLoginMode && (
-								<div className="grid gap-1">
-									<Label htmlFor="confirmPassword" className="text-gray-700">
+								<div>
+									<div className="grid gap-1 relative">
+									<Label htmlFor="confirmPassword" className="text-gray-700 mb-2">
 										Confirm Password
 									</Label>
 									<Input
 										id="confirmPassword"
-										type="password"
+										type={isView2 ? "text" : "password"}
+
 										className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
 										{...register("confirmPassword", {
 											required: "Confirm Password is required",
@@ -242,12 +239,21 @@ export default function SignUpPage() {
 												"Passwords do not match",
 										})}
 									/>
+									 {/* Eye / EyeOff icon inside input */}
+									<div className="absolute right-3 top-2/3 -translate-y-1/2 cursor-pointer text-gray-500">
+										{isView2 ? (
+										<Eye size={16} className="text-red-400" onClick={() => setIsView2(!isView2)} />
+										) : (
+										<EyeOff size={16} onClick={() => setIsView2(!isView2)} />
+										)}
+									</div>
+								</div>
 									{errors.confirmPassword && (
 										<small className="text-red-600 text-sm">
 											{errors.confirmPassword.message}
 										</small>
 									)}
-								</div>
+							</div>
 							)}
 
 							<Button

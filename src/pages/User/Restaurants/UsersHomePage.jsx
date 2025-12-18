@@ -241,7 +241,7 @@ export default function DetailPageTest() {
                   {item.description}
                 </p>
 
- 				{/* Distance Highlight - Primary Info */}
+ 				{/* Distance Highlight - Primary Info
 				<div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
 				  <div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
@@ -262,7 +262,7 @@ export default function DetailPageTest() {
 					  </div>
 					)}
 				  </div>
-				</div>
+				</div> */}
 
                 {/* Cuisine Tags */}
                 <div className="flex flex-wrap gap-2 mt-3">

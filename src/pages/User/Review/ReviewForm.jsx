@@ -57,7 +57,7 @@ const ReviewForm = ({ mode = "add", review = null, onSubmitForm }) => {
 		<>
 			{JSON.parse(localStorage.getItem("user"))?.role == "consumer" ? (
 				<form
-					className="p-8 my-12 bg-white border border-gray-200 shadow-md rounded-2xl space-y-6"
+					className="p-8 mb-12 bg-white border border-gray-200 shadow-md rounded-2xl space-y-6"
 					onSubmit={handleSubmit(onSubmit)}
 				>
 					{/* Header */}

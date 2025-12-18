@@ -289,15 +289,7 @@ const RestaurantDetail = () => {
   {console.log("review................", reviews)}
                 {activeTab === "reviews" && (
                   <div className="text-gray-600">
-                    <p className="text-gray-800 text-end"><strong>Total</strong> : {reviews?.count}</p>
-                    {reviews?.data.map((item, i) => (
-                      <ReviewCard
-                        key={i}
-                        reviewData={item}
-                        onDelete={() => handleDelete(item._id)}
-                        onEdit={() => setEditingReview(item)}
-                      />
-                    ))}
+                    
 
                     {editingReview && (
                       <ReviewForm
@@ -316,6 +308,15 @@ const RestaurantDetail = () => {
                       />
                     )}
 
+                  <p className="text-gray-800 text-end"><strong>Total</strong> : {reviews?.count}</p>
+                    {reviews?.data.map((item, i) => (
+                      <ReviewCard
+                        key={i}
+                        reviewData={item}
+                        onDelete={() => handleDelete(item._id)}
+                        onEdit={() => setEditingReview(item)}
+                      />
+                    ))}
 
                   </div>
                 )}

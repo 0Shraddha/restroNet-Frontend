@@ -1,187 +1,197 @@
-import React, { useEffect, useState } from "react";
-import { Star, Clock, Flame, ChefHat, Edit2, Trash2 } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Star, Clock, Flame, ChefHat, Edit2, Trash2,X } from "lucide-react";
+import { useGetCategoriesQuery } from "../../../state/restaurants/categoryApiSlice";
 
-const MenuCards = ({ menu, currency = "Rs" }) => {
+const MenuCards = ({ menu, currency = "Rs", onEdit, onDelete, isAdmin = false }) => {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [hideButtons, setHideButtons] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    if (location.pathname === "/restaurant-detail") {
-      setHideButtons(false);
-    } else {
-      setHideButtons(true);
-    }
-  }, [location.pathname]);
+  const { data: categories } = useGetCategoriesQuery();
 
-  // Extract unique categories (if you have category field)
-  const categories = ["all", ...new Set(menu?.data?.map(item => item?.category).filter(Boolean))];
+  // --- FILTER MENU ---
+  const filteredMenu = menu?.data?.filter((item) => {
+    // Make category comparison case-insensitive
+    const itemCategory = item?.category?.toString().toLowerCase();
+    const selectedCat = selectedCategory.toString().toLowerCase();
 
-  const filteredMenu = selectedCategory === "all"
-    ? menu?.data
-    : menu?.data?.filter(item => item?.category === selectedCategory);
+    const matchesCategory = selectedCategory === "all" || itemCategory === selectedCat;
+
+    const matchesSearch =
+      searchQuery === "" ||
+      item?.item_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.description?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
 
   const handleEdit = (id) => {
-    navigate(`/menu-manager?id=${id}`);
+    if (onEdit) onEdit(id);
   };
-
 
   const handleDelete = (id) => {
-    console.log("deleting : ", id);
+    if (onDelete) onDelete(id);
   };
 
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
 
   return (
-    <div className="px-4 pb-8 pt-3">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className=" bg-red-100 border-b border-gray-200 z-10 shadow-sm">
+        <div className="max-w-4xl mx-auto py-6 flex">
+          <div className="me-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Our Menu</h1>
+            <p className="text-gray-600 mb-4 text-nowrap">Explore our delicious selection</p>
+          </div>
+          {/* Search */}
+          <div className="relative w-full mb-4">
+            <input
+              type="text"
+              placeholder="Search dishes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-4 top-1/4 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X size={20} />
+              </button>
+            )}
+          </div>
+        </div>
 
-      {/* Menu Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredMenu?.map((item) => {
-          const unavailable = item?.availability === false;
-          return (
-            <div
-              key={item?._id}
-              className={`group bg-white rounded-2xl overflow-hidden border transition-all duration-300 ${unavailable
-                ? "border-gray-200 opacity-70"
-                : "border-gray-100 hover:border-red-200 hover:shadow-xl hover:-translate-y-1"
-                }`}
+
+          {/* Categories */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 ps-18 scrollbar-hide">
+            <button
+              onClick={() => setSelectedCategory("all")}
+              className={`px-4 py-2 rounded-full font-medium whitespace-nowrap ${
+                selectedCategory === "all"
+                  ? "bg-red-600 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
             >
-              {/* Image Container */}
-              <div className="relative h-48 overflow-hidden bg-gray-100">
-                <img
-                  src={item?.images || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"}
-                  alt={item?.item_name}
-                  className={`w-full h-full object-cover transition-transform duration-500 ${unavailable ? "grayscale" : "group-hover:scale-110"
-                    }`}
-                />
+              All
+            </button>
 
-                {/* Availability Badge */}
-                <div className="absolute top-3 left-3">
-                  <span
-                    className={`px-3 py-1 text-xs rounded-full font-semibold shadow-lg ${unavailable
-                      ? "bg-red-500 text-white"
-                      : "bg-emerald-500 text-white"
-                      }`}
-                  >
-                    {unavailable ? "Unavailable" : "Available"}
-                  </span>
-                </div>
-
-                {/* Price Badge */}
-                <div className="absolute bottom-3 right-3">
-                  <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-                    <span className="text-red-600 font-bold text-lg">
-                      {currency} {item?.price}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-5">
-                {/* Title */}
-                <h3 className="font-bold text-xl text-gray-900 mb-2 line-clamp-1">
-                  {item?.item_name}
-                </h3>
-
-                {/* Description */}
-                <p className="text-gray-600 text-sm line-clamp-2 mb-4">
-                  {item?.description || "Delicious dish prepared with care"}
-                </p>
-
-                {/* Tags Row */}
-                <div className="flex items-center gap-3 mb-4">
-                  {/* Prep Time */}
-                  <div className="flex items-center gap-1 text-blue-600">
-                    <Clock size={14} />
-                    <span className="text-xs font-medium">{item?.preparation_time}m</span>
-                  </div>
-
-                  {/* Spice Level */}
-                  {item?.spice_level > 0 && (
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: Math.min(item?.spice_level, 3) }).map((_, i) => (
-                        <Flame key={i} className="w-3.5 h-3.5 text-red-500" fill="currentColor" />
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Rating */}
-                  <div className="flex items-center gap-1 text-yellow-500 ml-auto">
-                    <Star size={14} fill="currentColor" />
-                    <span className="text-xs font-medium text-gray-700">
-                      {item?.ratings || "4.5"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Ingredients */}
-                {item?.ingredients?.length > 0 && (
-                  <div className="pt-3 border-t border-gray-100">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <ChefHat size={12} className="text-gray-400" />
-                      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                        Ingredients
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {item?.ingredients?.slice(0, 3)?.map((ing, i) => (
-                        <span
-                          key={i}
-                          className="px-2 py-1 bg-gray-50 text-xs rounded-md text-gray-600"
-                        >
-                          {ing}
-                        </span>
-                      ))}
-                      {item?.ingredients?.length > 3 && (
-                        <span className="px-2 py-1 text-xs text-gray-400">
-                          +{item?.ingredients?.length - 3}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* ACTION BUTTONS */}
-                {JSON.parse(localStorage.getItem("user"))?.role == "user" ? (
-
-                  <div className="flex gap-2 pt-2 border-t border-gray-100">
-                    <button
-                      type="button"
-                      onClick={() => handleEdit(item?._id)}
-                      className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-medium"
-                    >
-                      <Edit2 size={16} />
-                      Edit
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(item?._id)}
-                      className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-sm font-medium"
-                    >
-                      <Trash2 size={16} />
-                      Delete
-                    </button>
-                  </div>
-                ) : ("")
-                }
-              </div>
-            </div>
-          );
-        })}
+            {categories?.data?.map((cat) => (
+              <button
+                key={cat?._id}
+                onClick={() => setSelectedCategory(cat?.label)}
+                className={`px-4 py-2 rounded-full font-medium whitespace-nowrap capitalize ${
+                  selectedCategory === cat?.label
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {cat?.label}
+              </button>
+            ))}
+          </div>
       </div>
 
-      {/* Empty State */}
-      {(!filteredMenu || filteredMenu.length === 0) && (
-        <div className="text-center py-16">
-          <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">No items found</h3>
-          <p className="text-gray-500">Check back later for delicious options!</p>
+      {/* Results */}
+      <div className="max-w-4xl mx-auto px-4 py-4">
+        <p className="text-sm text-gray-600 mb-4">
+          Showing <span className="font-semibold text-gray-900">{filteredMenu?.length || 0}</span> items
+          {selectedCategory !== "all" && (
+            <span> in <span className="font-semibold text-red-600">{selectedCategory}</span></span>
+          )}
+        </p>
+
+        {/* Menu List */}
+        <div className="space-y-4">
+          {filteredMenu?.map((item) => {
+            const unavailable = item?.availability === false;
+            return (
+              <div
+                key={item?._id}
+                className={`bg-white rounded-xl shadow p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+                  unavailable ? "opacity-70" : ""
+                }`}
+              >
+                {/* Left Info */}
+                <div className="flex flex-col gap-1">
+                  <h3 className={`font-bold text-lg ${unavailable ? "text-gray-400" : "text-gray-900"}`}>
+                    {item?.item_name}
+                  </h3>
+                  {item?.category && (
+                    <span className="text-xs text-red-600 font-semibold capitalize">{item?.category}</span>
+                  )}
+                  <p className="text-gray-600 text-sm">{item?.description}</p>
+                  <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
+                    <Clock size={14} /> <span>{item?.preparation_time}m</span>
+                    {item?.spice_level > 0 && (
+                      <div className="flex gap-1">
+                        {Array.from({ length: Math.min(item?.spice_level, 3) }).map((_, i) => (
+                          <Flame key={i} className="w-4 h-4 text-red-500" fill="currentColor" />
+                        ))}
+                      </div>
+                    )}
+                    <Star size={14} className="text-yellow-500" />{" "}
+                    <span>{item?.ratings || "4.5"}</span>
+                  </div>
+                </div>
+
+                {/* Right Actions */}
+                <div className="flex gap-2 mt-2 md:mt-0">
+                  <div className="bg-gray-50 rounded-full px-4 py-2 font-semibold text-red-600">
+                    {currency} {item?.price}
+                  </div>
+
+                  {isAdmin && (
+                    <>
+                      <button
+                        onClick={() => handleEdit(item?._id)}
+                        className="px-3 py-1 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100"
+                      >
+                        <Edit2 size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(item?._id)}
+                        className="px-3 py-1 rounded-lg bg-red-50 text-red-700 hover:bg-red-100"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Empty State */}
+          {filteredMenu?.length === 0 && (
+            <div className="text-center py-20">
+              <div className="bg-white rounded-3xl shadow-lg p-12 max-w-md mx-auto">
+                <ChefHat className="w-20 h-20 text-gray-300 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-gray-800 mb-3">No items found</h3>
+                <p className="text-gray-500 mb-6">
+                  {searchQuery
+                    ? `No results for "${searchQuery}". Try a different search.`
+                    : "Check back later for delicious options!"}
+                </p>
+                {(searchQuery || selectedCategory !== "all") && (
+                  <button
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedCategory("all");
+                    }}
+                    className="px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-colors"
+                  >
+                    Clear Filters
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

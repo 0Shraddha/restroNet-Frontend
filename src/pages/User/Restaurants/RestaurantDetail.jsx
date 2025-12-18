@@ -335,18 +335,7 @@ const RestaurantDetail = () => {
 
 								{activeTab === "reviews" && (
 									<div className="text-gray-600">
-										<p className="text-gray-800 text-end">
-											<strong>Total</strong> : {reviews?.count}
-										</p>
-										{reviews?.data.map((item, i) => (
-											<ReviewCard
-												key={i}
-												reviewData={item}
-												onDelete={() => handleDelete(item._id)}
-												onEdit={() => setEditingReview(item)}
-											/>
-										))}
-
+										
 										{editingReview && (
 											<ReviewForm
 												mode="edit"
@@ -363,6 +352,19 @@ const RestaurantDetail = () => {
 												onSubmitForm={(data) => addReview(data)}
 											/>
 										)}
+										
+										<p className="text-gray-800 text-end">
+											<strong>Total</strong> : {reviews?.count}
+										</p>
+										{reviews?.data.map((item, i) => (
+											<ReviewCard
+												key={i}
+												reviewData={item}
+												onDelete={() => handleDelete(item._id)}
+												onEdit={() => setEditingReview(item)}
+											/>
+										))}
+
 									</div>
 								)}
 							</CardContent>

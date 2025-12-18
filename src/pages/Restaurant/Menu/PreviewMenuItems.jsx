@@ -77,13 +77,9 @@ const PreviewMenuItems = ({ id }) => {
 
       {/* Menu Cards */}
       {!isLoading && !isError &&
-        <>
-          <StatsCard
-            cardsData={categories?.data}
-            layout="grid-cols-1 md:grid-cols-8 gap-2"
-          />
+       
           <MenuCards menu={menus} />
-        </>
+
       }
     </>
   );

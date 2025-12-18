@@ -163,6 +163,21 @@ export default function SignUpPage() {
                         value === getValues('password') || 'Passwords do not match'
                     })}
                   />
+                   {isView ? (
+                        <Eye
+                          size={14}
+                          className=" text-red-400 cursor-pointer text-gray-500"
+                          onClick={() => {
+                            setIsView(!isView)
+                          }}
+                        />
+                      ) : (
+                        <EyeOff
+                        size={14}
+                          className=" cursor-pointer text-gray-500"
+                          onClick={() => setIsView(!isView)}
+                        />
+                      )}
                   {errors.confirmPassword && <small className='text-red-600 text-sm'>{errors.confirmPassword.message}</small>}
                 </div>
               )}
