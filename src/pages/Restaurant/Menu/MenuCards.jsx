@@ -69,6 +69,7 @@ const MenuCards = ({ menu, currency = "Rs", onEdit, onDelete, isAdmin = false })
           {/* Categories */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 ps-18 scrollbar-hide">
             <button
+            type="button"
               onClick={() => setSelectedCategory("all")}
               className={`px-4 py-2 rounded-full font-medium whitespace-nowrap ${
                 selectedCategory === "all"
@@ -82,6 +83,7 @@ const MenuCards = ({ menu, currency = "Rs", onEdit, onDelete, isAdmin = false })
             {categories?.data?.map((cat) => (
               <button
                 key={cat?._id}
+                type="button"
                 onClick={() => setSelectedCategory(cat?.label)}
                 className={`px-4 py-2 rounded-full font-medium whitespace-nowrap capitalize ${
                   selectedCategory === cat?.label

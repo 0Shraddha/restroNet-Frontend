@@ -3,7 +3,6 @@ import { Input } from "../components/ui/input"; // Assuming this path is correct
 import { Label } from "../components/ui/label"; // Assuming this path is correct
 import { Button } from "../components/ui/button"; // Assuming this path is correct
 import {
-	showSuccessToast,
 	showErrorToast,
 } from "../components/common/ToastNotification";
 import { useEffect, useState } from "react";
@@ -23,6 +22,7 @@ import {
 	useSignupMutation,
 	useLoginMutation,
 } from "../state/restaurants/consumerApi";
+import { toast } from "react-toastify";
 
 export default function SignUpPage() {
 	const navigation = useNavigation();
@@ -69,18 +69,18 @@ export default function SignUpPage() {
     console.log(response, response.user)
 		if (isLoginMode) {
 			if (response.success) {
-				showSuccessToast("User login successfully!");
+				toast.success("User login successfully!");
         localStorage.setItem("user",JSON.stringify(response.user))
 				navigate("/users");
 			} else {
-				showSuccessToast("Enter valid credential!");
+				toast.error("Enter valid credential!");
 			}
 		} else {
 			if (response.success) {
-				showSuccessToast("User created successfully!");
+				toast.success("User created successfully!");
 				navigate("/consumer?mode=login");
 			} else {
-				showSuccessToast("Could not create user check the data again");
+				toast.error("Could not create user check the data again");
 			}
 		
 		}
