@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { MapPin, Filter, UserRound, Clock } from "lucide-react";
 import GoogleMapComponent from "../../../components/Map";
-import { useGetRecommendationsQuery } from "../../../state/restaurants/recommendationApiSlice";
 import { useTableFilter } from "../../../hooks/useTableFilter";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "../../../components/common/Modal";
 import GetPreferences from "../Preference/GetPreferenceForm";
 import Search from "../../../components/ui/searchcontent"
+import { useGetDiscoveryQuery } from "../../../state/restaurants/recommendationApiSlice";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -25,7 +25,7 @@ const userPreferences = {
 	tags: ["Romantic", "Outdoor Seating"],
 };
 
-  // Calculate estimated walk time (assuming 5 km/h walking speed)
+
   const getWalkTime = (distance) => {
     if (!distance) return null;
     const minutes = Math.round((distance / 5) * 60);
@@ -39,13 +39,21 @@ export default function DetailPageTest() {
 	
 	const navigate = useNavigate();
  
-	const { data: restaurants, isLoading } = useGetRecommendationsQuery({
-		_search: query,
+	console.log()
+	const consumerId = JSON.parse(localStorage.getItem("user"))._id
+	const { data: restaurants, isLoading } = useGetDiscoveryQuery({
+		id: consumerId,
+		q: query,
+		cusine: category,
+		limit: 10,
 		_perPage: perPage,
 		_page: page,
 		_category: category,
 		_genre: genre,
+		
 	});
+
+	console.log(restaurants, "rrrrrrrrrrrrrrrrrrrrrr")
 	
 	 const { location: userLocation, error: locationError } = useUserLocation();
 	console.log({userLocation});
@@ -111,10 +119,10 @@ export default function DetailPageTest() {
 					</div>
 
 					{/* Filters Button */}
-					<button className="flex items-center gap-2 bg-red-600 text-white px-5 py-2 rounded-xl font-medium shadow hover:bg-red-700 transition">
+					{/* <button className="flex items-center gap-2 bg-red-600 text-white px-5 py-2 rounded-xl font-medium shadow hover:bg-red-700 transition">
 						<Filter size={16} />
 						Filters
-					</button>
+					</button> */}
 
 					<DropdownMenu className="font-['sora'] ">
 						<DropdownMenuTrigger className="rounded-full border-2 p-2 bg-red-700 border-red-700 cursor-pointer hover:bg-red-500 hover:border-red-500">
@@ -142,14 +150,14 @@ export default function DetailPageTest() {
 					{/* <p className="font-semibold text-gray-700 mb-2">Your Preferences:</p> */}
 
 					<div className="flex flex-wrap gap-4">
-						<div className="">
+						{/* <div className="">
 							<button
 								onClick={() => setShowPreferencesModal(true)}
 								className="px-5 py-2 bg-red-600 text-white text-sm rounded-lg font-medium shadow hover:bg-red-500 transition cursor-pointer"
 							>
 								Update Preferences
 							</button>
-						</div>
+						</div> */}
 						<div className="flex gap-3">
 							{[
 								...userPreferences.cuisines,

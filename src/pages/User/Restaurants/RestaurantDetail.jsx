@@ -32,7 +32,7 @@ const RestaurantDetail = () => {
 	const [activeTab, setActiveTab] = useState("overview");
 
 	const { data: restaurantData, isLoading } = useGetRestaurantByIdQuery(id);
-	const { data: reviews, refetch: refetchReviews } = useGetReviewsQuery();
+	const { data: reviews, refetch: refetchReviews } = useGetVenueReviewsQuery({id: id});
 
 	const { location: userLocation, error: locationError } = useUserLocation();
 	const { data: nearestRestaurants, isNearestLoading } = useGetNearestRestaurantsQuery(

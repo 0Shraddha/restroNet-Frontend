@@ -162,14 +162,14 @@ const AddMenu = () => {
 			onSubmit={handleSubmit(id ? onUpdate : onSubmit)}
 			ref={formRef}
 		>
-			<div className="bg-white rounded-xl shadow-sm p-6 mb-4">
+			<div className="bg-white rounded-sm shadow-sm p-6 mb-4">
 				<h1 className="text-3xl font-bold text-gray-900 mb-2">
 					Menu Management
 				</h1>
 				<p className="text-gray-600">Manage your menu listings and details</p>
 			</div>
 
-			<Card className="border-gray-100 bg-white text-card-foreground p-6 mb-4 ">
+			<Card className="border-gray-100 rounded-md bg-white text-card-foreground p-6 mb-4 ">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					{/* Basic Information */}
 					
@@ -439,12 +439,12 @@ const AddMenu = () => {
 				</Button>
 			</Card>
 
-			<Button
+			{/* <Button
 				type="submit"
 				className="bg-red-400 text-white py-2 px-4 rounded-md hover:bg-red-500 transition-colors duration-200"
 			>
 				Save all items
-			</Button>
+			</Button> */}
 
 			<PreviewMenuItems />
 		</form>

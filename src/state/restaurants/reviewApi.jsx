@@ -16,7 +16,7 @@ export const reviewApi = createApi({
 
         // ================= GET VENUE REVIEWS =================
         getVenueReviews: builder.query({
-            query: (id) => `/venue/${id}/reviews`,
+            query: ({id}) => `/venue/${id}/reviews`,
             providesTags: ["Review"],
         }),
 

@@ -2,6 +2,7 @@ import { Edit2, Trash2, User } from "lucide-react";
 
 export default function ReviewCard({ reviewData, onDelete, onEdit }) {
   const { review, rating, user_name } = reviewData;
+  console.log(reviewData, "review data")
 
   return (
     <div className="bg-white rounded-xl shadow-md p-5 w-full mb-4 border border-gray-100">

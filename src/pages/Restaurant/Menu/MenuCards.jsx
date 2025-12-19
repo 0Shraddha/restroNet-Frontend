@@ -46,7 +46,7 @@ const MenuCards = ({ menu, currency = "Rs", onEdit, onDelete, isAdmin = false })
             <p className="text-gray-600 mb-4 text-nowrap">Explore our delicious selection</p>
           </div>
           {/* Search */}
-          <div className="relative w-full mb-4">
+          {/* <div className="relative w-full mb-4">
             <input
               type="text"
               placeholder="Search dishes..."
@@ -62,13 +62,13 @@ const MenuCards = ({ menu, currency = "Rs", onEdit, onDelete, isAdmin = false })
                 <X size={20} />
               </button>
             )}
-          </div>
+          </div> */}
         </div>
 
 
           {/* Categories */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 ps-18 scrollbar-hide">
-            <button
+            {/* <button
             type="button"
               onClick={() => setSelectedCategory("all")}
               className={`px-4 py-2 rounded-full font-medium whitespace-nowrap ${
@@ -78,7 +78,7 @@ const MenuCards = ({ menu, currency = "Rs", onEdit, onDelete, isAdmin = false })
               }`}
             >
               All
-            </button>
+            </button> */}
 
             {categories?.data?.map((cat) => (
               <button
