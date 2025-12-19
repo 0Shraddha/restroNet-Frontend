@@ -117,28 +117,28 @@ const stats = useMemo(() => {
             title="Total Restaurants"
             value={stats.totalRestaurants}
             subtitle="Active listings"
-            color="text-blue-600"
+            color="text-red-600"
           />
           <StatCard
             icon={Globe}
             title="Unique Cuisines"
             value={stats.uniqueCuisines}
             subtitle="Types available"
-            color="text-purple-600"
+            color="text-red-600"
           />
           <StatCard
             icon={MapPin}
             title="Valid Locations"
             value={stats.validLocations}
             subtitle="Mapped restaurants"
-            color="text-pink-600"
+            color="text-red-600"
           />
           <StatCard
             icon={Calendar}
             title="Recent Additions"
             value={Object.keys(stats.timeline).length}
             subtitle="Registration days"
-            color="text-green-600"
+            color="text-red-600"
           />
         </div>
 
@@ -250,11 +250,8 @@ const stats = useMemo(() => {
 
         {/* Text content */}
         <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-          <p className="text-white font-semibold text-sm truncate">
+          <p className="text-white font-semibold text-sm truncate mb-2">
             {restaurant.restaurant_name}
-          </p>
-          <p className="text-white/80 text-xs mt-1">
-            Click to view gallery
           </p>
         </div>
       </div>
