@@ -66,11 +66,11 @@ export default function SignUpPage() {
 		} else {
 			response = await signup(formData).unwrap();
 		}
-    console.log(response, response.user)
+		console.log(response, response.user)
 		if (isLoginMode) {
 			if (response.success) {
 				toast.success("User login successfully!");
-        localStorage.setItem("user",JSON.stringify(response.user))
+				localStorage.setItem("user", JSON.stringify(response.user))
 				navigate("/users");
 			} else {
 				toast.error("Enter valid credential!");
@@ -82,7 +82,7 @@ export default function SignUpPage() {
 			} else {
 				toast.error("Could not create user check the data again");
 			}
-		
+
 		}
 	};
 
@@ -173,7 +173,13 @@ export default function SignUpPage() {
 										name="phone"
 										placeholder="Enter phone number"
 										className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-										{...register("phone")}
+										{...register('phone', {
+											required: 'Phone number is required',
+											pattern: {
+												value: /^[0-9]{10}$/,
+												message: 'Phone number must be exactly 10 digits'
+											}
+										})}
 									/>
 									{errors.phone && (
 										<small className="text-red-600 text-sm">
@@ -193,67 +199,67 @@ export default function SignUpPage() {
 									name="password"
 									className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500 pr-10"
 									{...register("password", {
-									required: "Password is required",
-									minLength: {
-										value: 8,
-										message: "Password should be at least 8 characters long",
-									},
-									pattern: {
-										value:
-										/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-										message:
-										"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-									},
+										required: "Password is required",
+										minLength: {
+											value: 8,
+											message: "Password should be at least 8 characters long",
+										},
+										pattern: {
+											value:
+												/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+											message:
+												"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+										},
 									})}
 								/>
 
 								{/* Eye / EyeOff icon inside input */}
 								<div className="absolute right-3 top-2/3 -translate-y-1/2 cursor-pointer text-gray-500">
 									{isView ? (
-									<Eye size={16} className="text-red-400" onClick={() => setIsView(!isView)} />
+										<Eye size={16} className="text-red-400" onClick={() => setIsView(!isView)} />
 									) : (
-									<EyeOff size={16} onClick={() => setIsView(!isView)} />
+										<EyeOff size={16} onClick={() => setIsView(!isView)} />
 									)}
 								</div>
 							</div>
-							  {errors.password && (
-									<small className="text-red-600 text-sm">{errors.password.message}</small>
-								)}
+							{errors.password && (
+								<small className="text-red-600 text-sm">{errors.password.message}</small>
+							)}
 
 
 							{!isLoginMode && (
 								<div>
 									<div className="grid gap-1 relative">
-									<Label htmlFor="confirmPassword" className="text-gray-700 mb-2">
-										Confirm Password
-									</Label>
-									<Input
-										id="confirmPassword"
-										type={isView2 ? "text" : "password"}
+										<Label htmlFor="confirmPassword" className="text-gray-700 mb-2">
+											Confirm Password
+										</Label>
+										<Input
+											id="confirmPassword"
+											type={isView2 ? "text" : "password"}
 
-										className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-										{...register("confirmPassword", {
-											required: "Confirm Password is required",
-											validate: (value) =>
-												value === getValues("password") ||
-												"Passwords do not match",
-										})}
-									/>
-									 {/* Eye / EyeOff icon inside input */}
-									<div className="absolute right-3 top-2/3 -translate-y-1/2 cursor-pointer text-gray-500">
-										{isView2 ? (
-										<Eye size={16} className="text-red-400" onClick={() => setIsView2(!isView2)} />
-										) : (
-										<EyeOff size={16} onClick={() => setIsView2(!isView2)} />
-										)}
+											className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+											{...register("confirmPassword", {
+												required: "Confirm Password is required",
+												validate: (value) =>
+													value === getValues("password") ||
+													"Passwords do not match",
+											})}
+										/>
+										{/* Eye / EyeOff icon inside input */}
+										<div className="absolute right-3 top-2/3 -translate-y-1/2 cursor-pointer text-gray-500">
+											{isView2 ? (
+												<Eye size={16} className="text-red-400" onClick={() => setIsView2(!isView2)} />
+											) : (
+												<EyeOff size={16} onClick={() => setIsView2(!isView2)} />
+											)}
+										</div>
 									</div>
-								</div>
 									{errors.confirmPassword && (
 										<small className="text-red-600 text-sm">
 											{errors.confirmPassword.message}
 										</small>
 									)}
-							</div>
+								</div>
 							)}
 
 							<Button
@@ -264,20 +270,20 @@ export default function SignUpPage() {
 								{isSubmitting
 									? "Submitting..."
 									: isLoginMode
-									? "Login"
-									: "Sign Up"}
+										? "Login"
+										: "Sign Up"}
 							</Button>
 
 							<div className="text-center text-sm text-gray-600 mt-4 cursor-pointer">
 								{isLoginMode ? (
 									<>
-									<Link to="/forget-password" className="font-bold text-red-600 hover:underline hover:underline-offset-4">
-										Forgot password?
-									</Link>
+										<Link to="/forget-password" className="font-bold text-red-600 hover:underline hover:underline-offset-4">
+											Forgot password?
+										</Link>
 
-									<br/>
-									
-									
+										<br />
+
+
 										Don&apos;t have an account?{" "}
 										<Link
 											to="/consumer?mode=signup"
@@ -285,7 +291,7 @@ export default function SignUpPage() {
 										>
 											Sign up
 										</Link>
-										
+
 									</>
 								) : (
 									<>

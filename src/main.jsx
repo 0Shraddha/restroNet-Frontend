@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <SidebarProvider>
         <Suspense fallback={LoadingFallback}>
-          <RouterProvider router={router} />
+            <RouterProvider router={router} />
         </Suspense>
       </SidebarProvider>
     </Provider>

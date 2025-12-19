@@ -24,6 +24,8 @@ const userPreferences = {
 	category: ["Dinner", "Lunch"],
 	tags: ["Romantic", "Outdoor Seating"],
 };
+  const user = JSON.parse(localStorage.getItem('user'));
+
 
   // Calculate estimated walk time (assuming 5 km/h walking speed)
   const getWalkTime = (distance) => {
@@ -110,14 +112,14 @@ export default function DetailPageTest() {
 						<Search tableFor={"Search for restaurants or cuisines"} />
 					</div>
 
-					{/* Filters Button */}
+					{/* Filters Button
 					<button className="flex items-center gap-2 bg-red-600 text-white px-5 py-2 rounded-xl font-medium shadow hover:bg-red-700 transition">
 						<Filter size={16} />
 						Filters
-					</button>
+					</button> */}
 
 					<DropdownMenu className="font-['sora'] ">
-						<DropdownMenuTrigger className="rounded-full border-2 p-2 bg-red-700 border-red-700 cursor-pointer hover:bg-red-500 hover:border-red-500">
+						<DropdownMenuTrigger className="rounded-full border-2 p-2 bg-red-600 border-red-700 cursor-pointer hover:bg-red-500 hover:border-red-500">
 							<UserRound className=" text-white " />
 						</DropdownMenuTrigger>
 						<DropdownMenuContent className="bg-red-500 text-white absolute -right-6  ">
@@ -135,6 +137,9 @@ export default function DetailPageTest() {
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
+
+						<span className="bg-red-100 border border-red-700 text-red-600 p-2 px-4 rounded-3xl ">{user.username}</span>
+					
 				</div>
 
 				{/* ⭐ Preferences Display */}

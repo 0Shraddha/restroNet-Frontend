@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TabsButton from "../../components/TabsButton";
 import ListItem from "./ListItems";
+import TopHeader from "../../layout/Topheader";
 
 // import DataTable from "../../components/common/Datatable";
 const AllCategories = () => {
@@ -38,9 +39,11 @@ const AllCategories = () => {
     }
   };
     return(
-        <div className="min-h-screen bg-gray-50 p-6">
+      <>
+          <TopHeader title='Restaurant Metadata Manager' />
+           
+                <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">Restaurant Metadata Manager</h1>
 
         {/* Tabs */}
         <div className="flex space-x-1 mb-6 bg-white rounded-lg p-1 shadow">
@@ -64,9 +67,7 @@ const AllCategories = () => {
 		</div>
 		
 		</div>
-           
-          
-        
+        </>
     )
 }
 

@@ -337,14 +337,13 @@ const AddRestaurant = () => {
                 id="restaurant_contact"
                 type="tel"
                 placeholder="Enter Restaurant Phone Number"
-                {...register('restaurant_contact',
-                  {
-                    required: 'Phone number is required',
-                    //  pattern: {
-                    //   value: /^(?:\+977)?0?(9[78]\d{8}|1\d{7}|[2-9]\d{6,7})$/,
-                    //   message: 'Invalid phone number'
-                    // }
-                  })}
+                {...register('phone', {
+                  required: 'Phone number is required',
+                  pattern: {
+                    value: /^[0-9]{10}$/,
+                    message: 'Phone number must be exactly 10 digits'
+                  }
+                })}
               />
               {errors.restaurant_contact && <p className="error">{errors.restaurant_contact.message}</p>}
             </div>
