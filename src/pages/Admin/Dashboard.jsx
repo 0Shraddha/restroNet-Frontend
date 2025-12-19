@@ -117,28 +117,28 @@ const stats = useMemo(() => {
             title="Total Restaurants"
             value={stats.totalRestaurants}
             subtitle="Active listings"
-            color="text-blue-600"
+            color="text-red-600"
           />
           <StatCard
             icon={Globe}
             title="Unique Cuisines"
             value={stats.uniqueCuisines}
             subtitle="Types available"
-            color="text-purple-600"
+            color="text-red-600"
           />
           <StatCard
             icon={MapPin}
             title="Valid Locations"
             value={stats.validLocations}
             subtitle="Mapped restaurants"
-            color="text-pink-600"
+            color="text-red-600"
           />
           <StatCard
             icon={Calendar}
             title="Recent Additions"
             value={Object.keys(stats.timeline).length}
             subtitle="Registration days"
-            color="text-green-600"
+            color="text-red-600"
           />
         </div>
 
