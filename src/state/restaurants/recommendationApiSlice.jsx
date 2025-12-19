@@ -22,8 +22,8 @@ export const recommendationApiSlice = createApi({
                 url: `/discover/${id}`,
                 method: "GET",
                 params: {
-                    q,       // Matches backend 'q'
-                    cuisine, // Matches backend 'cuisine'
+                    q,       
+                    cuisine, 
                     limit,
                 },
             }),

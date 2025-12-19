@@ -8,7 +8,7 @@ export const useTableFilter = () => {
   const perPage = searchParams.get("_perPage") || "10";
   const query = searchParams.get("_search") || "";
   const category = searchParams.get("_category") || "";
-  const genre = searchParams.get("_genre") || "";
+  const cuisine = searchParams.get("_cuisine") || "";
 
   const setFilters = useCallback(
     (newFilters) => {
@@ -39,9 +39,9 @@ export const useTableFilter = () => {
           updatedParams.set("_category", newFilters.category);
         }
 
-        // GENRE
-        if (newFilters.genre !== undefined) {
-          updatedParams.set("_genre", newFilters.genre);
+        // cuisine
+        if (newFilters.cuisine !== undefined) {
+          updatedParams.set("_cuisine", newFilters.cuisine);
         }
 
         return updatedParams;
@@ -59,7 +59,7 @@ export const useTableFilter = () => {
     perPage,
     page,
     category,
-    genre,
+    cuisine,
     setFilters,
     resetFilters,
   };

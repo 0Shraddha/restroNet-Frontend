@@ -286,7 +286,6 @@ const RestaurantDetail = () => {
                 {/* {activeTab === "offers" && (
                 <OffersCard />
                 )} */}
-  {console.log("review................", reviews)}
                 {activeTab === "reviews" && (
                   <div className="text-gray-600">
                     

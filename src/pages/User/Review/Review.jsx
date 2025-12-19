@@ -2,10 +2,9 @@ import { Edit2, Trash2, User } from "lucide-react";
 
 export default function ReviewCard({ reviewData, onDelete, onEdit }) {
   const { review, rating, user_name } = reviewData;
-  console.log(reviewData, "review data")
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-5 w-full mb-4 border border-gray-100">
+    <div className="bg-white rounded-sm hover:shadow-md p-5 w-full mb-4 border border-gray-200">
       
       {/* Top row: Avatar + Name + Rating + Actions */}
       <div className="flex items-center justify-between">

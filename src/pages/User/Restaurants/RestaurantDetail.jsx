@@ -354,7 +354,7 @@ const RestaurantDetail = () => {
 										)}
 										
 										<p className="text-gray-800 text-end">
-											<strong>Total</strong> : {reviews?.count}
+											<strong>Total</strong> : {reviews?.total_reviews}
 										</p>
 										{reviews?.data.map((item, i) => (
 											<ReviewCard

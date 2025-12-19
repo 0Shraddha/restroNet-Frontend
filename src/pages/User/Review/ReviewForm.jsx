@@ -29,14 +29,17 @@ const ReviewForm = ({ mode = "add", review = null, onSubmitForm }) => {
 			setValue("review", review.review);
 		}
 	}, [mode, review, setValue]);
+	const consumerId = JSON.parse(localStorage.getItem("user"))._id
 
 	const onSubmit = async (data) => {
 		const payload = {
-			user_id: review?.user_id || "6878638d8f0567e00c8bb26a",
+			consumer_id: consumerId,
 			rating: data.rating,
 			review: data.review,
 			venue_id: venueId,
+
 		};
+
 
 		try {
 			await onSubmitForm(payload); // parent handles add/update API call
@@ -57,7 +60,7 @@ const ReviewForm = ({ mode = "add", review = null, onSubmitForm }) => {
 		<>
 			{JSON.parse(localStorage.getItem("user"))?.role == "consumer" ? (
 				<form
-					className="p-8 mb-12 bg-white border border-gray-200 shadow-md rounded-2xl space-y-6"
+					className="p-8 mb-12 bg-white border border-gray-200 shadow-md rounded-lg space-y-6"
 					onSubmit={handleSubmit(onSubmit)}
 				>
 					{/* Header */}
