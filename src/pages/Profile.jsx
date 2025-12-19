@@ -22,6 +22,9 @@ export default function RestaurantProfile() {
     window.location.href = "/consumer";
   };
 
+  const user = JSON.parse(localStorage.getItem('user'));
+
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       {/* Back Button */}
@@ -44,10 +47,10 @@ export default function RestaurantProfile() {
                 <User className="w-10 h-10 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">SHRADDHA DONGOL</h1>
+                <h1 className="text-3xl font-bold text-gray-900">{user?.username || "Guest"}</h1>
                 <div className="text-gray-600 flex items-center mt-1">
                   <Mail className="w-4 h-4 me-2" />
-                  <span>shraddhadongol12345@gmail.com</span>
+                  <span>{user?.email || "guest@example.com"}</span>
                 </div>
                 <div className="text-gray-600 flex items-center mt-1">
                   <Phone className="w-4 h-4 me-2" />

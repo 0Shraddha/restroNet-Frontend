@@ -25,6 +25,8 @@ export default function SignUpPage() {
   } = useForm();
 
   const [ isView, setIsView ] = useState(false);
+    const [isView2, setIsView2] = useState(false);
+  
 
   useEffect(()=>{
     if(actionData){
@@ -107,13 +109,20 @@ export default function SignUpPage() {
                     name='phone'
                     placeholder="Enter phone number"
                     className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                    {...register('phone')}
+                    {...register('phone', {
+                      required: 'Phone number is required',
+                      pattern: {
+                        value: /^[0-9]{10}$/,
+                        message: 'Phone number must be exactly 10 digits'
+                      }
+                    })}
                   />
                   {errors.phone && <small className='text-red-600 text-sm'>{errors.phone.message}</small>}
                 </div>
               )}
 
-              <div className="grid gap-1">
+<div className="relative">
+                <div className="grid gap-1">
                 <Label htmlFor="password" className="text-gray-700">Password</Label>
                 <Input
                   id="password"
@@ -149,13 +158,14 @@ export default function SignUpPage() {
                       )}
                 {errors.password && <small className='text-red-600 text-sm'>{errors.password.message}</small>}
               </div>
+</div>
 
               {!isLoginMode && (
                 <div className="grid gap-1">
                   <Label htmlFor="confirmPassword" className="text-gray-700">Confirm Password</Label>
                   <Input
                     id="confirmPassword"
-                    type="password"
+                    type={isView2 ? "text": "password"}
                     className="rounded-md border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                     {...register('confirmPassword', {
                       required: 'Confirm Password is required',
@@ -163,19 +173,19 @@ export default function SignUpPage() {
                         value === getValues('password') || 'Passwords do not match'
                     })}
                   />
-                   {isView ? (
+                   {isView2 ? (
                         <Eye
                           size={14}
                           className=" text-red-400 cursor-pointer text-gray-500"
                           onClick={() => {
-                            setIsView(!isView)
+                            setIsView2(!isView2)
                           }}
                         />
                       ) : (
                         <EyeOff
                         size={14}
                           className=" cursor-pointer text-gray-500"
-                          onClick={() => setIsView(!isView)}
+                          onClick={() => setIsView2(!isView2)}
                         />
                       )}
                   {errors.confirmPassword && <small className='text-red-600 text-sm'>{errors.confirmPassword.message}</small>}

@@ -30,6 +30,7 @@ import { useGetRestaurantsQuery } from "../../../state/restaurants/restuarantApi
 import MultiSelect from "../../../components/common/MultiSelect";
 import { useGetTagsQuery } from "../../../state/restaurants/tagApi";
 import { Plus } from "lucide-react";
+import TopHeader from "../../../layout/Topheader";
 
 const AddMenu = () => {
 	const {
@@ -155,6 +156,8 @@ const AddMenu = () => {
 	};
 
 	return (
+			<>
+				  <TopHeader title='Menu Manager' />
 		<form
 			className="mx-auto p-6 space-y-10"
 			method="POST"
@@ -448,6 +451,7 @@ const AddMenu = () => {
 
 			<PreviewMenuItems />
 		</form>
+		</>
 	);
 };
 

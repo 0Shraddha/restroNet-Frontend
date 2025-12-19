@@ -26,6 +26,8 @@ const userPreferences = {
 	category: ["Dinner", "Lunch"],
 	tags: ["Romantic", "Outdoor Seating"],
 };
+  const user = JSON.parse(localStorage.getItem('user'));
+
 
 const getWalkTime = (distance) => {
 	if (!distance) return null;
@@ -142,8 +144,8 @@ export default function DetailPageTest() {
 					</button> */}
 
 					<DropdownMenu className="font-['sora'] ">
-						<DropdownMenuTrigger className="rounded-full border-2 p-2 bg-red-700 border-red-700 cursor-pointer hover:bg-red-500 hover:border-red-500">
-							<UserRound className=" text-white " />
+						<DropdownMenuTrigger className="rounded-full border-2 p-2 bg-red-600 border-red-600 cursor-pointer hover:bg-red-500 hover:border-red-500">
+							<UserRound size={16} className=" text-white " />
 						</DropdownMenuTrigger>
 						<DropdownMenuContent className="bg-red-500 text-white absolute -right-6  ">
 							<DropdownMenuItem className="cursor-pointer hover:bg-red-400">
@@ -160,6 +162,9 @@ export default function DetailPageTest() {
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
+
+						{/* <span className="bg-red-100 border border-red-700 text-red-600 p-2 px-4 rounded-3xl ">{user.username}</span> */}
+					
 				</div>
 
 				{/* ⭐ Preferences Display */}

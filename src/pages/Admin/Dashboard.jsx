@@ -4,6 +4,7 @@ import { TrendingUp, Store, Globe, MapPin, Calendar, DollarSign, Users, Eye } fr
 import { useGetRestaurantsQuery } from '../../state/restaurants/restuarantApiSlice';
 import GoogleMapComponent from '../../components/Map';
 import RestaurantGallery from '../../components/common/RestaurantGallery';
+import TopHeader from '../../layout/Topheader';
 
 const RestaurantDashboard = () => {
   const {data:restaurantData} = useGetRestaurantsQuery();
@@ -100,13 +101,15 @@ const stats = useMemo(() => {
   );
 
   return (
+    <>
+    <TopHeader title='Dashboard' />
     <div className="min-h-screen bg-gray-50 p-8">
-      <header className="max-w-8xl mx-auto mb-5 bg-gradient-to-r from-red-500 to-red-600 text-white font-['poppins'] rounded-xl ">
+      {/* <header className="max-w-8xl mx-auto mb-5 bg-gradient-to-r from-red-500 to-red-600 text-white font-['poppins'] rounded-xl ">
         <div className="px-6 pt-4 pb-12 relative">
           <h1 className="text-3xl font-semibold">Restaurant Management Dashboard</h1>
           <p className="text-[#001F3D] bg-gray-100 font-medium font-['lilex'] text-sm mt-1 absolute bottom-0 left-0 rounded-b-lg w-full px-6 py-2">Admin Panel</p>
         </div>
-      </header>
+      </header> */}
 
       <div className="max-w-8xl mx-auto">
 
@@ -325,6 +328,7 @@ const stats = useMemo(() => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

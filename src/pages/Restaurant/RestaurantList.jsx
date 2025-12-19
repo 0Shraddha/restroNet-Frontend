@@ -4,6 +4,7 @@ import { Input } from '../../components/ui/input';
 import { Plus, Tag, Star } from 'lucide-react';
 import RestaurantTableList from './RestaurantTableList';
 import StatsCard from '../../components/StatsCard';
+import TopHeader from '../../layout/Topheader';
 
 const RestaurantList = () => {
    const cardsData = [
@@ -42,7 +43,12 @@ const RestaurantList = () => {
   };
 
   return (
+    <>
+          <TopHeader title='Restaurant List' />
+
     <div className="mx-auto p-6 space-y-8">
+          
+      
       {/* Header Section */}
       <div className="bg-white rounded-xl shadow-sm p-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -65,6 +71,7 @@ const RestaurantList = () => {
   
 <RestaurantTableList />
      </div>
+     </>
   );
 };
 
